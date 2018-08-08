@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'}
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-slide-content { padding: 0.5rem 4rem; }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .remark-slide-content * { font-size: 16px; }
+      .remark-code * { font-size: 12px; }
+      .remark-slide-content img { width: 50%; margin: 1rem 0;}
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+3D-visualisering
+================
+
+# Heelt generelt
+
+<bilde av Transformers>
+<bilde av regnbue-fis>
+<bilde fra South Park>
+<bilde fra Doom>
+
+---
+
+# Fra modell til bilde
+
+<bilde av ansikt-wireframe>
+<opplisting av koordinater>
+<bilde av piksler på skjermen>
+<bilde fra Avatar>
+
+---
+
+Data
+  Modeller
+  Kameraposisjon
+  Lysposisjon
+  Farger
+  ++
+(magic)
+Bilder på skjermen
+
+---
+
+DATA -> Magic -> Bilde
+
+# Data
+
+- Vertices
+  - <bilde av vertices>
+- Faces
+  - <bilde>
+- Vertices + Faces = Geometry
+  - <bilde>
+- Farger og teksturer
+  - <bilde med rgba-vektorer både 0.0-1.0 og 0-255>
+  - <bilde av map av flere rgba-vektorer>
+- Posisjoner og rotasjoner
+  - <bilde av objekts posisjoner med posisjonsvektorer>
+  - <bilde av rotert objekt med rotasjonsvektorer>
+- Kamera
+  - <bilde med posisjon, retning og formfaktor>
+- Lys
+  - <bilde med lystype punktlys, posisjon, lysstyrke>
+  - <bilde med lystype directional, retning, lysstyrke>
+
+---
+
+Data -> MAGIC -> Bilde
+
+# Projisering
+
+<bilde av projisering>
+
+---
+
+Data -> MAGIC -> Bilde
+
+# Projisering
+
+<bilde 2 av projisering>
+<bilde 3 av projisering>
+<bilde 4 av projisering>
+
+---
+
+Data -> MAGIC -> Bilde
+
+# Rasterisering
+
+<bilde 1 av rasterisering>
+<bilde 2 av rasterisering>
+<bilde 3 av rasterisering>
+<bilde 4 av rasterisering>
+
+---
+
+Data -> MAGIC -> Bilde
+
+# Rasterisering
+
+<bilde med samme modell i wireframe, solid color, flat shading, diffuse shading, fancy shading m/ fresnel+reflection map++> 
+
+-> shading
+
+---
+
+Data -> MAGIC -> Bilde
+
+# Shading
+
+<bilde av kamera-lys-vinkler>
+
+---
+
+Data -> MAGIC -> Bilde
+
+# Shading
+
+<bilde av gouraud-wireframe>
+<bilde av gouraud-piksler>
+<bilde av phong-piksler>
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js"> </script>
+    <script>var slideshow = remark.create();</script>
+  </body>
+</html>
+
