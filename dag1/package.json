@@ -1,0 +1,17 @@
+{
+  "name": "dag1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "budo index.js --title 'Avansert Visualisering' --live --open -- -t brfs"
+  },
+  "keywords": [],
+  "author": "BEKK",
+  "license": "CC-BY-SA-4.0",
+  "devDependencies": {
+    "brfs": "^2.0.0",
+    "browserify": "^16.2.2",
+    "budo": "^11.3.2"
+  }
+}
