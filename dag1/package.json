@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "budo index.js --live --open -- -t brfs"
+    "start": "budo index.js -S --live --open -- -t brfs"
   },
   "keywords": [],
   "author": "BEKK",
@@ -15,6 +15,8 @@
     "budo": "^11.3.2"
   },
   "dependencies": {
-    "three": "^0.95.0"
+    "three": "^0.95.0",
+    "three-orbit-controls": "^82.1.0",
+    "web-audio-analyser": "^2.0.1"
   }
 }

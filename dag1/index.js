@@ -1,6 +1,8 @@
+const createAnalyser = require('web-audio-analyser');
 const THREE = require('three');
+const OrbitControls = require('three-orbit-controls')(THREE);
 
-var scene, camera, renderer;
+var scene, camera, renderer, cubes, analyser;
 
 var WIDTH = window.innerWidth;
 var HEIGHT = window.innerHeight;
@@ -15,12 +17,16 @@ function init() {
   initRenderer();
 
   document.body.appendChild(renderer.domElement);
+
+  renderer.render(scene, camera);
 }
 
 function initCamera() {
-  camera = new THREE.PerspectiveCamera(70, WIDTH / HEIGHT, 1, 10);
-  camera.position.set(0, 3.5, 5);
+  camera = new THREE.PerspectiveCamera(70, WIDTH / HEIGHT, 1, 100);
+  camera.position.set(0, 7, 20);
   camera.lookAt(scene.position);
+
+  new OrbitControls(camera);
 }
 
 function initRenderer() {
@@ -29,24 +35,44 @@ function initRenderer() {
 }
 
 function initCube() {
-  cube = new THREE.Mesh(
-    new THREE.CubeGeometry(2, 2, 2),
-    new THREE.MeshNormalMaterial()
-  );
-  scene.add(cube);
+  cubes = Array(32)
+    .fill()
+    .map(function(_, i, l) {
+      let n = -1 * Math.floor(l.length / 2) + i;
+      let cube = new THREE.Mesh(
+        new THREE.CubeGeometry(1, 1, 1),
+        new THREE.MeshNormalMaterial()
+      );
+      cube.position.set(n * 1 + n * 0.1, 0, 0);
+      scene.add(cube);
+
+      return cube;
+    });
 }
 
-function rotateCube() {
-  cube.rotation.x -= SPEED * 2;
-  cube.rotation.y -= SPEED;
-  cube.rotation.z -= SPEED * 3;
+function normalise(v) {
+  return (v - analyser.analyser.minDecibels) / analyser.analyser.maxDecibels;
+}
+
+function rotateCube(freqs) {
+  cubes.forEach((c, i) => c.scale.set(1, normalise(freqs[i]), 1));
 }
 
 function render() {
   requestAnimationFrame(render);
-  rotateCube();
+  rotateCube(analyser.frequencies());
   renderer.render(scene, camera);
 }
 
 init();
-render();
+navigator.mediaDevices
+  .getUserMedia({ video: false, audio: true })
+  .then(function(stream) {
+    analyser = createAnalyser(stream, { stereo: false, audible: false });
+    analyser.analyser.fftSize = 64;
+
+    render();
+  })
+  .catch(function(error) {
+    console.error(error);
+  });
