@@ -1,2 +1,2 @@
 # dataviz-kursserie
-Kurs serie i Datavisualisering
+Kurs-serie i Datavisualisering
