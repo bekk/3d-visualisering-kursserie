@@ -1,2 +1,2 @@
-# dataviz-kursserie
-Kurs-serie i Datavisualisering
+# avansert-visualisering-kursserie
+Kurs-serie i avansert visualisering
