@@ -1,2 +1,2 @@
 # avansert-visualisering-kursserie
-Kurs-serie i avansert visualisering
+Kursserie i avansert visualisering
