@@ -1,6 +1,8 @@
 #define PI 3.14159265358979323844
 
 uniform float time;
+uniform float transitionTime;
+uniform float phase;
 uniform float nofParticles;
 uniform float particleSize;
 uniform float pixelRatio;
@@ -34,6 +36,14 @@ vec2 get2DCoord(float index, float width) {
   return vec2(x, y);
 }
 
+vec3 get3DCoord(float index, float width, float depth) {
+  float x = mod(index, width);
+  float y = floor(index / (width * depth));
+  float z = mod(floor(index / width), depth);
+
+  return vec3(x, y, z);
+}
+
 vec3 startPosition() {
   float square = floor(sqrt(nofParticles));
 
@@ -54,27 +64,30 @@ vec3 startPosition() {
 }
 
 vec3 targetPosition() {
-  float width = 20.0;
-  float height = 40.0;
-  float z = -width/2.0;
-  if (deviance.y < 0.03) z -= width;
-  if (deviance.y > 0.2) z += width;
+  float width = 30.0;
+  float depth = 30.0;
 
-  return vec3(-20.0, 30.0 + deviance.w*height, z + deviance.z*width);
+  float spread = 2.0;
+
+  vec3 coordNormalized = get3DCoord(vertexIndex, width, depth) - vec3(width/2.0);
+
+  vec3 origo = vec3(0.0);//vec3(-40.0, 15.0, 10.0) + deviance.xyz;
+
+  return coordNormalized * spread + origo;
 }
 
 void main() {
 
   vec3 startPosition = startPosition();
-  
   vec3 targetPosition = targetPosition();
 
-  float movementSpeed = 1.0/2.0;
-  float releaseTempo = 1.0/10.0;
-  float relativeTime = (time - deviance.x/releaseTempo) * movementSpeed;
-  relativeTime = clamp(relativeTime, 0.0, 1.0);
+  if (phase == 1.0 && transitionTime < 1.0) {
+    vec3 temp = startPosition;
+    startPosition = targetPosition;
+    targetPosition = temp;
+  }
 
-  vec3 newPosition = mix(startPosition, targetPosition, easeInOutQuad(relativeTime));
+  vec3 newPosition = mix(startPosition, targetPosition, easeInOutQuad(transitionTime));
 
   particlePosition = newPosition;
   devianceForFragshader = deviance;

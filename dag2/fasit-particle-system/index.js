@@ -4,15 +4,20 @@ const fragmentShaderCode = fs.readFileSync(__dirname + '/fragmentshader.glsl', '
 const THREE = require('three');
 const dat = require('dat.gui');
 
-const nofParticles = 40000;
+const nofParticles = 30*30*30;
 
 let timeStart;
 let camera;
 let renderer;
 let scene;
+let phase = 0;
+let transitionInProgress = false;
+let transitionStart = 0.0;
 
 const uniforms = {
     time: {value: 0.0},
+    transitionTime: {value: 0.0},
+    phase: {value: 0.0},
     pixelRatio: {value: window.devicePixelRatio},
     nofParticles: {value: nofParticles},
     particleSize: {value: window.screen.width/4},
@@ -52,7 +57,7 @@ const initAnimation = function() {
     const points = new THREE.Points(geometry, material);
     scene.add(points);
 
-    addResizeListener(camera, renderer);
+    initMouseEvents();
 }
 
 function makeGeometry() {
@@ -81,22 +86,40 @@ function makeGeometry() {
     return geometry;
 }
 
+function initMouseEvents() {
+    function callback(event) {
+       transitionInProgress = !transitionInProgress;
+       transitionStart = new Date().getTime();
+    }
+
+    document.getElementsByTagName("canvas")[0].addEventListener("click", callback);
+}
+
 const animate = function() {
     requestAnimationFrame(animate);
 
-    uniforms.time.value = (new Date().getTime() - timeStart) / 1000;
+    const now = new Date().getTime();
+    const animationTime = (now - timeStart) / 1000;
+    let transitionTime = (now - transitionStart) / 1000;
+
+    uniforms.time.value = animationTime;
+
+    console.log(`animationTime: ${animationTime} transitionTime: ${uniforms.transitionTime.value} phase: ${phase}`)
+
+    if (transitionInProgress) {
+        uniforms.transitionTime.value = transitionTime;
+
+        if (transitionTime > 1.0) {
+            phase = (phase+1) % 2;
+            transitionInProgress = false;
+            uniforms.transitionTime.value = 0.0;
+        }
+    }
+
+    uniforms.phase.value = phase;
 
     renderer.render(scene, camera);
 }
 
-const addResizeListener = function(camera, renderer) {
-    window.addEventListener('resize', function() {
-        var height = window.innerHeight;
-        renderer.setSize(window.innerWidth, height);
-        camera.aspect = window.innerWidth / height;
-        camera.updateProjectionMatrix();
-    });
-}
-
-initAnimation("container", "renderer");
+initAnimation();
 animate();
