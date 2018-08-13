@@ -63,17 +63,30 @@ vec3 startPosition() {
   );
 }
 
-vec3 targetPosition() {
-  float width = 30.0;
-  float depth = 30.0;
+mat2 rotate2d(float angle){
+  return mat2(
+    cos(angle), -sin(angle),
+    sin(angle), cos(angle)
+  );
+}
 
-  float spread = 2.0;
+vec3 targetPosition() {
+  float width = 25.0;
+  float depth = 25.0;
+
+  float spread = 3.0;
 
   vec3 coordNormalized = get3DCoord(vertexIndex, width, depth) - vec3(width/2.0);
 
   vec3 origo = vec3(0.0);//vec3(-40.0, 15.0, 10.0) + deviance.xyz;
 
-  return coordNormalized * spread + origo;
+  vec3 target = coordNormalized * spread + origo;
+
+  float speed = 0.3;
+
+  vec2 rotated = rotate2d(time * speed) * vec2(target.x, target.z);
+
+  return vec3(rotated.x, target.y, rotated.y);
 }
 
 void main() {

@@ -4,7 +4,7 @@ const fragmentShaderCode = fs.readFileSync(__dirname + '/fragmentshader.glsl', '
 const THREE = require('three');
 const dat = require('dat.gui');
 
-const nofParticles = 30*30*30;
+const nofParticles = Math.pow(5, 2*3); // = 25*25*25 = 125*125
 
 let timeStart;
 let camera;
@@ -37,7 +37,7 @@ const initAnimation = function() {
     const ratio = renderer.getContext().drawingBufferWidth / renderer.getContext().drawingBufferHeight;
     
     camera = new THREE.PerspectiveCamera(60, ratio, 0.1, 10000);
-    camera.position.set(-150, 50, 0)
+    camera.position.set(-120, 40, 0)
     camera.lookAt(new THREE.Vector3(0, 0, 0));
     camera.updateProjectionMatrix();
 
@@ -104,7 +104,7 @@ const animate = function() {
 
     uniforms.time.value = animationTime;
 
-    console.log(`animationTime: ${animationTime} transitionTime: ${uniforms.transitionTime.value} phase: ${phase}`)
+    //console.log(`animationTime: ${animationTime} transitionTime: ${uniforms.transitionTime.value} phase: ${phase}`)
 
     if (transitionInProgress) {
         uniforms.transitionTime.value = transitionTime;
