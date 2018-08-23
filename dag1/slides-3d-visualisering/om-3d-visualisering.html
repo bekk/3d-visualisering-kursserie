@@ -60,19 +60,21 @@ DATA -> Magic -> Bilde
 # Data
 
 - Vertices
-  - <bilde av vertices>
+  - <bilde av vertice-koordinater som tall>
+  - <bilde av vertices som punkter>
 - Faces
-  - <bilde>
+  - <bilde av vertex-index-vektorer som tall>
+  - <bilde av faces som wireframe-polygoner>
 - Vertices + Faces = Geometry
   - <bilde>
 - Farger og teksturer
-  - <bilde med rgba-vektorer både 0.0-1.0 og 0-255>
-  - <bilde av map av flere rgba-vektorer>
+  - <bilde med rgba-vektorer som tall både 0.0-1.0 og 0-255>
+  - <bilde av teksturmap med rgba-verdier inni pikslene>
 - Posisjoner og rotasjoner
-  - <bilde av objekts posisjoner med posisjonsvektorer>
-  - <bilde av rotert objekt med rotasjonsvektorer>
+  - <bilde av eksempler på objekts posisjoner med posisjonsvektorer>
+  - <bilde av rotert objekt med rotasjonsvektorene>
 - Kamera
-  - <bilde med posisjon, retning og formfaktor>
+  - <bilde med posisjon, retnings-vektor og formfaktor på bilderektangel>
 - Lys
   - <bilde med lystype punktlys, posisjon, lysstyrke>
   - <bilde med lystype directional, retning, lysstyrke>
@@ -94,6 +96,14 @@ Data -> MAGIC -> Bilde
 <bilde 2 av projisering>
 <bilde 3 av projisering>
 <bilde 4 av projisering>
+
+---
+
+Data -> MAGIC -> Bilde
+
+# Rasterisering
+
+<Pipeline fra projection4 til rasterization3 til fullfarget trekant>
 
 ---
 
@@ -133,6 +143,34 @@ Data -> MAGIC -> Bilde
 <bilde av gouraud-wireframe>
 <bilde av gouraud-piksler>
 <bilde av phong-piksler>
+
+---
+
+Data -> Magic -> BILDE
+
+# Hardware
+
+<Diagram med 
+  - CPU (bilde av Core i7)
+  -- med CPU-minne
+  -- og CPU-programmet f.eks. C++, Java, JAVASCRIPT
+  - Databuss
+  - GPU (bilde av skjermkort)
+  -- med separat GPU-minne
+  -- og GPU-programmet GLSL, HLSL
+  - Skjerm
+>
+
+---
+
+Data -> Magic -> BILDE
+
+# Hardware
+
+Hardware påvirker hvordan vi skriver koden
+
+- Tar forholdvis lang tid å sende data til GPU (60 fps)
+- GPU har MASSIV parallellitet gjennom tusenvis av kjernerß
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js"> </script>
