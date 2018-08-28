@@ -1,7 +1,13 @@
-const THREE = require('three');
-const fs = require('fs');
-const vertexShaderCode = fs.readFileSync(__dirname + '/vertexshader.glsl', 'utf8');
-const fragmentShaderCode = fs.readFileSync(__dirname + '/fragmentshader.glsl', 'utf8');
+const THREE = require("three");
+const fs = require("fs");
+const vertexShaderCode = fs.readFileSync(
+  __dirname + "/vertexshader.glsl",
+  "utf8"
+);
+const fragmentShaderCode = fs.readFileSync(
+  __dirname + "/fragmentshader.glsl",
+  "utf8"
+);
 
 let scene, camera, renderer;
 
@@ -11,7 +17,7 @@ const HEIGHT = window.innerHeight;
 const SPEED = 0.004;
 
 const uniforms = {
-  time: {value: 0.0},
+  time: { value: 0.0 }
 };
 
 let timeStart = 0;
@@ -47,10 +53,7 @@ function initCube() {
     transparent: true
   });
 
-  cube = new THREE.Mesh(
-    new THREE.CubeGeometry(2, 2, 2),
-    material
-  );
+  cube = new THREE.Mesh(new THREE.CubeGeometry(2, 2, 2), material);
   scene.add(cube);
 }
 
