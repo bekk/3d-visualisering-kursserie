@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "budo index.js -S --live --open -- -t brfs"
+    "start": "budo index.js --live --open -- -t brfs"
   },
   "keywords": [],
   "author": "BEKK",
