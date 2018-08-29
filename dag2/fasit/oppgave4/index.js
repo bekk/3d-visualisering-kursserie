@@ -84,7 +84,7 @@ function initStar() {
 function initBackdrop() {
   const geometry = new THREE.PlaneGeometry(205, 137);
   const material = new THREE.MeshBasicMaterial({ 
-    map: new THREE.TextureLoader().load("img/Milkyway.jpg") 
+    map: new THREE.TextureLoader().load("fasit/oppgave4/img/Milkyway.jpg") 
   });
 
   const backdrop = new THREE.Mesh(

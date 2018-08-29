@@ -6,28 +6,7 @@ I denne oppgaven skal vi bruke shadere til å fargelegge kubene fra forrige oppg
 
 ![Resultat Shader Intro](./img/fasit.gif)
 
-Utdelt oppsett
----------------
-
-Filene med `(*)` må endres for å løse oppgaven
-
-```javascript
-oppgave-3-shader-intro/
-├── (*) fragmentshader.glsl     // Koden for fragment shader
-├── index.html                  // Html-en ligger her, og starter index.js
-├── (*) index.js                // Javascriptet ligger her
-├── package.json                // Byggekonfigurasjonen til npm
-└── README.md                   // Denne readme-filen
-```
-
-Bygging og kjøring
-------------------
-
-Bygg med `npm install`. Dette gjøres typisk kun 1 gang.
-
-Kjør med `npm start`. Dette vil åpne en utviklings-server som serverer applikasjonen og oppdaterer seg automatisk hver gang du lagrer filer.
-
-Teori og tips
+Teori
 -------------
 
 Vertex- og fragment shadere jobber sammen for å beregne pikslene på skjermen. Når man bruker three.js setter den inn automatisk sine egne innebygde shadere som tar hensyn til attributtene på hver Mesh. Men for fullstendig kreativ frihet skriver man sine egne shadere.

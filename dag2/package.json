@@ -1,0 +1,26 @@
+{
+  "name": "dag2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "budo index.js --live -- -t brfs",
+    "oppgave4": "budo fasit/oppgave4/index.js --live -- -t brfs",
+    "oppgave5": "budo fasit/oppgave5/index.js --live -- -t brfs",
+    "oppgave6": "budo fasit/oppgave6/index.js --live -- -t brfs"
+  },
+  "keywords": [],
+  "author": "BEKK",
+  "license": "CC-BY-SA-4.0",
+  "devDependencies": {
+    "brfs": "^2.0.0",
+    "browserify": "^16.2.2",
+    "budo": "^11.3.2"
+  },
+  "dependencies": {
+    "dat.gui": "^0.7.2",
+    "three": "^0.95.0",
+    "three-orbit-controls": "^82.1.0",
+    "web-audio-analyser": "^2.0.1"
+  }
+}
