@@ -20,9 +20,8 @@ function init() {
 }
 
 function initCamera() {
-  camera = new THREE.PerspectiveCamera(70, WIDTH / HEIGHT, 1, 10);
-  camera.position.set(0, 3.5, 5);
-  camera.lookAt(scene.position);
+  camera = new THREE.PerspectiveCamera(45, WIDTH / HEIGHT, 0.1, 1000);
+  camera.position.z = 5;
 }
 
 function initRenderer() {

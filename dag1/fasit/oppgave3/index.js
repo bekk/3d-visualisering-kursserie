@@ -32,9 +32,8 @@ function init() {
 }
 
 function initCamera() {
-  camera = new THREE.PerspectiveCamera(70, WIDTH / HEIGHT, 1, 100);
-  camera.position.set(0, 7, 20);
-  camera.lookAt(scene.position);
+  camera = new THREE.PerspectiveCamera(45, WIDTH / HEIGHT, 0.1, 1000);
+  camera.position.z = 40;
 
   new OrbitControls(camera);
 }
@@ -74,7 +73,7 @@ function makeCubeDance(analyser) {
     c.scale.set(1, normalise(min, max, frequencies[i]), 1)
   );
 
-  soundLevel = frequencies.reduce((a, b) => a+b, 0);
+  soundLevel = frequencies.reduce((a, b) => a + b, 0);
 }
 
 function updateUniforms() {
