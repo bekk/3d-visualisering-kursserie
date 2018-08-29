@@ -8,11 +8,17 @@
 
 ## Oppgaver
 
-### Oppgave 1: Hello three.js
+- [Oppgave 1](#oppgave-1)
+- [Oppgave 2](#oppgave-2)
+- [Oppgave 3](#oppgave-3)
+
+## Oppgave 1
+
+> Hello three.js
 
 Du skal lage en snurrende kube. Den ultimate introen til WebGL og three.js
 
-#### Komme i gang
+### Komme i gang
 
 Du har fått utdelt noe kode som du finner i `dag1`-mappen.
 
@@ -39,7 +45,7 @@ Så åpner du `http://localhost:9966` i din utvalgte nettleser.
 
 Du skal da kunne se teksten `Velkommen til kurs!` på skjermen.
 
-#### Skrive kode
+### Skrive kode
 
 All kode kan skrives i `index.js`-fila du finner i denne mappa. Prosessen du startet i sted vil sørge for at nettleseren blir oppdatert med nyeste kode når du lagrer den fila.
 
@@ -81,7 +87,7 @@ init();
 render();
 ```
 
-#### Lage `three.js` renderer, scene og kamera
+### Lage `three.js` renderer, scene og kamera
 
 De første tingene du må lage for å komme i gang med `three.js` er:
 
@@ -147,7 +153,7 @@ renderer.render(scene, camera);
 
 Det er fortsatt ikke stort å se, for vi har ingen objekter i scenen. Men hvis du får en svart skjerm er sansynligheten stor for at ting er OK.
 
-#### Hello Cube!
+### Hello Cube!
 
 Vår første oppgave er å få en kube til å vises på skjermen. For å få til det trenger vi å lage en kube. En kube er et objekt, og de fleste objekter i `three.js` består av en geometri og et materiale. Geometrien avgjør formen på objektet og materiale avgjør utseende.
 
@@ -190,7 +196,7 @@ camera.position.z = 5;
 
 Det var kanskje litt uimponerende, kuben ser helt flat ut. Men det kan vi fikse på ved å rotere kuben litt.
 
-#### Rotere kuben
+### Rotere kuben
 
 Alle objekter i `three.js` har noen attributter som styrer hvor de befinner seg, hvor store de er og hvilken vei de er rotert. Vi har allerede sett et eksempel på dette når vi endret posisjonen til kameraet for å se kuben.
 
@@ -230,10 +236,14 @@ Lek deg litt med de ulike verdiene og se hva som skjer med kuben. Noen forslag f
 - Endre på attributtene til kameraet (near, far, where ever you are 🎶)
 - Endre på posisjonen til kameraet.
 
-### Oppgave 2: Dancing cubes!
+## Oppgave 2
+
+> Dancing cubes!
 
 Du skal gjøre om din snurrende kube til et ensemble av dansende kuber!
 
-### Oppgave 3: Colorful dancing cubes!
+## Oppgave 3
+
+> Colorful dancing cubes!
 
 Du skal benytte deg av en fragmentshader for å gjøre kubene ekstra spreke.
