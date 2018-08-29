@@ -36,8 +36,8 @@ function initRenderer() {
 function initCubes() {
   cubes = Array(NUM_CUBES)
     .fill()
-    .map(function(_, i, l) {
-      let n = -1 * Math.floor(l.length / 2) + i;
+    .map(function(_, i) {
+      let n = -1 * Math.floor(NUM_CUBES / 2) + i;
       let cube = new THREE.Mesh(
         new THREE.CubeGeometry(1, 1, 1),
         new THREE.MeshNormalMaterial()
@@ -53,7 +53,7 @@ function normalise(min, max, v) {
   return (v - min) / max;
 }
 
-function makeCubeDance(analyser) {
+function makeCubesDance() {
   let min = analyser.analyser.minDecibels;
   let max = analyser.analyser.maxDecibels;
   let frequencies = analyser.frequencies();
@@ -62,11 +62,14 @@ function makeCubeDance(analyser) {
   );
 }
 
-function render(analyser) {
-  requestAnimationFrame(render.bind(null, analyser));
-  makeCubeDance(analyser);
+function render() {
+  requestAnimationFrame(render);
+  makeCubesDance();
   renderer.render(scene, camera);
 }
 
 init();
-analyse({ fftSize: NUM_CUBES * 2 }, render);
+analyse({ fftSize: NUM_CUBES * 2 }, function(a) {
+  analyser = a;
+  render();
+});
