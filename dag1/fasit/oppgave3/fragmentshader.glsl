@@ -1,9 +1,6 @@
-uniform float time;
+uniform float soundLevel;
 
 void main() {
-  const float speed = 3.0;
-  float redness = (sin(time*speed) + 1.0) / 2.0;
-
-  // gl_FragColor er output
-  gl_FragColor = vec4(redness, 0.25, 0.25, 1.0);
+  float redness = soundLevel / 3000.0;
+  gl_FragColor = vec4(1.0, 0.15, 0.15, 1.0) * (redness + 0.2);
 }

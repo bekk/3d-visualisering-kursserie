@@ -8,7 +8,7 @@ const fragmentShaderCode = fs.readFileSync(
   "utf8"
 );
 
-let scene, camera, renderer, cubes, analyser, timeStart;
+let scene, camera, renderer, cubes, analyser, soundLevel;
 
 const WIDTH = window.innerWidth;
 const HEIGHT = window.innerHeight;
@@ -16,13 +16,11 @@ const HEIGHT = window.innerHeight;
 const NUM_CUBES = 32;
 
 const UNIFORMS = {
-  time: { value: 0.0 }
+  soundLevel: { value: 0.0 }
 };
 
 function init() {
   scene = new THREE.Scene();
-
-  timeStart = new Date().getTime();
 
   initCubes();
   initCamera();
@@ -75,17 +73,18 @@ function makeCubeDance(analyser) {
   cubes.forEach((c, i) =>
     c.scale.set(1, normalise(min, max, frequencies[i]), 1)
   );
+
+  soundLevel = frequencies.reduce((a, b) => a+b, 0);
 }
 
-function updateTime() {
-  const now = new Date().getTime();
-  UNIFORMS.time.value = (now - timeStart) / 1000;
+function updateUniforms() {
+  UNIFORMS.soundLevel.value = soundLevel;
 }
 
 function render(analyser) {
   requestAnimationFrame(render.bind(null, analyser));
-  updateTime();
   makeCubeDance(analyser);
+  updateUniforms();
   renderer.render(scene, camera);
 }
 

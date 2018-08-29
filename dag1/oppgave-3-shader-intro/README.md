@@ -2,9 +2,9 @@
 Oppgave 3 - Shader-introduksjon
 ===============================
 
-I denne oppgaven skal vi bruke shadere til å fargelegge en kube:
+I denne oppgaven skal vi bruke shadere til å fargelegge kubene fra forrige oppgave i henhold til lydstyrken:
 
-![Resultat Shader Intro](./img/shader-intro.gif)
+![Resultat Shader Intro](./img/fasit.gif)
 
 Utdelt oppsett
 ---------------
@@ -17,7 +17,6 @@ oppgave-3-shader-intro/
 ├── index.html                  // Html-en ligger her, og starter index.js
 ├── (*) index.js                // Javascriptet ligger her
 ├── package.json                // Byggekonfigurasjonen til npm
-├── (*) vertexshader.glsl       // Kode for vertex shader
 └── README.md                   // Denne readme-filen
 ```
 
@@ -76,11 +75,11 @@ const fragmentShaderCode = fs.readFileSync(__dirname + '/fragmentshader.glsl', '
 
 ### Vertexshader
 
-(Si at Stian vertex shader skal vi lære om på dag 2)
+(Si at vertex shader skal vi lære om på dag 2)
 
 ### Fragmentshader
 
-(Forklar oppbyngingen)
+(Forklar oppbygningen)
 
 ```c
 uniform float time;
@@ -140,6 +139,10 @@ for (float i = 0.0; i < 10.0; i++) {
 ```
 
 Flere detaljer kan finnes på side 3 og 4 her: https://www.khronos.org/files/webgl/webgl-reference-card-1_0.pdf
+
+### Lydstyrke
+
+Det er mange måter å beregne lydstyrke på, men en som er ganske enkel er å summere styrken på alle frekvensene fra lydanalysen. Da får man et høyt tall på flere tusen som kanskje bør skaleres ned.
 
 Fasit
 ------
