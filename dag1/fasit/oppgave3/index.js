@@ -1,9 +1,5 @@
 const THREE = require("three");
 const fs = require("fs");
-const vertexShaderCode = fs.readFileSync(
-  __dirname + "/vertexshader.glsl",
-  "utf8"
-);
 const fragmentShaderCode = fs.readFileSync(
   __dirname + "/fragmentshader.glsl",
   "utf8"
@@ -48,7 +44,6 @@ function initRenderer() {
 function initCube() {
   const material = new THREE.ShaderMaterial({
     uniforms: uniforms,
-    vertexShader: vertexShaderCode,
     fragmentShader: fragmentShaderCode,
     transparent: true
   });

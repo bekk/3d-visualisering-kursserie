@@ -76,29 +76,7 @@ const fragmentShaderCode = fs.readFileSync(__dirname + '/fragmentshader.glsl', '
 
 ### Vertexshader
 
-(Forklar oppbygningen til koden til en vertex shader)
-
-(Variablene, main-metoden, matriseregningen, outputen som er vec4 med x,y,Z og den rare W)
-
-TODO: Sats på at Stian forklarer vertexshader på dag 2
-
-```c
-uniform float time;
-
-void main() {
-  // position er vertex-koordinatene gitt av webgl til shaderen
-  vec4 modelSpaceCoordinates = vec4(position.x, position.y, position.z, 1.0);
-
-  // modelViewMatrix inneholder modellens translasjon og rotasjon
-  vec4 worldSpaceCoordinates = modelViewMatrix * modelSpaceCoordinates;
-
-  // projectionMatrix projiserer til 2D
-  vec4 screenSpaceCoordinate = projectionMatrix * worldSpaceCoordinates;
-
-  // gl_Position er output som en vektor av (x, y, z, w)
-  gl_Position = screenSpaceCoordinate;
-}
-```
+(Si at Stian vertex shader skal vi lære om på dag 2)
 
 ### Fragmentshader
 
@@ -162,26 +140,6 @@ for (float i = 0.0; i < 10.0; i++) {
 ```
 
 Flere detaljer kan finnes på side 3 og 4 her: https://www.khronos.org/files/webgl/webgl-reference-card-1_0.pdf
-
-### Uniform, attribute og varying
-(-> TODO: FLYTT DETTE KAPITLET TIL DAG 2)
-
-I webgl er det definert tre typer variabler som shaderkoden bruker. Forskjellen mellom dem er
- 
-- når de kan endres
-- hvilken kode som kan lese dem
-- når de leses, om man får verdien deres direkte eller en interpolasjon mellom to nabo-verdier
-
-De tre typene er
-
-- `uniform` Variabler som kan skrives av Javascript-koden og sendes over 1 gang per rendret bilde, er read-only for shaderne og har samme globale verdi for alle vertices og alle piksler til hvert Mesh
--- For eksempel tid, museposisjon, animasjonshastighet, osv
--- Hensikten med dette er at GPU-en så kan kjøre shaderkoden uten å gjøre flere trege dataoverføringen fra resten av datamaskinen
-- `attribute` Samme som uniform, men kan kun leses i vertex shader, og skal ha en separat verdi for hver eneste vertex
--- For eksempel farge, teksturkoordinat, osv
--- Hensikten med denne typen er at GPU-en kan optimalisere minnet og kjernene sine slik at flest mulig beregninger kan kjøre samtidig uten å måtte snakke sammen
-- `varying` Kan ikke skrives til av Javascript-koden, men av vertexshaderen. Får dermed en separat verdi per vertex. Men den kan leses av fragmentshaderen, og den verdien som leses da er interpolert mellom de tre vertexene som pikselen er mellom
--- Typisk eksempel er den interpolerte fargen pikselen skal ha fra en tekstur. Men generelt er denne typen brukt hvis man vil at vertexshaderen skal beregne en verdi som fragmentshaderen igjen skal bruke til å beregne fargen. Slik kan vertex shader og fragment shader snakke sammen.
 
 Fasit
 ------
