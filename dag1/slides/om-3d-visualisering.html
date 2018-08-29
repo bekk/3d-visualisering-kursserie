@@ -45,6 +45,8 @@
       .left img,
       .center img,
       .right img { width: 97.5% !important; margin: 0.1rem !important; }
+
+      .full * { width: 97% !important;}
     </style>
   </head>
   <body>
@@ -81,8 +83,6 @@
 
 ---
 
-DATA -> Magic -> Bilde
-
 # Data
 
 - Vertices
@@ -107,15 +107,11 @@ DATA -> Magic -> Bilde
 
 ---
 
-Data -> MAGIC -> Bilde
-
 # Projisering
 
 ![altxt](./img/projection1.png)
 
 ---
-
-Data -> MAGIC -> Bilde
 
 # Projisering
 
@@ -125,15 +121,13 @@ Data -> MAGIC -> Bilde
 
 ---
 
-Data -> MAGIC -> Bilde
-
 # Rasterisering
 
 (Pipeline fra projection4 til rasterization3 til fullfarget trekant)
 
----
+(Kanskje droppe denne sliden?)
 
-Data -> MAGIC -> Bilde
+---
 
 # Rasterisering
 
@@ -144,8 +138,6 @@ Data -> MAGIC -> Bilde
 
 ---
 
-Data -> MAGIC -> Bilde
-
 # Rasterisering
 
 (bilde med samme modell i wireframe, solid color, flat shading, diffuse shading, fancy shading m/ fresnel+reflection map++) 
@@ -154,15 +146,11 @@ Data -> MAGIC -> Bilde
 
 ---
 
-Data -> MAGIC -> Bilde
-
 # Shading
 
 ![altxt](./img/shading1.png)
 
 ---
-
-Data -> MAGIC -> Bilde
 
 # Shading
 
@@ -172,26 +160,9 @@ Data -> MAGIC -> Bilde
 
 ---
 
-Data -> Magic -> BILDE
-
 # Hardware
 
-Diagram med 
-
-- CPU (bilde av Core i7)
-  - med CPU-minne
-  - og CPU-programmet f.eks. C++, Java, JAVASCRIPT
-- Databuss
-- GPU (bilde av skjermkort)
-  - med separat GPU-minne
-  - og GPU-programmet GLSL, HLSL
-- Skjerm
-
----
-
-Data -> Magic -> BILDE
-
-# Hardware
+.full[![altxt](./img/hardware.png)]
 
 Hardware påvirker hvordan vi skriver koden
 
