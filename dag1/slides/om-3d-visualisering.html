@@ -18,6 +18,33 @@
       .remark-slide-content * { font-size: 16px; }
       .remark-code * { font-size: 12px; }
       .remark-slide-content img { width: 50%; margin: 1rem 0;}
+
+      .topLeft { left: 1rem; top: 8rem }
+      .topRight { right: 1rem; top: 8rem }
+      .bottomLeft { left: 1rem; bottom: 1rem }
+      .bottomRight { right: 1rem; bottom: 1rem }
+
+      .left { left: 1rem; top: 16rem }
+      .center { right: 38%; top: 16rem }
+      .right { right: 1rem; top: 16rem }
+
+      .topLeft img,
+      .topRight img,
+      .bottomLeft img, 
+      .bottomRight img { width: 97.5% !important; margin: 0.1rem !important; }
+
+      .topLeft,
+      .topRight,
+      .bottomLeft, 
+      .bottomRight { position: fixed; width: 40%;}
+
+      .left,
+      .center,
+      .right { position: fixed; width: 28%;}
+
+      .left img,
+      .center img,
+      .right img { width: 97.5% !important; margin: 0.1rem !important; }
     </style>
   </head>
   <body>
@@ -26,32 +53,31 @@
 3D-visualisering
 ================
 
-# Heelt generelt
-
-<bilde av Transformers>
-<bilde av regnbue-fis>
-<bilde fra South Park>
-<bilde fra Doom>
+.topLeft[![altxt](./img/transformers.png)]
+.topRight[![altxt](./img/rainbow-fart.png)]
+.bottomLeft[![altxt](./img/southpark.png)]
+.bottomRight[![altxt](./img/doom.jpg)]
 
 ---
 
 # Fra modell til bilde
 
-<bilde av ansikt-wireframe>
-<opplisting av koordinater>
-<bilde av piksler på skjermen>
-<bilde fra Avatar>
+.topLeft[![altxt](./img/face-wireframe.png)]
+.topRight[![altxt](./img/avatar.png)]
+
+.bottomLeft[![altxt](./img/coordinates.png)]
+.bottomRight[![altxt](./img/pixels-on-screen-close.jpg)]
 
 ---
 
-Data
-  Modeller
-  Kameraposisjon
-  Lysposisjon
-  Farger
-  ++
-(magic)
-Bilder på skjermen
+- Data
+  - Modeller
+  - Kameraposisjon
+  - Lysposisjon
+  - Farger
+  - ++
+- (magic)
+- Bilder på skjermen
 
 ---
 
@@ -60,24 +86,24 @@ DATA -> Magic -> Bilde
 # Data
 
 - Vertices
-  - <bilde av vertice-koordinater som tall>
-  - <bilde av vertices som punkter>
+  - (bilde av vertice-koordinater som tall)
+  - (bilde av vertices som punkter)
 - Faces
-  - <bilde av vertex-index-vektorer som tall>
-  - <bilde av faces som wireframe-polygoner>
+  - (bilde av vertex-index-vektorer som tall)
+  - (bilde av faces som wireframe-polygoner)
 - Vertices + Faces = Geometry
-  - <bilde>
+  - (bilde)
 - Farger og teksturer
-  - <bilde med rgba-vektorer som tall både 0.0-1.0 og 0-255>
-  - <bilde av teksturmap med rgba-verdier inni pikslene>
+  - (bilde med rgba-vektorer som tall både 0.0-1.0 og 0-255)
+  - (bilde av teksturmap med rgba-verdier inni pikslene)
 - Posisjoner og rotasjoner
-  - <bilde av eksempler på objekts posisjoner med posisjonsvektorer>
-  - <bilde av rotert objekt med rotasjonsvektorene>
+  - (bilde av eksempler på objekts posisjoner med posisjonsvektorer)
+  - (bilde av rotert objekt med rotasjonsvektorene)
 - Kamera
-  - <bilde med posisjon, retnings-vektor og formfaktor på bilderektangel>
+  - (bilde med posisjon, retnings-vektor og formfaktor på bilderektangel)
 - Lys
-  - <bilde med lystype punktlys, posisjon, lysstyrke>
-  - <bilde med lystype directional, retning, lysstyrke>
+  - (bilde med lystype punktlys, posisjon, lysstyrke)
+  - (bilde med lystype directional, retning, lysstyrke)
 
 ---
 
@@ -85,7 +111,7 @@ Data -> MAGIC -> Bilde
 
 # Projisering
 
-<bilde av projisering>
+![altxt](./img/projection1.png)
 
 ---
 
@@ -93,9 +119,9 @@ Data -> MAGIC -> Bilde
 
 # Projisering
 
-<bilde 2 av projisering>
-<bilde 3 av projisering>
-<bilde 4 av projisering>
+.left[![altxt](./img/projection2.png)]
+.center[![altxt](./img/projection3.png)]
+.right[![altxt](./img/projection4.png)]
 
 ---
 
@@ -103,7 +129,7 @@ Data -> MAGIC -> Bilde
 
 # Rasterisering
 
-<Pipeline fra projection4 til rasterization3 til fullfarget trekant>
+(Pipeline fra projection4 til rasterization3 til fullfarget trekant)
 
 ---
 
@@ -111,10 +137,10 @@ Data -> MAGIC -> Bilde
 
 # Rasterisering
 
-<bilde 1 av rasterisering>
-<bilde 2 av rasterisering>
-<bilde 3 av rasterisering>
-<bilde 4 av rasterisering>
+.topLeft[![altxt](./img/rasterization1.png)]
+.topRight[![altxt](./img/rasterization2.png)]
+.bottomLeft[![altxt](./img/rasterization3.png)]
+.bottomRight[![altxt](./img/rasterization4.png)]
 
 ---
 
@@ -122,7 +148,7 @@ Data -> MAGIC -> Bilde
 
 # Rasterisering
 
-<bilde med samme modell i wireframe, solid color, flat shading, diffuse shading, fancy shading m/ fresnel+reflection map++> 
+(bilde med samme modell i wireframe, solid color, flat shading, diffuse shading, fancy shading m/ fresnel+reflection map++) 
 
 -> shading
 
@@ -132,7 +158,7 @@ Data -> MAGIC -> Bilde
 
 # Shading
 
-<bilde av kamera-lys-vinkler>
+![altxt](./img/shading1.png)
 
 ---
 
@@ -140,9 +166,9 @@ Data -> MAGIC -> Bilde
 
 # Shading
 
-<bilde av gouraud-wireframe>
-<bilde av gouraud-piksler>
-<bilde av phong-piksler>
+.left[![altxt](./img/shading2.png)]
+.center[![altxt](./img/shading3.png)]
+.right[![altxt](./img/shading4.png)]
 
 ---
 
@@ -150,16 +176,16 @@ Data -> Magic -> BILDE
 
 # Hardware
 
-<Diagram med 
-  - CPU (bilde av Core i7)
-  -- med CPU-minne
-  -- og CPU-programmet f.eks. C++, Java, JAVASCRIPT
-  - Databuss
-  - GPU (bilde av skjermkort)
-  -- med separat GPU-minne
-  -- og GPU-programmet GLSL, HLSL
-  - Skjerm
->
+Diagram med 
+
+- CPU (bilde av Core i7)
+  - med CPU-minne
+  - og CPU-programmet f.eks. C++, Java, JAVASCRIPT
+- Databuss
+- GPU (bilde av skjermkort)
+  - med separat GPU-minne
+  - og GPU-programmet GLSL, HLSL
+- Skjerm
 
 ---
 
@@ -170,7 +196,7 @@ Data -> Magic -> BILDE
 Hardware påvirker hvordan vi skriver koden
 
 - Tar forholdvis lang tid å sende data til GPU (60 fps)
-- GPU har MASSIV parallellitet gjennom tusenvis av kjernerß
+- GPU har MASSIV parallellitet gjennom tusenvis av kjerner
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js"> </script>
