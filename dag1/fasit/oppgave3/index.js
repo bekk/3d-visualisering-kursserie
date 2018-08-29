@@ -1,39 +1,44 @@
 const THREE = require("three");
+const OrbitControls = require("three-orbit-controls")(THREE);
+const analyse = require("./soundanalyser.js");
+
 const fs = require("fs");
 const fragmentShaderCode = fs.readFileSync(
   __dirname + "/fragmentshader.glsl",
   "utf8"
 );
 
-let scene, camera, renderer;
+let scene, camera, renderer, cubes, analyser, timeStart;
 
 const WIDTH = window.innerWidth;
 const HEIGHT = window.innerHeight;
 
-const SPEED = 0.004;
+const NUM_CUBES = 32;
 
-const uniforms = {
+const UNIFORMS = {
   time: { value: 0.0 }
 };
-
-let timeStart = 0;
 
 function init() {
   scene = new THREE.Scene();
 
-  initCube();
+  timeStart = new Date().getTime();
+
+  initCubes();
   initCamera();
   initRenderer();
 
-  timeStart = new Date().getTime();
-
   document.body.appendChild(renderer.domElement);
+
+  renderer.render(scene, camera);
 }
 
 function initCamera() {
-  camera = new THREE.PerspectiveCamera(70, WIDTH / HEIGHT, 1, 10);
-  camera.position.set(0, 3, 4);
+  camera = new THREE.PerspectiveCamera(70, WIDTH / HEIGHT, 1, 100);
+  camera.position.set(0, 7, 20);
   camera.lookAt(scene.position);
+
+  new OrbitControls(camera);
 }
 
 function initRenderer() {
@@ -41,34 +46,48 @@ function initRenderer() {
   renderer.setSize(WIDTH, HEIGHT);
 }
 
-function initCube() {
+function initCubes() {
   const material = new THREE.ShaderMaterial({
-    uniforms: uniforms,
-    fragmentShader: fragmentShaderCode,
-    transparent: true
+    uniforms: UNIFORMS,
+    fragmentShader: fragmentShaderCode
   });
 
-  cube = new THREE.Mesh(new THREE.CubeGeometry(2, 2, 2), material);
-  scene.add(cube);
+  cubes = Array(NUM_CUBES)
+    .fill()
+    .map(function(_, i, l) {
+      let n = -1 * Math.floor(l.length / 2) + i;
+      let cube = new THREE.Mesh(new THREE.CubeGeometry(1, 1, 1), material);
+      cube.position.set(n * 1 + n * 0.1, 0, 0);
+      scene.add(cube);
+
+      return cube;
+    });
 }
 
-function rotateCube() {
-  cube.rotation.x -= SPEED * 2;
-  cube.rotation.y -= SPEED;
-  cube.rotation.z -= SPEED * 3;
+function normalise(min, max, v) {
+  return (v - min) / max;
+}
+
+function makeCubeDance(analyser) {
+  let min = analyser.analyser.minDecibels;
+  let max = analyser.analyser.maxDecibels;
+  let frequencies = analyser.frequencies();
+  cubes.forEach((c, i) =>
+    c.scale.set(1, normalise(min, max, frequencies[i]), 1)
+  );
 }
 
 function updateTime() {
   const now = new Date().getTime();
-  uniforms.time.value = (now - timeStart) / 1000;
+  UNIFORMS.time.value = (now - timeStart) / 1000;
 }
 
-function render() {
-  requestAnimationFrame(render);
+function render(analyser) {
+  requestAnimationFrame(render.bind(null, analyser));
   updateTime();
-  rotateCube();
+  makeCubeDance(analyser);
   renderer.render(scene, camera);
 }
 
 init();
-render();
+analyse({ fftSize: NUM_CUBES * 2 }, render);
