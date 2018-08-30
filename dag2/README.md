@@ -24,9 +24,15 @@ Du kjører koden i denne mappa med kommandoen
 npm run oppgave4
 ```
 
+Den utdelte koden har en gjennomsiktig gul firkant oppå en fin stjernebakgrunn. I løpet av oppgaven skal vi forme den gule firkanten til en stjerne.
+
 ### Teori
 
 Siden det er flere dager siden forrige gang kan det være greit å friske opp teorien fra siste oppgave den forrige kursdagen før man går videre: (LINK TIL OPPGAVE-3-SHADER-INTRO)
+
+<!--
+
+// TODO: Flytt dette til oppgave 5 eller 6??
 
 ### Uniform, attribute og varying
 
@@ -47,6 +53,8 @@ De tre typene er
 - `varying` Kan ikke skrives til av Javascript-koden, men av vertexshaderen. Får dermed en separat verdi per vertex. Men den kan leses av fragmentshaderen, og den verdien som leses da er interpolert mellom de tre vertexene som pikselen er mellom
   - Typisk eksempel er den interpolerte fargen pikselen skal ha fra en tekstur. Men generelt er denne typen brukt hvis man vil at vertexshaderen skal beregne en verdi som fragmentshaderen igjen skal bruke til å beregne fargen. Slik kan vertex shader og fragment shader snakke sammen.
 
+-->
+  
 ### Anatomy of a star
 
 For å tegne stjernen vil vi bruke polarkoordinater. Da kan vi ha forskjellige intensitet i sentrum, og vi kan ha stråler som varierer med vinkelen rundt sentrum.
@@ -80,12 +88,49 @@ Nå har du en enkel ball.
 
 ### Sexify
 
-(Forklar at vi må lage glød og stråler for at det skal bli fint)
+For å få det riktig fint skal vi legge til glød på stjernen vår. En bra glød starter intenst og så faller av brått
 
-(x-y-graf over glød som avtar exponensielt med radius)
+(TODO: x-y-graf over glød som avtar exponensielt med radius fra og med coreSize)
 
-(steg for steg å beregne glød-komponent fra glowRange og glowIntensity)
-(Slutter med at man har disk med glød)
+Vi starter med å regne ut et praktisk tall som sier hvor langt unna ytterkanten av stjernens kjerne vi er:
+
+```c
+float glowDistance = clamp(radius - coreSize, 0.0, 1.0);
+```
+
+`clamp(x, a, b)` er en funksjon som returnerer x, med mindre den er mindre enn a, da får man a. Eller med mindre den er større enn b, da får man b. Så med andre ord er man garantert å få noe mellom a og b. Praktisk for å unngå feil tall, slik som når radius er mindre enn coreSize.
+
+Nå kan vi øke beregne glow som inverse av denne avstanden, og legge den til alpha slik at fargen kommer frem i gløden:
+
+```c
+float glow = 1.0 - glowDistance;
+alpha += glow;
+```
+
+Dette er jo lineær avtagende glød, som ikke er så pent. Vi ønsker at den avtar litt mer eksponensielt, og en lett måte å oppnå det er å opphøye tallet i f.eks. 3:
+
+```c
+float glowFalloff = 3.0;
+glow = pow(glow, glowFalloff);
+```
+
+La oss parameterisere intensiteten videre ved å gange det hele med et tall:
+
+```c
+float glowIntensity = 0.9;
+glow *= glowIntensity;
+```
+
+Stjernen vår er fin, men føles det som den blender deg? Nei, det er litt flat gulfarge, men ingen blendende supernova. Et supertriks her er å øke alle farge-elementene for å få hvitere farge nærmere sentrum:
+
+```c
+float brightness = 0.9;
+color += glow * brightness;
+```
+
+### Let there be rays
+
+Siste prikken over i-en blir stråler som skinner ut av stjernen. Her kan vi bruke `angle` fra polarkoordinatene
 
 (Forklar at stråler kan være bølger som en funksjon av vinkelen)
 
