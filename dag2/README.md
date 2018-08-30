@@ -12,9 +12,7 @@
 
 I denne oppgaven skal vi bruke en fragmentshader til å lage en fin stjerne med interaktive kontrollere:
 
-![Resultat Shader Intro](./bilder/fasit-oppgave4.gif)
-
-// TODO: Bytt ut med animert kontrollpanel
+![Resultat Shader Intro](./bilder/fasit-oppgave4-controlpanel-small.gif)
 
 ### Utdelt oppsett
 
