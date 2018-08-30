@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Title</title>
+    <title>three.js</title>
     <meta charset="utf-8">
     <style>
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -15,8 +15,8 @@
       }
       .remark-slide-content { padding: 0.5rem 4rem; }
       .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
-      .remark-slide-content * { font-size: 16px; }
-      .remark-code * { font-size: 12px; }
+      .remark-slide-content * { font-size: 24px; }
+      .remark-code * { font-size: 18px; }
       .remark-slide-content img { width: 50%; margin: 1rem 0;}
     </style>
   </head>
@@ -25,6 +25,210 @@
 
 three.js
 ================
+
+## Rammeverk for WebGL
+
+---
+
+## Bakgrunn
+
+WebGL er veldig lavnivå
+
+https://raw.githubusercontent.com/mollerse/regl-vj-presentation/gh-pages/code-slides/demo.js
+
+---
+
+## Bakgrunn
+
+three.js derimot prøver å gi deg et høyere nivå å jobbe på
+
+---
+
+## three.js
+
+Kjernekomponentene i three.js er en scene, et kamera og en renderer
+
+---
+
+## three.js
+
+Det finnes mange ulike renderere i three.js, men den vi skal bry oss om er WebGL rendereren
+
+```js
+renderer = new THREE.WebGLRenderer();
+renderer.setSize(HEIGHT,WIDTH);
+```
+
+three.js har også CSS2D/3DRenderer, CanvasRenderer og SVGRenderer
+
+---
+
+## three.js
+
+For at en renderer skal ha noe å tegne trenger den en scene.
+
+En scene representerer 3D verdenen som blir tegna. Det er her objektene kommer til å leve.
+
+```js
+scene = new THREE.Scene();
+// ...
+scene.add(someObject);
+```
+
+---
+
+## three.js
+
+For å komplettere 3D-opplevelsen trenger rendereren også noe som kan se på scena: et kamera.
+
+```js
+camera = new THREE.PerspectiveCamera(/*argumenter*/)
+```
+
+
+---
+
+## three.js
+
+Når vi har disse tre tingene kan vi rendre en vilkårlig 3D-verden:
+
+
+```js
+renderer.render(scene, camera);
+```
+
+Og dette er kjernen i three.js
+
+---
+
+## three.js
+
+Når vi har dette på plass vil resten gå ut på å legge til objekter til scena slik at rendereren kan rendre det til skjermen.
+
+---
+
+## Objekter
+
+I three.js har alle objekter noen fellestrekk
+
+- Posisjon
+- Rotasjon
+- Scale
+- Children
+
+(... og en del andre ting som er litt mer nisje)
+
+---
+
+## Objekter
+
+I tillegg til en del spesialobjekter (som feks scene, camera og lights) har three.js en rekke generiske objekter
+
+Generiske objekter kan lages ved å kombinere en geometri og et materiale
+
+---
+
+## Geometrier
+
+Geometrier er three.js' sin måte å representere form.
+
+Det finnes mange ulike geometrier innebygd:
+- Box
+- Circle
+- Cone
+- Plane
+- Polyhedra
+etc
+
+De fleste 3D-former har en geometri-funksjon i three.js
+
+---
+
+## Geometrier
+
+```js
+geometry = new THREE.BoxGeometry(1, 1, 1);
+```
+
+---
+
+## Materialer
+
+Materialer i three.js er måten objekter får utseende.
+
+Ulike materialer har ulike egenskaper og interaksjoner med andre objekter.
+
+Det finnes egne materialer for spesielle lysmodeller eller materialer som bruker custom shadere.
+
+---
+
+## Materialer
+
+```js
+vertexShader = fs.readFileSync('./vertexShader.glsl');
+fragmentShader = fs.readFileSync('./fragmentShader.glsl');
+material = new THREE.ShaderMaterial({vertexShader, fragmentShader});
+```
+
+---
+
+## Objekter
+
+Når du har en geometri og et materiale kan du lage et objekt
+
+Det finnes også ulike objekt-typer, men den vanligste er Mesh:
+
+```js
+object = new THREE.Mesh( geometry, material );
+scene.add(object);
+```
+
+---
+
+## three.js
+
+Dette er kjernen i three.js
+
+Det er mange andre ting, som feks lys, modell-loaders, animasjonsabstraksjoner, mattefunksjoner etc.
+
+---
+
+## Endringer
+
+Det er kjedelig å bare lage statiske modeller.
+
+Heldigvis har three.js støtte for å endre på ting.
+
+---
+
+## Endringer
+
+Hvis du endrer på noen av attributtene til et objekt i objekt-grafen vil three.js beregne nye posisjoner neste gang du kaller `renderer.render`
+
+```js
+renderer.render(scene, camera);
+cube.position.x = 10;
+renderer.render(scene, camera);
+// hurra, cube har flyttet seg 10 langs x-aksen
+```
+
+---
+
+## Endringer
+
+Dette gjør at du kan bruke vanlige JavaScript-teknikker for å gjøre animasjoner
+
+```js
+function render() {
+  requestAnimationFrame(render);
+
+  // move stuff around
+
+  renderer.render(scene, camera);
+}
+```
+
+
 
 
     </textarea>
