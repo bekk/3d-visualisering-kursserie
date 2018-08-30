@@ -447,7 +447,7 @@ Shadere er skrevet i et C-lignende språk blir kompilert av webgl og sendt til G
 
 For å oppnå høy ytelse er renderingen arrangert i en pipeline med definert inn- og ut-verdier:
 
-![Shader pipeline](./bilder/shader-pipeline.gif)
+![Shader pipeline](./bilder/shader-pipeline.png)
 
 ### Data fra Javascript til GPU
 
