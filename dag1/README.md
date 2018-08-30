@@ -447,76 +447,58 @@ Shadere er skrevet i et C-lignende språk blir kompilert av webgl og sendt til G
 
 For å oppnå høy ytelse er renderingen arrangert i en pipeline med definert inn- og ut-verdier:
 
-(Diagram av data (vertices, faces) inn til vertex shader, output (skjermkoordinater) til fragment shader, output (rgba-verdier) til skjerm-buffer)
+![Shader pipeline](./img/shader-pipeline.gif)
 
 ### Data fra Javascript til GPU
 
 I tillegg til vertices og faces er det mulig å sende over mer vilkårlige data som kan brukes av shaderne. Det kan være tall, vektorer og array av vektorer, og inneholder typisk fargeverdier, teksturer, animasjonsparametere og andre verdier man har tenkt å bruke i shaderne.
 
-Javascript-koden kjører på CPU-en og har tilgang til datamaskinens vanlige minne. For å holde ytelsen høy er det nøye definert i webgl når og hvordan man kan sende innholdet i variablene sine til shaderen på GPU-en. I denne oppgaven skal vi bruke en `uniform` variabel for å sende klokketidspunktet for hver rendret frame. Slik får vi en tidsvariabel som vi kan bruke i shaderne for å fete ting™.
+Javascript-koden kjører på CPU-en og har tilgang til datamaskinens vanlige minne. For å holde ytelsen høy er det nøye definert i webgl når og hvordan man kan sende innholdet i variablene sine til shaderen på GPU-en. I denne oppgaven skal vi bruke en `uniform` variabel for å sende lydnivået for hver rendret frame. Slik får vi en variabel som vi kan bruke i shaderne til å gjøre fete ting™:
 
-### Oppsett i three.js
+    const UNIFORMS = {
+      soundLevel: { value: 0.0 }
+    };
 
-Three.js gjør det veldig enkelt å skifte fra de innebygde shaderne og materialene til egenskrevne:
+Det er viktig her at hver uniform har et felt `value` med selve verdien. Det er fordi den kan også ha andre metadata som f.eks. `type`, som kan være f.eks. vektor eller tekstur. Men i vårt tilfelle skal vi bare ha et tall, og three.js kommer til å skjønne selv at den skal ha typen `float`.
+
+### Shader material
+
+I forrige oppgave brukte vi et av three.js sine innebygde materialer `THREE.MeshNormalMaterial`. For å skrive våre egne shadere må vi bytte til `THREE.ShaderMaterial`, som er et slags rått materiale uten noen definert oppførsel:
 
 ```javascript
 const material = new THREE.ShaderMaterial({
-  uniforms: uniforms, // Objekt med uniform-variabler
-  vertexShader: vertexShaderCode, // String med vertexshader-koden
-  fragmentShader: fragmentShaderCode, // String med fragmentshader-koden
-  transparent: true // Betyr at alpha-verdien skal brukes for gjennomsiktighet i tillegg til RGB
+    uniforms: UNIFORMS, // Objekt med uniform-variabler
+    fragmentShader: fragmentShaderCode, // String med fragmentshader-koden
 });
 ```
 
-`uniforms` er et objekt med info om uniform-variablene:
-
-```javascript
-const uniforms = {
-  time: { value: 0.0 }
-};
-```
+Her legger man merke til at vi ikke definerer noen vertexshader. Da vil three.js bruke en helt standard vertexshader som kun projiserer polygonene fra 3D-rommet til skjermens 2D-koordinater. Vi lærer mer om vertexshadere i dag 2.
 
 Selve shaderkoden er det mest praktisk å lagre i en separat fil som leses inn:
 
 ```javascript
 const fragmentShaderCode = fs.readFileSync(
-  __dirname + "/fragmentshader.glsl",
-  "utf8"
+    __dirname + '/fragmentshader.glsl', 
+    'utf8'
 );
-```
-
-### Vertexshader
-
-(Si at vertex shader skal vi lære om på dag 2)
-
-### Fragmentshader
-
-(Forklar oppbygningen)
-
-```c
-uniform float time;
-
-void main() {
-  // gl_FragColor er output som en vektor av (r, g, b, a)
-  gl_FragColor = vec4(1.0, 0.25, 0.25, 1.0);
-}
 ```
 
 ### WebGL shader language
 
-WebGL shader language er det språket shaderne skrives i, og det ligner veldig mye på C, som igjen ligner veldig mye på gammeldags JavaScript. En viktig forskjell er at det er veldig strengt på at alt er helt riktig, og det er mange innebygde operasjoner for vektor- og matrise-regning.
+WebGL shader language er det språket shaderne skrives i, og det ligner veldig mye på C, som igjen ligner veldig mye på gammeldags JavaScript. En viktig forskjell er at det er veldig strengt på at alt er helt riktig, spesielt når det gjelder variablenes typer (float, int). En annen viktig forskjell er at det er mange innebygde operasjoner for vektor- og matrise-regning.
 
 ```c
-// Deklarasjoner
+// Eksempler på deklarasjoner
 
 float a = 42.0; // Flyttall (desimaltall)
 float b = 42;  // FEIL pga manglende desimaltall til float
 int c = 42; // Heltall
 bool d = true; // Boolean
 
-vec3 minVektor = vec3(2.0, 1.5, 0.5); // Vektor. vec2 og vec4 går også an
+vec3 minVektor = vec3(2.0, 1.5, 0.5); // Dett er en 3D vektor. vec2 og vec4 går også an
+float enKoordinat = minVektor.x; // Lesing av en koordinat i vektoren
 
-float minProsedyre(float t) { // Prosedyre som kan kalles
+float minProsedyre(float t) { // Prosedyre som kan kalles senere
   t = t - 1;
   return t*t*t + 1.0;
 }
@@ -525,7 +507,7 @@ float minVerdi = minProsedyre(2.3); // Kall på prosedyren
 ```
 
 ```c
-// Operasjoner
+// Eksempler på operasjoner
 
 float e = (a + c) / 23.0;
 
@@ -536,22 +518,81 @@ float f = sin(0.5); // sinus
 float g = pow(2.0, 8.0); // 2^8
 ```
 
-De fleste matematiske og geometriske operasjoner man trenger er definert: http://www.shaderific.com/glsl-functions/
+De fleste matematiske og geometriske operasjoner man trenger er definert. Et praktisk oppslagsverk finnes her: http://www.shaderific.com/glsl-functions/
+
+### fragmentshader.glsl
+
+Tilbake til koden vår. Innholdet i `fragmentshader.glsl` definerer altså fargen til hver piksel. Shaderen vår trenger en inngang, og det er standard i glsl at det er en prosedyre med navn `main`:
 
 ```c
-// Kontrollstrukturer
-
-if (a == 2.0) {
-    b = 3.0;
-}
-
-for (float i = 0.0; i < 10.0; i++) {
-    // kode
+void main() {
+  // Denne koden kjøres først
 }
 ```
 
-Flere detaljer kan finnes på side 3 og 4 her: https://www.khronos.org/files/webgl/webgl-reference-card-1_0.pdf
+Nå har forfatteren fortalt i det lange og brede om denne pikselfargen som er outputen til fragmentshaderen. Og her er den. Det er så enkelt som at man skriver til en foråndsdefinert variabel som heter `gl_FragColor`:
+
+```
+  gl_FragColor = vec4(0.5, 1.0, 0.5, 1.0); // Red, blue, green, alpha
+```
+
+Prøv dette. Fargen skal bli lys grønn, og det er fordi fargen er en 4D-vektor med RGBA (rød, grønn, blå, alpha-gjennomsiktighet). `gl_FragColor` er en såkalt output-variabel og er til stedet automatisk og brukes som en vanlig variabel. Farge-elementene er tall mellom 0.0 og 1.0, hvor (1.0, 1.0, 1.0) dermed er helt hvitt.
+
+Men, vi skal ha rød farge. Lag en variabel `baseRed` som inneholder en `vec4` med en rødfarge du bestemmer selv.
+
+For å parametisere akkurat hvor sterk rødfargen blir kan vi bruke glsl sine vektor-operasjoner til å gange `baseRed` med et tall:
+
+```c
+gl_FragColor = baseRed * 0.5; // (baseRed.x*0.5, baseRed.y*0.5, baseRed.z*0.5, baseRed.w*0.5)
+```
+
+Prøv å endre tallet fra `0.5` til `1.0` og `0.1`. Rødfargens styrke styres nå enkelt av dette tallet.
+
+Hva med alpha-verdien, spør du nå. Du er jo en oppmerksom student. Joda, i prinsippet skaleres også den ned, men akkurat i vår kode ignoreres gjennomsiktighet fordi vi ikke har skrudd det på. Om du vil leke med gjennomsiktighet kan du spesifisere det i materialet:
+
+```c
+new THREE.ShaderMaterial({
+  ...
+  transparent: true, // Er default false pga ytelse
+});
+```
 
 ### Lydstyrke
 
-Det er mange måter å beregne lydstyrke på, men en som er ganske enkel er å summere styrken på alle frekvensene fra lydanalysen. Da får man et høyt tall på flere tusen som kanskje bør skaleres ned.
+Nå må vi koble sammen lyd og bilde. Dette må gjøres i JavaScript-koden, siden det er der lyddataene finnes. Det er mange måter å beregne lydstyrke på, men en som er ganske enkel er å summere styrken på alle frekvensene fra lydanalysen:
+
+```javascript
+const soundLevel = frequencies.reduce((a, b) => a + b, 0);
+```
+
+// TODO: Kanskje bruke en koselig løkke i stedet?
+
+For å sende denne til shaderen trenger vi bare skrive over `value`-feltet til uniformen:
+
+```javascript
+UNIFORMS.soundLevel.value = soundLevel;
+```
+
+Three.js vil oppdage at uniformen har endret verdi og sende over den nye verdien til gpu-minnet.
+
+Tilbake til shaderkoden vår tar vi uniformen i bruk. Siden glsl er så strengt må den deklareres først med type `float`:
+
+```c
+uniform float soundLevel; // Denne blir globalt tilgjengelig for hele shaderen
+```
+
+Fett, la oss sende den rett inn i outputen:
+
+```c
+gl_FragColor = baseRed * soundLevel;
+```
+
+Resultatet blir en skuffende lav korrelasjon til lyden. Vi har truffet en typisk fallgrube i shaderprogrammering, og det er at koden vår legger opp til at `soundLevel` bør være et sted mellom 0.0 og 1.0. 
+
+Prøv å skrive ut soundLevel i konsollen og se:
+
+```
+console.log(soundLevel);
+```
+
+Skaler etterpå tallet i koden med å dele det for å få den ned på rimelige verdier. Resultatet skal være en visualisering rimelig lik bildet i starten av oppgaven.

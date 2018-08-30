@@ -73,17 +73,14 @@ function makeCubesDance() {
     c.scale.set(1, normalise(min, max, frequencies[i]), 1)
   );
 
-  soundLevel = frequencies.reduce((a, b) => a + b, 0);
-}
-
-function updateUniforms() {
+  const soundLevel = frequencies.reduce((a, b) => a + b, 0);
+  console.log(soundLevel);
   UNIFORMS.soundLevel.value = soundLevel;
 }
 
 function render() {
   requestAnimationFrame(render);
   makeCubesDance();
-  updateUniforms();
   renderer.render(scene, camera);
 }
 
