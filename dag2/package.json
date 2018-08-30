@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "budo index.js --live -- -t brfs",
-    "oppgave4": "budo fasit/oppgave4/index.js --live -- -t brfs",
-    "oppgave5": "budo fasit/oppgave5/index.js --live -- -t brfs",
-    "oppgave6": "budo fasit/oppgave6/index.js --live -- -t brfs"
+    "start4": "budo oppgave-4-fragment-shader/index.js --live -- -t brfs",
+    "fasit4": "budo fasit/oppgave4/index.js --live -- -t brfs",
+    "fasit5": "budo fasit/oppgave5/index.js --live -- -t brfs",
+    "fasit6": "budo fasit/oppgave6/index.js --live -- -t brfs"
   },
   "keywords": [],
   "author": "BEKK",

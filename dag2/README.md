@@ -18,6 +18,12 @@ I denne oppgaven skal vi bruke en fragmentshader til å lage en fin stjerne med 
 
 I mappen `oppgave-4-fragment-shader` finner du et oppsett som ligner det vi lagde på dag 1, men uten noe innhold. Her skal du skrive koden for denne oppgaven.
 
+Du kjører koden i denne mappa med kommandoen
+
+```
+npm run oppgave4
+```
+
 ### Teori
 
 Siden det er flere dager siden forrige gang kan det være greit å friske opp teorien fra siste oppgave den forrige kursdagen før man går videre: (LINK TIL OPPGAVE-3-SHADER-INTRO)
