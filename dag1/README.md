@@ -328,7 +328,7 @@ Da vil du se en større del av scena du har laga og forhåpentligvis alle kubene
 Det er nå det morsomme starter, koble på input for å endre på ting 🎶 Vi har laga en ferdig liten modul til deg som du kan bruke for å hente input fra mikrofonen på laptopen din:
 
 ```js
-const analyse = require(".fasit/oppgave2/soundanalyser.js");
+const analyse = require("./fasit/oppgave2/soundanalyser.js");
 ```
 
 Den modulen kan du bruke på denne måten:
