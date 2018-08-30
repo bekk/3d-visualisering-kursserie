@@ -242,6 +242,192 @@ Lek deg litt med de ulike verdiene og se hva som skjer med kuben. Noen forslag f
 
 Du skal gjøre om din snurrende kube til et ensemble av dansende kuber!
 
+### Før du starter
+
+Hvis du ikke kom helt i mål med forrige oppgave kan du starte ferskt ved å kopiere fasiten som du finner i `fasit/oppgave1/index.js`. Du kan også ta en titt på fasiten ved å kjøre:
+
+```sh
+npm run oppgave1
+```
+
+### OrbitControls
+
+Det første vi skal gjøre er å bruke et kjekt triks fra `three.js` som gjør det litt enklere å jobbe med 3D-kode. [`OrbitControls`](https://threejs.org/docs/index.html#examples/controls/OrbitControls) er en tilleggsmodul til `three.js` som gir oss et kamera som kan kontrolleres med mus. Da kan vi zoome og bevege oss rundt i scena litt som vi vil. Kjekt hvis du feks "mister" et objekt et sted 😅
+
+For å bruke `OrbitControls` må vi først laste inn modulen det ligger i. Det gjør vi på følgende måte:
+
+```js
+const OrbitControlsModule = require("three-orbit-controls");
+const OrbitControls = OrbitControlsModule(THREE);
+```
+
+Legg spesielt merke til at vi sender inn `THREE` som et argument til modulen for å få en konstruktør som er bundet til den samme instansen av `THREE` vi bruker til resten av koden.
+
+Når vi har en `OrbitControls`-konstruktør kan vi koble den til kameraet vårt for å koble på mus-navigasjon.
+
+```js
+let controls;
+controls = new OrbitControls(camera);
+```
+
+Hvis du endrer på posisjonen til kameraet etter at du har koblet det til `OrbitControls` må du også oppdatere `OrbitControls`. Det gjør du slik:
+
+```js
+controls.update();
+```
+
+Nå kan du bevege deg fritt rundt i scena du har laga.
+
+### Multiplisere kubene
+
+For å lage et ensemble av dansende kuber trenger vi fler kuber enn vi har til nå.
+
+Det er ikke noe hokus-pokus i `three.js` for å gjøre dette, bare god gammeldags JavaScript. Dette er koden som ble brukt i oppgave 1 for å lage en kube:
+
+```js
+let cube = new THREE.Mesh(
+  new THREE.CubeGeometry(height, width, depth),
+  new THREE.MeshNormalMaterial()
+);
+cube.position.set(x, y, z);
+scene.add(cube);
+```
+
+Det du må gjøre er å repetere dette så mange ganger du har lyst til. Om du foretrekker `for`-løkker eller `forEach`/`map` er opp til deg selv. Men det vil være en fordel å kunne refere til hver enkelt kube i stegene som kommer etterpå, så lagre alle kubene du lager i en liste 👍
+
+Du kan prøve å skrive om koden som du laga for å rotere kuben i oppgave 1 til å rotere alle kubene du nå har laga.
+
+### Posisjonering av kuber
+
+Litt avhengig av hvordan du gjorde det forrige steget vil kubene havne litt rundt om kring eller kanskje rett oppå hverandre hvis alle fikk samme posisjon.
+
+Nå må du finne en formel for hvordan du ønsker å plassere kubene dine. Du kan plassere hver av dem manuelt hvis du ønsker, men da blir det fort komplisert å endre på hvor mange kuber du har.
+
+Vårt forslag til deg er å lage en funksjon som lar deg beregne posisjonen til en kube gitt nummeret i rekken av kuber og utgangsposisjonen.
+
+```js
+function positionCube(cubeNumber, startPosition) {
+  // hvor X er et tall på avstanden mellom hver kube
+  return startPosition + cubeNumber * X;
+}
+```
+
+Her kan du velge å holde det enkelt og kun posisjonere kuber langs en av aksene (feks X-aksen), men det er fritt frem å være litt kreativ her. Det viktigste er at du får sett alle kubene.
+
+Her kan det også være en god ide å endre utgangsposisjonen til kameraet, feks ved å zoome enda litt lengre ut:
+
+```js
+camera.position.z = 40;
+```
+
+Da vil du se en større del av scena du har laga og forhåpentligvis alle kubene dine.
+
+### Koble på lyd
+
+Det er nå det morsome starter, koble på input for å endre på ting 🎶 Vi har laga en ferdig liten modul til deg som du kan bruke for å hente input fra mikrofonen på laptopen din:
+
+```js
+const analyse = require(".fasit/oppgave2/soundanalyser.js");
+```
+
+Den modulen kan du bruke på denne måten:
+
+```js
+init(); // Kaller init-funksjonen din som vanlig for å sette opp ting
+
+let analyser; // Ta vare på en referanse til analyseren din
+
+// Kall analyse-funksjonen, den tar inn options og et callback
+analyse({ fftSize: antallKuber * 2 }, function(a) {
+  // Når analyse funksjonen har kobla seg til mikrofonen
+  // vil denne koden bli kjørt
+
+  // Da får du en referanse til analysern, som du bør ta vare på
+  analyser = a;
+
+  // Så kan du kalle render-funksjonen din
+  // som kicker igang render-loopen som før
+  render();
+});
+```
+
+> Hvis du lurer på hvordan den modulen ser ut kan du scrolle litt lengre ned, der finner du en kommentert utgave av kildekoden.
+
+Analyser-objektet du får tilbake fra `analyse`-funksjonen har en kjekk metode som heter `analyser.frequencies()`. Den gir deg en liste av decibel-verdier for de ulike frekvensene mikrofonen plukker opp. Hvor mange frekvenser du får ut er avhengig av `fftSize`. Nærmere bestemt får du ut halvparten så mange frekvenser som størrelsen på `fftSize`, det kan derfor være en god ide å sette `fftSize` til `2 * numberOfCubes`.
+
+I tillegg kan du også lese ut max og min verdien til decibelene mikrofonen plukker opp. De finner du slik:
+
+```js
+const maxDecibels = analyser.analyser.maxDecibels;
+const minDecibels = analyser.analyser.minDecibels;
+```
+
+De verdiene er kjekke å ha for å kunne normalisere decibel-verdien til en frekvens. Normalisering er navnet på å regne om en gitt nummer range til en `[0,1]` range.
+
+```js
+function normalise(min, max, value) {
+  return (value - min) / max;
+}
+```
+
+Denne funksjonen gir deg tilbake et tall mellom `0` og `1` som svarer til hvor nærme min (nærmere 0) eller max (nærmere 1) value er. Dette er nyttig for å begrense verdiene du jobber med til noe som er innenfor en bestemt range.
+
+Nå som du har noen tall som svarer til hvor mange decibel av en gitt frekvens mikrofonen din har plukket opp kan vi koble disse til kubene vi har laga.
+
+Vi bytter ut koden som snurrer på kubene med noe som heller skalerer kubene etter hvor mye lyd som blir plukka opp.
+
+```
+let frequencies = analyser.frequencies();
+function scaleCube(cube, cubeNumber) {
+  let frequency = frequencies[cubeNumber];
+  let scaleFactor = normalise(minDecibels, maxDecibels, frequency);
+
+  cube.scale.y = scaleFactor;
+}
+```
+
+Dette vil skalere kuben din i y-retning med en `scaleFactor` som er mellom `0` og `1`. Her er det bare å leke seg 🤹‍♂️
+
+Hvis du har gjort ting riktig vil du nå se at kubene dine danser i takt med det mikrofonen din plukker opp. Gratulerer, du har nå en fiks ferdig musikk visualisering 👍
+
+Noen forslag til ting du kan endre på og leke med:
+
+- Skalere kuben i ulike retninger med ulike verdier
+- Endre start-størrelsen til kubene dine, kanskje du heller vil ha stolper?
+- Endre på posisjoneringen til kubene dine
+
+### Bonus: Forklaring av soundanalyser-modulen
+
+```js
+// Bruker en modul som lager en web-audio AnalyserNode for oss
+const createAnalyser = require("web-audio-analyser");
+
+// Eksporter en funksjon fra modulen
+module.exports = function analyse(options = { fftSize: 64 }, callback) {
+  // Vi ber nettleseren om lov til å bruke en mediaDevice
+  // Dette er en del av WebRTC APIet
+  navigator.mediaDevices
+    // Vi ønsker bare audio, ikke lyd
+    .getUserMedia({ video: false, audio: true })
+    // Hvis vi får tilgang, får vi et stream-objekt av mikrofonens input
+    .then(function(stream) {
+      // Så bruker vi mikrofon-streamen til å lage en analyser
+      let analyser = createAnalyser(stream, { stereo: false, audible: false });
+
+      // Vi setter fftSizen til analysern i henhold til det vi sendte inn
+      analyser.analyser.fftSize = options.fftSize;
+
+      // Så kaller vi callback-funksjonen som ble sendt inn
+      callback(analyser);
+    })
+
+    // Hvis vi ikke får tilgang til mikrofonen logger vi en feilmelding
+    .catch(function(error) {
+      console.error(error);
+    });
+};
+```
+
 ## Oppgave 3
 
 > Shader-introduksjon
@@ -250,8 +436,7 @@ I denne oppgaven skal vi bruke shadere til å fargelegge kubene fra forrige oppg
 
 ![Resultat Shader Intro](./img/fasit.gif)
 
-Teori
--------------
+## Teori
 
 Vertex- og fragment shadere jobber sammen for å beregne pikslene på skjermen. Når man bruker three.js setter den inn automatisk sine egne innebygde shadere som tar hensyn til attributtene på hver Mesh. Men for fullstendig kreativ frihet skriver man sine egne shadere.
 
@@ -275,10 +460,10 @@ Three.js gjør det veldig enkelt å skifte fra de innebygde shaderne og material
 
 ```javascript
 const material = new THREE.ShaderMaterial({
-    uniforms: uniforms, // Objekt med uniform-variabler
-    vertexShader: vertexShaderCode, // String med vertexshader-koden
-    fragmentShader: fragmentShaderCode, // String med fragmentshader-koden
-    transparent: true, // Betyr at alpha-verdien skal brukes for gjennomsiktighet i tillegg til RGB
+  uniforms: uniforms, // Objekt med uniform-variabler
+  vertexShader: vertexShaderCode, // String med vertexshader-koden
+  fragmentShader: fragmentShaderCode, // String med fragmentshader-koden
+  transparent: true // Betyr at alpha-verdien skal brukes for gjennomsiktighet i tillegg til RGB
 });
 ```
 
@@ -286,14 +471,17 @@ const material = new THREE.ShaderMaterial({
 
 ```javascript
 const uniforms = {
-    time: {value: 0.0},
+  time: { value: 0.0 }
 };
 ```
 
 Selve shaderkoden er det mest praktisk å lagre i en separat fil som leses inn:
 
 ```javascript
-const fragmentShaderCode = fs.readFileSync(__dirname + '/fragmentshader.glsl', 'utf8');
+const fragmentShaderCode = fs.readFileSync(
+  __dirname + "/fragmentshader.glsl",
+  "utf8"
+);
 ```
 
 ### Vertexshader
