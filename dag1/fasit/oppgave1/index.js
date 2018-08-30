@@ -25,7 +25,7 @@ function initCamera() {
 }
 
 function initRenderer() {
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new THREE.WebGLRenderer();
   renderer.setSize(WIDTH, HEIGHT);
 }
 
