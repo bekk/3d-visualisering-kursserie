@@ -2,19 +2,25 @@
 
 ## Oppgaver
 
-## Oppgave 4: Interaktiv stjerne
+- [Oppgave 4](#oppgave-4)
+- [Oppgave 5](#oppgave-5)
+- [Oppgave 6](#oppgave-6)
 
-Oppgave 4 - Fragment shader
-===============================
+## Oppgave 4
+
+> Interaktiv stjerne
 
 I denne oppgaven skal vi bruke en fragmentshader til å lage en fin stjerne med interaktive kontrollere:
 
-![Resultat Shader Intro](./img/fasit.png)
+![Resultat Shader Intro](./bilder/fasit-oppgave4.gif)
 
-// TODO: Bytt ut bilde med animasjon med kontrollene
+// TODO: Bytt ut med animert kontrollpanel
 
-Teori
--------------
+### Utdelt oppsett
+
+I mappen `oppgave-4-fragment-shader` finner du et oppsett som ligner det vi lagde på dag 1, men uten noe innhold. Her skal du skrive koden for denne oppgaven.
+
+### Teori
 
 Siden det er flere dager siden forrige gang kan det være greit å friske opp teorien fra siste oppgave den forrige kursdagen før man går videre: (LINK TIL OPPGAVE-3-SHADER-INTRO)
 
@@ -37,14 +43,48 @@ De tre typene er
 - `varying` Kan ikke skrives til av Javascript-koden, men av vertexshaderen. Får dermed en separat verdi per vertex. Men den kan leses av fragmentshaderen, og den verdien som leses da er interpolert mellom de tre vertexene som pikselen er mellom
   - Typisk eksempel er den interpolerte fargen pikselen skal ha fra en tekstur. Men generelt er denne typen brukt hvis man vil at vertexshaderen skal beregne en verdi som fragmentshaderen igjen skal bruke til å beregne fargen. Slik kan vertex shader og fragment shader snakke sammen.
 
+### Anatomy of a star
+
+(Forklar at vi vil bruke polarkoordinater for å lage stjernen, fordi da kan vi ha forskjellige intensitet i sentrum, og vi kan ha stråler som varierer med vinkelen rundt sentrum)
+
+(Steg for steg kode for å beregne polarkoordinater)
+(Inkl steg hvor vertex shader må gir videre vertexposition-varying)
+(Slutter med at man har disk med baseColor og coreSize uten noe annet)
+
+### Sexify
+
+(Forklar at vi må lage glød og stråler for at det skal bli fint)
+
+(x-y-graf over glød som avtar exponensielt med radius)
+
+(steg for steg å beregne glød-komponent fra glowRange og glowIntensity)
+(Slutter med at man har disk med glød)
+
+(Forklar at stråler kan være bølger som en funksjon av vinkelen)
+
+(x-y-graf over sinus over vinkel)
+(polar-graf over sinus over vinkel)
+
+(steg for steg å beregne sinus-stråler med samme rayRange og rayIntensity)
+
+// TODO: parametriser rayRange og rayIntensity i fasitkoden
+
+(slutter med at stjernen er fin, men hardkodet)
+
 ### DAT.gui kontrollpanel
 
-(Forklar DAT.gui)
+(Forklar hva DAT.gui er)
 
-## Oppgave 5: Wobbling sphere
+(Steg for steg kode for å koble alle parameterne til dat.gui)
+
+## Oppgave 5
+
+> Wobbling sphere
 
 Du bruker en vertex shader til å lage en boblende, kokende ball of love
 
-## Oppgave 6: Partikkelsystem
+## Oppgave 6
+
+> Partikkelsystem
 
 Du skal benytter deg av GPU-en enorme parallellitet for å visualisere tusenvis av partikler
