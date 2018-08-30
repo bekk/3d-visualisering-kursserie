@@ -25,6 +25,7 @@ Du har fått utdelt noe kode som du finner i `dag1`-mappen.
 ```sh
 dag1/
 ├── README.md                   # Denne teksten
+├── bilder                      # Bilder vi har i denne teksten
 ├── fasit                       # Fasiten på de ulike oppgavene
 ├── index.html                  # HTML-fila som kjører koden vår
 ├── index.js                    # JS-fila som blir kjørt
@@ -434,7 +435,7 @@ module.exports = function analyse(options = { fftSize: 64 }, callback) {
 
 I denne oppgaven skal vi bruke shadere til å fargelegge kubene fra forrige oppgave i henhold til lydstyrken:
 
-![Resultat Shader Intro](./img/fasit.gif)
+![Resultat Shader Intro](./bilder/oppgave3-fasit.gif)
 
 ## Teori
 
