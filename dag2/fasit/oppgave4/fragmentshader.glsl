@@ -1,6 +1,6 @@
 // vertexPosition er interpolert mellom (-1, -1) og (1, 1) 
 // fordi geometrien er et sentrert plane med bredde og høyde lik 2
-varying vec3 vertexPosition;
+varying vec2 vertexPosition;
 
 uniform vec3 baseColor;
 uniform float coreSize;

@@ -49,11 +49,34 @@ De tre typene er
 
 ### Anatomy of a star
 
-(Forklar at vi vil bruke polarkoordinater for å lage stjernen, fordi da kan vi ha forskjellige intensitet i sentrum, og vi kan ha stråler som varierer med vinkelen rundt sentrum)
+For å tegne stjernen vil vi bruke polarkoordinater. Da kan vi ha forskjellige intensitet i sentrum, og vi kan ha stråler som varierer med vinkelen rundt sentrum.
 
-(Steg for steg kode for å beregne polarkoordinater)
-(Inkl steg hvor vertex shader må gir videre vertexposition-varying)
-(Slutter med at man har disk med baseColor og coreSize uten noe annet)
+(bilde av polarkoordinater-systemet)
+
+`position` er et punkt i det vanlige 3D-koordinatsystemet, såkalt kartesisk system. Og den matematiske formelen for å konvertere kartesiske koordinater til polarkoordinater er:
+
+```c
+polarkoordinater(x, y) = (
+    sqrt(x*x + y*y), // sqrt er kvadratrot
+    atan(y / x) // atan er arctangens
+);
+```
+
+I den utdelte koden ligger x og y i `vertexPosition.x` og `vertexPosition.y`. Og siden `sqrt(x*x + y*y)` er lik lengden av vektoren kan vi bruke funksjonen `length()`:
+
+```c
+float radius = length(vertexPosition);
+float angle = atan(vertexPosition.y / vertexPosition.x);
+```
+
+Og da kan vi endelig lage en stjerne som en enkel disk ved å sette gjennomsiktigheten til maks utenfor en viss radius:
+
+```c
+float coreSize = 0.1;
+float alpha = radius < coreSize ? 1.0 : 0.0;
+```
+
+Nå har du en enkel ball.
 
 ### Sexify
 
