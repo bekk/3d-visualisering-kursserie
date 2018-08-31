@@ -65,7 +65,7 @@ Hvis du på et eller annet tidspunkt føler for å putte kode i flere filer har 
     const fileContents = fs.readFileSync(`${__dirname}/path/to/file`, "utf8");
     ```
 
-Ellers er det fritt fram for JS-syntax som er støtta av din utvalgte nettleser. Vi har ikke lagt inn noe som oversetter syntax for å holde oppsettet så enkelt som mulig.
+For å holde oppsettet så enkelt som mulig, har vi droppet å dra inn rammeverk som React eller Vue, så her er det bare å kjøre på med helt vanlig JavaScript.
 
 I `index.js`-fila er det laget en veldig enkel boilerplate:
 
@@ -300,7 +300,7 @@ Du kan prøve å skrive om koden som du laga for å rotere kuben i oppgave 1 til
 
 ### Posisjonering av kuber
 
-Litt avhengig av hvordan du gjorde det forrige steget vil kubene havne litt rundt om kring eller kanskje rett oppå hverandre hvis alle fikk samme posisjon.
+Litt avhengig av hvordan du gjorde det forrige steget vil kubene havne litt rundt omkring eller kanskje rett oppå hverandre hvis alle fikk samme posisjon.
 
 Nå må du finne en formel for hvordan du ønsker å plassere kubene dine. Du kan plassere hver av dem manuelt hvis du ønsker, men da blir det fort komplisert å endre på hvor mange kuber du har.
 
@@ -325,10 +325,10 @@ Da vil du se en større del av scena du har laga og forhåpentligvis alle kubene
 
 ### Koble på lyd
 
-Det er nå det morsome starter, koble på input for å endre på ting 🎶 Vi har laga en ferdig liten modul til deg som du kan bruke for å hente input fra mikrofonen på laptopen din:
+Det er nå det morsomme starter, koble på input for å endre på ting 🎶 Vi har laga en ferdig liten modul til deg som du kan bruke for å hente input fra mikrofonen på laptopen din:
 
 ```js
-const analyse = require(".fasit/oppgave2/soundanalyser.js");
+const analyse = require("./fasit/oppgave2/soundanalyser.js");
 ```
 
 Den modulen kan du bruke på denne måten:
@@ -587,7 +587,7 @@ Fett, la oss sende den rett inn i outputen:
 gl_FragColor = baseRed * soundLevel;
 ```
 
-Resultatet blir en skuffende lav korrelasjon til lyden. Vi har truffet en typisk fallgrube i shaderprogrammering, og det er at koden vår legger opp til at `soundLevel` bør være et sted mellom 0.0 og 1.0. 
+Resultatet blir en skuffende lav korrelasjon til lyden. Vi har truffet en typisk fallgruve i shaderprogrammering, og det er at koden vår legger opp til at `soundLevel` bør være et sted mellom 0.0 og 1.0.
 
 Prøv å skrive ut soundLevel i konsollen og se:
 
