@@ -1,38 +1,31 @@
+const THREE = require('three');
 const fs = require('fs');
 const vertexShaderCode = fs.readFileSync(__dirname + '/vertexshader.glsl', 'utf8');
 const fragmentShaderCode = fs.readFileSync(__dirname + '/fragmentshader.glsl', 'utf8');
-const THREE = require('three');
-const dat = require('dat.gui');
+
+const pixelRatio = window.devicePixelRatio || 1;
 
 const nofParticles = Math.pow(125, 2);
-const impulseLength = 2.5;
+const animationLength = 2.5;
 
-let timeStart;
-let camera;
-let renderer;
-let scene;
-let phase = 0;
-let impulseInProgress = false;
-let impulseStart = 0.0;
+let timeStart, camera, renderer, scene, animationStart;
+
+let animationInProgress = false;
 
 const uniforms = {
     time: {value: 0.0},
-    impulseTime: {value: 0.0},
-    pixelRatio: {value: window.devicePixelRatio},
-    nofParticles: {value: nofParticles},
-    particleSize: {value: window.screen.width/4},
+    animationTime: {value: 0.0},
+    pixelRatio: {value: pixelRatio},
+    nofParticles: {value: nofParticles}
 };
 
 const initAnimation = function() {
-
     timeStart = new Date().getTime();
 
     renderer = new THREE.WebGLRenderer();
-    renderer.gammaInput = true;
-    renderer.gammaOutput = true;
     renderer.setClearColor(0x1D1D1D);
     renderer.setSize(window.innerWidth, window.innerHeight, true);
-    renderer.setPixelRatio(window.devicePixelRatio || 1);
+    renderer.setPixelRatio(pixelRatio);
 
     const ratio = renderer.getContext().drawingBufferWidth / renderer.getContext().drawingBufferHeight;
     
@@ -79,8 +72,8 @@ function makeGeometry() {
 
 function initMouseEvents() {
     function callback(event) {
-       impulseInProgress = true;
-       impulseStart = new Date().getTime();
+       animationInProgress = true;
+       animationStart = new Date().getTime();
     }
 
     document.getElementsByTagName("canvas")[0].addEventListener("click", callback);
@@ -93,18 +86,18 @@ const animate = function() {
 
     uniforms.time.value = (now - timeStart) / 1000;
 
-    let impulseTime = 0.0;
+    let animationTime = 0.0;
 
-    if (impulseInProgress) {
-        impulseTime = (now - impulseStart) / 1000 / impulseLength;
+    if (animationInProgress) {
+        animationTime = (now - animationStart) / 1000 / animationLength;
         
-        if (impulseTime > 1) {
-            impulseInProgress = false;
-            impulseTime = 1;
+        if (animationTime > 1) {
+            animationInProgress = false;
+            animationTime = 1;
         }
     }
 
-    uniforms.impulseTime.value = impulseTime;
+    uniforms.animationTime.value = animationTime;
 
     renderer.render(scene, camera);
 }
