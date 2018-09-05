@@ -24,36 +24,11 @@ Du kjører koden i denne mappa med kommandoen
 npm run oppgave4
 ```
 
-Den utdelte koden har en gjennomsiktig gul firkant oppå en fin stjernebakgrunn. I løpet av oppgaven skal vi forme den gule firkanten til en stjerne.
+Den utdelte koden har en gjennomsiktig gul `PlaneGeometry` oppå en fin stjernebakgrunn. I løpet av oppgaven skal vi forme denne gule firkanten til en stjerne.
 
 ### Teori
 
 Siden det er flere dager siden forrige gang kan det være greit å friske opp teorien fra siste oppgave den forrige kursdagen før man går videre: (LINK TIL OPPGAVE-3-SHADER-INTRO)
-
-<!--
-
-// TODO: Flytt dette til oppgave 5 eller 6??
-
-### Uniform, attribute og varying
-
-Vi har lært om `uniform`, men i webgl er det faktisk definert tre typer variabler som shaderkoden bruker. Forskjellen mellom dem er
- 
-- når de kan endres
-- hvilken kode som kan lese dem
-- når de leses, om man får verdien deres direkte eller en interpolasjon mellom to nabo-verdier
-
-De tre typene er
-
-- `uniform` Variabler som kan skrives av Javascript-koden og sendes over 1 gang per rendret bilde, er read-only for shaderne og har samme globale verdi for alle vertices og alle piksler til hvert Mesh
-  - For eksempel tid, museposisjon, animasjonshastighet, osv
-  - Hensikten med dette er at GPU-en så kan kjøre shaderkoden uten å gjøre flere trege dataoverføringen fra resten av datamaskinen
-- `attribute` Samme som uniform, men kan kun leses i vertex shader, og skal ha en separat verdi for hver eneste vertex
-  - For eksempel farge, teksturkoordinat, osv
-  - Hensikten med denne typen er at GPU-en kan optimalisere minnet og kjernene sine slik at flest mulig beregninger kan kjøre samtidig uten å måtte snakke sammen
-- `varying` Kan ikke skrives til av Javascript-koden, men av vertexshaderen. Får dermed en separat verdi per vertex. Men den kan leses av fragmentshaderen, og den verdien som leses da er interpolert mellom de tre vertexene som pikselen er mellom
-  - Typisk eksempel er den interpolerte fargen pikselen skal ha fra en tekstur. Men generelt er denne typen brukt hvis man vil at vertexshaderen skal beregne en verdi som fragmentshaderen igjen skal bruke til å beregne fargen. Slik kan vertex shader og fragment shader snakke sammen.
-
--->
   
 ### Anatomy of a star
 
@@ -262,4 +237,184 @@ Du bruker en vertex shader til å lage en boblende, kokende ball of love
 
 > Partikkelsystem
 
-Du skal benytter deg av GPU-en enorme parallellitet for å visualisere tusenvis av partikler
+I denne oppgaven skal du benytte deg av GPU-ens enorme parallellitet for å visualisere tusenvis av partikler:
+
+![Resultat Particle System](./bilder/fasit-oppgave6-particle-system.gif)
+
+### Utdelt oppsett
+
+I mappen `oppgave-6-particle-system` finner du et oppsett med den vanlige boilerplate-koden. Her skal du skrive koden for denne oppgaven. Du skal ikke bygge på den forrige oppgaven.
+
+### Partikler i webgl
+
+Partikkelsystemer fungerer ganske likt som vanlige geometrier og mesher. Men, det er kun vertices som brukes, og faces ignoreres. Hver vertex blir en partikkel med posisjon gitt av vertexshaderen, men i stedet for at fragmentshaderen fargelegger faces brukes den til å fargelegge en "flat" todimensjonal firkant der hver vertex position befinner seg på skjermen. 
+
+Three.js har en egen klasse `THREE.Points` for partikler som fungerer på akkurat denne måten. Vi legger den til `scene` som alle andre objekter:
+
+```javascript
+const points = new THREE.Points(geometry, material);
+scene.add(points);
+```
+
+Materialet er faktisk helt likt som før. Og det er jo logisk siden vårt `ShaderMaterial` er helt rått uten definert oppførsel:
+
+```javascript
+const material = new THREE.ShaderMaterial({
+    uniforms: uniforms,
+    vertexShader: vertexShaderCode,
+    fragmentShader: fragmentShaderCode,
+    transparent: true
+});
+```
+
+Geometrien er derimot litt spesiell. Vi lager en `BufferGeometry`, som er en helt rå geometri uten noe innhold. Rått er som vanlig bra. Vil vil rett på jernet her:
+
+```javascript
+const geometry = new THREE.BufferGeometry();
+```
+
+Den er så himla rå at vi til og med må allokere plass på GPU-minnet til posisjonene til alle verticene. I dette minnet er stort sett alt floats, og siden posisjonene er vektorer av tre floats må vi allokere 3 floats for hver partikkel. Vi setter antall partikler til 125 * 125 som blir rundt femten tusen tilsammen:  
+
+```javascript
+const nofParticles = Math.pow(125, 2);
+const positions = new Float32Array(nofParticles * 3);
+```
+
+Vi bruker `Float32Array` i stedet for et vanlig javascript-array for å få 32-bit floats som GPU-en forventer. Et vanlig array ville bestått av javascript sin `Number` som er en brukervennlig klasse, men for lite spesifikk på hvor mange bits den okkuperer i minnet. 
+
+Til slutt spesifiserer vi selve allokeringen ved å legge til et `attribute` på geometrien. Tallet `3` her forteller webgl at floatene skal grupperes tre og tre, slik at de kan brukes som `vec3` i shaderen.
+
+```javascript
+geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3));
+```
+
+Kommer det noe opp på skjermen? Nei. Årsaken til det er at det mangler en ny output fra vertexshaderen som vi ikke har brukt før: `gl_PointSize`. Den er i tillegg til den kjente `gl_Position`, og den sier hvor stor firkanten til hver vertex skal være på skjermen.
+
+```c
+float particleSize = 3.0;
+gl_PointSize = particleSize * pixelRatio;
+```
+
+Nå har vi noe på skjermen. En enslig partikkel? Nei, det er jo alle femten tusen partiklene på samme posisjon oppå hverandre. På tide å flytte rundt på dem. Men først litt teori.
+
+### Uniforms, attributes og varyings
+
+Vi har lært om `uniform`, men i webgl er det faktisk definert tre typer variabler som shaderkoden bruker. Forskjellen mellom dem er
+ 
+- når de kan endres
+- hvilken kode som kan lese dem
+- når de leses, om man får verdien deres direkte eller en interpolasjon mellom to nabo-verdier
+
+De tre typene er
+
+- `uniform` Variabler som kan skrives av Javascript-koden og sendes over 1 gang per rendret bilde, er read-only for shaderne og har samme globale verdi for alle vertices og alle piksler til hvert Mesh
+  - For eksempel tid, museposisjon, animasjonshastighet, osv
+  - Hensikten med dette er at GPU-en så kan kjøre shaderkoden uten å gjøre flere trege dataoverføringen fra resten av datamaskinen
+- `attribute` Samme som uniform, men kan kun leses i vertex shader, og skal ha en separat verdi for hver eneste vertex
+  - For eksempel farge, teksturkoordinat, osv
+  - Hensikten med denne typen er at GPU-en kan optimalisere minnet og kjernene sine slik at flest mulig beregninger kan kjøre samtidig uten å måtte snakke sammen
+- `varying` Kan ikke skrives til av Javascript-koden, men av vertexshaderen. Får dermed en separat verdi per vertex. Men den kan leses av fragmentshaderen, og den verdien som leses da er interpolert mellom de tre vertexene som pikselen er mellom
+  - Typisk eksempel er den interpolerte fargen pikselen skal ha fra en tekstur. Men generelt er denne typen brukt hvis man vil at vertexshaderen skal beregne en verdi som fragmentshaderen igjen skal bruke til å beregne fargen. Slik kan vertex shader og fragment shader snakke sammen.
+
+### Rutenett
+
+Vi har lyst til å fordelen partiklene i  et rutenett. For å holde ting ryddig lager vi en egen prosedyre for det:
+
+```c
+vec3 gridPosition() {
+  // Her skal vi regne ut posisjonen
+}
+
+void main() {
+  vec3 newPosition = gridPosition();
+  
+  ...
+}
+```
+
+Hvis hver partikkel har indeks `vertexIndex`, og bredden på rutenettet skal være `w` er formelen for posisjonene ganske enkel:
+
+```
+float x = mod(vertexIndex, w);
+float y = floor(vertexIndex / w);
+```
+
+Hvor `mod` er matamtisk modulo (rest) og `floor` gjør at et tall rundes ned til nærmeste heltall.
+
+Bredden `w` er jo kvadratoren av det totale antall partikler hvis rutenettet skal være kvadratisk. Og i den utdelte koden er dette allerede sendt over til shaderen i en uniform `nofParticles`:
+
+```
+float w = floor(sqrt(nofParticles));
+```
+
+Men hva med `vertexIndex`? Den har vi ikke. Siden dette er en rå shader må vi sende den over selv som et `attribute` på hve vertex.
+
+```javascript
+let vertexIndecies = new Float32Array(nofParticles);
+
+vertexIndecies = vertexIndecies.map((element, i) => i);
+
+geometry.addAttribute('vertexIndex', new THREE.BufferAttribute(vertexIndecies, 1));
+```
+
+Den snedige `map`-onelineren fyller hvert element i lista med 0, 1, 2, 3, osv.
+
+Vi må deklarere attributtet i shaderen for å bruke den, akkurat som uniforms:
+
+```c
+attribute float vertexIndex;
+```
+
+Nå kan vi returnere posisjonen til hver vertex. Siden posisjonen er 3d setter vi høyden til 0 og bruker `y` til dybden:
+
+```c
+return vec3(x, 0.0, y); 
+```
+
+Der, et rutenett! Men det er to problemer:
+
+- Det er ikke sentrert rundt origo (0, 0, 0)
+- Alle prikker har samme størrelse, så prikker lenger unna er like store som de nærme
+
+Vi løser det første problemet lett ved å trekke fra halvparten av bredden fra alle posisjonene:
+
+```c
+return vec3(x - w/2.0, 0.0, y - w/2.0);
+```
+
+Resultatet kan man se med en gang.
+
+For å skape bedre dybdefølelse endrer vi `gl_PointSize` slik at blir mindre jo lenger unna kamera partiklene er. `gl_Position` inneholder x- og y-koordinatene på skjermen. Og z-koordinaten dens er dybden slik den er sett fra kameraet. Vi deler dermed partikkelstørrelsen på denne z-dybden. Siden dette dybdetallet er ganske høyt må vi øke partikkelstørrelse-tallet vårt ganske mye for å få noenlunde samme partikkelstørrelse nå som den er avhengig av dybden:
+
+```c
+float particleSize = 300.0;
+gl_PointSize = particleSize * pixelRatio / gl_Position.z;
+```
+
+Resultatet er et pent rutenett av firkanter.
+
+### Fra firkanter til prikker
+
+TODO
+
+### Vi fargelegger
+
+TODO
+
+```javascript
+let color = new Float32Array(nofParticles * 3);
+color = color.map(Math.random);
+geometry.addAttribute('color', new THREE.BufferAttribute(color, 3));
+```
+
+### Vi legger på bevegelse
+
+TODO (sinusbølge)
+
+### Vi plukker opp de grønne
+
+TODO
+
+
+
+
