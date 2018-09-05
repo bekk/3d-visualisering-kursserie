@@ -70,7 +70,9 @@ polarkoordinater(x, y) = (
 );
 ```
 
-I den utdelte koden ligger x og y i `vertexPosition.x` og `vertexPosition.y`. Og siden `sqrt(x*x + y*y)` er lik lengden av vektoren kan vi bruke funksjonen `length()`:
+I den utdelte koden ligger x og y i `vertexPosition.x` og `vertexPosition.y`. Det er en vec2 som går fra (-1, -1) til (1, 1). 
+
+Siden `sqrt(x*x + y*y)` er lik lengden av vektoren kan vi bruke funksjonen `length()`:
 
 ```c
 float radius = length(vertexPosition);

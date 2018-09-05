@@ -8,6 +8,8 @@ uniform float glowRange;
 uniform float glowIntensity;
 
 
+// TODO: Denne fasiten er ikke helt lik det oppgaveteksten legger opp til lenger
+
 void main() {
     float radius = clamp(length(vertexPosition), 0.0, 1.0);
     float radInverse = 1.0 - radius;
