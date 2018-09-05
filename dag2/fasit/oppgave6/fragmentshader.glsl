@@ -1,10 +1,10 @@
 uniform float time;
 
-varying vec4 devianceForFragshader;
+varying vec3 colorForFragshader;
 varying vec3 particlePosition;
 
 vec4 circle(vec3 color, vec2 pointCoord) {
-  float radius = length(pointCoord * 2.0 - vec2(1.0, 1.0));
+  float radius = length(pointCoord * 2.0 - vec2(1.0));
   
   float sharpness = 4.0;
 
@@ -15,7 +15,6 @@ vec4 circle(vec3 color, vec2 pointCoord) {
 
 void main() {
   vec3 white = vec3(1.0);
-  vec3 randomColor = vec3(devianceForFragshader.xyz);
 
-  gl_FragColor = circle(randomColor, gl_PointCoord);
+  gl_FragColor = circle(colorForFragshader, gl_PointCoord);
 }

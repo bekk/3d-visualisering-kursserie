@@ -1,113 +1,55 @@
 #define PI 3.14159265358979323844
 
 uniform float time;
-uniform float transitionTime;
-uniform float phase;
+uniform float impulseTime;
 uniform float nofParticles;
 uniform float particleSize;
 uniform float pixelRatio;
 
 varying vec3 particlePosition;
-varying vec4 devianceForFragshader;
+varying vec3 colorForFragshader;
 
 attribute float vertexIndex;
-attribute vec4 deviance;
+attribute vec3 color;
 
-float easeOutCubic(float t) {
-  t--;
-  return t*t*t + 1.0;
-}
-
-float easeInOutCubic(float t) {
-  if (t < 0.5) 
-    return 4.0*t*t*t;
-  else 
-    return (t-1.0)*(2.0*t-2.0)*(2.0*t-2.0)+1.0;
-}
-
-float easeInOutQuad(float t) {
-  return t < 0.5 ? 2.0*t*t : -1.0+(4.0-2.0*t)*t;
-}
-
-vec2 get2DCoord(float index, float width) {
-  float x = mod(vertexIndex, width);
-  float y = floor(vertexIndex / width);
-
-  return vec2(x, y);
-}
-
-vec3 get3DCoord(float index, float width, float depth) {
-  float x = mod(index, width);
-  float y = floor(index / (width * depth));
-  float z = mod(floor(index / width), depth);
-
-  return vec3(x, y, z);
-}
-
-vec3 startPosition() {
+vec3 gridPosition() {
   float square = floor(sqrt(nofParticles));
 
-  vec2 coord2D = get2DCoord(vertexIndex, square) - vec2(square/2.0);
+  float x = mod(vertexIndex, square);
+  float y = floor(vertexIndex / square);
 
-  vec3 gridPosition = vec3(coord2D.x, 0, coord2D.y);
+  vec2 coord2D = vec2(x, y);
 
-  float wavelength = 1.0/10.0;
-  float wavespeed = 3.0;
-  float amplitude = 3.0;
-  float wave = amplitude * sin(gridPosition.z*wavelength + time*wavespeed);
+  vec2 origo = vec2(square/2.0);
 
-  return vec3(
-    gridPosition.x, 
-    gridPosition.y + wave, 
-    gridPosition.z
-  );
+  coord2D -= origo;
+
+  return vec3(coord2D.x, 0, coord2D.y);
 }
 
-mat2 rotate2d(float angle){
-  return mat2(
-    cos(angle), -sin(angle),
-    sin(angle), cos(angle)
-  );
-}
-
-vec3 targetPosition() {
-  float width = 25.0;
-  float depth = 25.0;
-
-  float spread = 3.0;
-
-  vec3 coordNormalized = get3DCoord(vertexIndex, width, depth) - vec3(width/2.0);
-
-  vec3 origo = vec3(0.0);//vec3(-40.0, 15.0, 10.0) + deviance.xyz;
-
-  vec3 target = coordNormalized * spread + origo;
-
-  float speed = 0.3;
-
-  vec2 rotated = rotate2d(time * speed) * vec2(target.x, target.z);
-
-  return vec3(rotated.x, target.y, rotated.y);
+float wave(float x, float frequency, float amplitude, float wavespeed) {
+  return amplitude * sin(x * frequency + time * wavespeed);
 }
 
 void main() {
+  vec3 newPosition = gridPosition();
 
-  vec3 startPosition = startPosition();
-  vec3 targetPosition = targetPosition();
+  newPosition.y += wave(newPosition.z, 0.1, 3.0, 3.0);
 
-  if (phase == 1.0 && transitionTime < 1.0) {
-    vec3 temp = startPosition;
-    startPosition = targetPosition;
-    targetPosition = temp;
+  bool isGreen = color.y > color.x && color.y > color.z;
+
+  //float impulseStrength = (sin(impulseTime * 2.0 * PI - PI/2.0) + 1.0) / 2.0; // f(x)=(sin(x*2*3.14 - 3.14/2) + 1) / 2
+  float impulseStrength = 1.0-abs(1.0-impulseTime*2.0);
+
+  if (isGreen) {
+    newPosition.y += 50.0 * impulseStrength;
+    newPosition.y = min(newPosition.y, 20.0);
   }
 
-  vec3 newPosition = mix(startPosition, targetPosition, easeInOutQuad(transitionTime));
-
   particlePosition = newPosition;
-  devianceForFragshader = deviance;
-
-  vec4 mvPosition = modelViewMatrix * vec4(newPosition, 1.0);
-  
-  gl_PointSize = particleSize*pixelRatio/length(mvPosition.xyz);
+  colorForFragshader = color;
 
   gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
+
+  gl_PointSize = particleSize * pixelRatio / gl_Position.z;
 }

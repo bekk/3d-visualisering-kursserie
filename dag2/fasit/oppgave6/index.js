@@ -4,20 +4,20 @@ const fragmentShaderCode = fs.readFileSync(__dirname + '/fragmentshader.glsl', '
 const THREE = require('three');
 const dat = require('dat.gui');
 
-const nofParticles = Math.pow(5, 2*3); // = 25*25*25 = 125*125
+const nofParticles = Math.pow(125, 2);
+const impulseLength = 2.5;
 
 let timeStart;
 let camera;
 let renderer;
 let scene;
 let phase = 0;
-let transitionInProgress = false;
-let transitionStart = 0.0;
+let impulseInProgress = false;
+let impulseStart = 0.0;
 
 const uniforms = {
     time: {value: 0.0},
-    transitionTime: {value: 0.0},
-    phase: {value: 0.0},
+    impulseTime: {value: 0.0},
     pixelRatio: {value: window.devicePixelRatio},
     nofParticles: {value: nofParticles},
     particleSize: {value: window.screen.width/4},
@@ -27,7 +27,7 @@ const initAnimation = function() {
 
     timeStart = new Date().getTime();
 
-    renderer = new THREE.WebGLRenderer({antialias: false});
+    renderer = new THREE.WebGLRenderer();
     renderer.gammaInput = true;
     renderer.gammaOutput = true;
     renderer.setClearColor(0x1D1D1D);
@@ -61,35 +61,26 @@ const initAnimation = function() {
 }
 
 function makeGeometry() {
-    const positions = new Float32Array(nofParticles * 3);
-
     const geometry = new THREE.BufferGeometry();
 
+    const positions = new Float32Array(nofParticles * 3);
     geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3));
 
-    const vertexIndecies = new Float32Array(nofParticles);
-    for (let i = 0; i < vertexIndecies.length; i++) {
-        vertexIndecies[i] = i;
-    }
-
+    let vertexIndecies = new Float32Array(nofParticles);
+    vertexIndecies = vertexIndecies.map((element, i) => i);
     geometry.addAttribute('vertexIndex', new THREE.BufferAttribute(vertexIndecies, 1));
 
-    const deviance = new Float32Array(nofParticles * 4);
-    for (let i = 0; i < deviance.length; i++) {
-        deviance[i] = Math.random();
-    }
-
-    geometry.addAttribute('deviance', new THREE.BufferAttribute(deviance, 4));
-
-    geometry.computeBoundingSphere();
+    let color = new Float32Array(nofParticles * 3);
+    color = color.map(Math.random);
+    geometry.addAttribute('color', new THREE.BufferAttribute(color, 3));
 
     return geometry;
 }
 
 function initMouseEvents() {
     function callback(event) {
-       transitionInProgress = !transitionInProgress;
-       transitionStart = new Date().getTime();
+       impulseInProgress = true;
+       impulseStart = new Date().getTime();
     }
 
     document.getElementsByTagName("canvas")[0].addEventListener("click", callback);
@@ -99,24 +90,21 @@ const animate = function() {
     requestAnimationFrame(animate);
 
     const now = new Date().getTime();
-    const animationTime = (now - timeStart) / 1000;
-    let transitionTime = (now - transitionStart) / 1000;
 
-    uniforms.time.value = animationTime;
+    uniforms.time.value = (now - timeStart) / 1000;
 
-    //console.log(`animationTime: ${animationTime} transitionTime: ${uniforms.transitionTime.value} phase: ${phase}`)
+    let impulseTime = 0.0;
 
-    if (transitionInProgress) {
-        uniforms.transitionTime.value = transitionTime;
-
-        if (transitionTime > 1.0) {
-            phase = (phase+1) % 2;
-            transitionInProgress = false;
-            uniforms.transitionTime.value = 0.0;
+    if (impulseInProgress) {
+        impulseTime = (now - impulseStart) / 1000 / impulseLength;
+        
+        if (impulseTime > 1) {
+            impulseInProgress = false;
+            impulseTime = 1;
         }
     }
 
-    uniforms.phase.value = phase;
+    uniforms.impulseTime.value = impulseTime;
 
     renderer.render(scene, camera);
 }
