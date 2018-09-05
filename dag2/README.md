@@ -128,26 +128,127 @@ float brightness = 0.9;
 color += glow * brightness;
 ```
 
-### Let there be rays
+### Let there be beams
 
-Siste prikken over i-en blir stråler som skinner ut av stjernen. Her kan vi bruke `angle` fra polarkoordinatene
-
-(Forklar at stråler kan være bølger som en funksjon av vinkelen)
+Siste prikken over i-en blir stråler som skinner ut av stjernen. Her kan vi bruke `angle` fra polarkoordinatene. Hvis intensiteten er en sinusbølge får vi pene stråler:
 
 (x-y-graf over sinus over vinkel)
 (polar-graf over sinus over vinkel)
 
-(steg for steg å beregne sinus-stråler med samme rayRange og rayIntensity)
+Vi regner ut et wave-tall som er sinusbølgen av polarkoordinat-vinkelen:
 
-// TODO: parametriser rayRange og rayIntensity i fasitkoden
+```c
+float nofBeams = 6.0;
+float wave = sin(angle * nofBeams);
+```
 
-(slutter med at stjernen er fin, men hardkodet)
+Her ser vi også en lett måte å kontrollere frekvensen til sinusbølger, nemlig å gange vinkelen med en konstant `nofBeams`.
 
-### DAT.gui kontrollpanel
+Men, siden sinus er en verdi fra -1 til +1, får vi negative stråler også, og det vil vi ikke. Så vi clamper bølgen til 0.0 - 1.0: 
 
-(Forklar hva DAT.gui er)
+```c
+wave = clamp(wave, 0.0, 1.0);
+```
 
-(Steg for steg kode for å koble alle parameterne til dat.gui)
+Så øker vi bare alpha slik at strålene synes i samme farge som stjernen:
+
+```c
+alpha += wave;
+```
+
+Dette blir ganske voldsomme stråler, som du kan se. Så vi gjenbruker teknikken til å redusere glød utover med avstanden til kjernen:
+
+```c
+float beamFalloff = 1.0 - glowDistance;
+float beamStrength = 0.075;
+wave *= beamStrength * beamFalloff;
+```
+
+Nå har vi en komplett stjerne. De viktige parameterne ble 
+
+- `color`
+- `coreSize`
+- `glowIntensity`
+- `glowFalloff`
+- `brightness`
+- `nofBeams`
+- `beamStrength`
+
+### Live-parametrisering med dat.GUI-kontrollpanel
+
+Når man har så mange interessante parametre er det såklart ekstra fett å kunne manipulere dem live. Helt til slutt i denne oppgaven skal vi bruke biblioteket dat.GUI og `uniforms` til å lage et slikt kontrollpanel.
+
+#### dat.GUI
+
+dat.GUI er et lite bibliotek for å lage små kontrollpanel til prototyping:
+
+![dat.GUI](./bilder/dat.GUI.png)
+
+For å bruke det importerer vi det og initialiserer en instans:
+
+```javascript
+const dat = require('dat.gui');
+
+const gui = new dat.GUI();
+```
+
+Så legger vi til en parameter for coreSize. dat.GUI fungerer ved at den endrer verdien direkte på parameterobjektet, og man kan spesifisere min- og max-verdi for å få en slider mellom disse ytterpunktene:
+
+```c
+const parameters = {coreSize: 0.1};
+
+gui.add(parameters, "coreSize", 0.02, 0.5);
+```
+
+Mer dokumentasjon for dat.GUI finnes her: http://workshop.chromeexperiments.com/examples/gui/#1--Basic-Usage 
+
+Nå får du opp en slik slider for coreSize. Men det skjer ikke noe man drar den. Det er fordi coreSize-verdien kun ligger i parameters-objektet. Vi må få den inn i shaderen.
+
+#### Parametrisering av shaderen
+
+I shaderen blir dette ganske enkelt. Vi må bytte ut hardkodet `coreSize` med en uniform:
+
+```c
+uniform float coreSize;
+```
+
+og legge til uniformen i `uniforms` som blir sendt til ShaderMaterial:
+
+```javascript
+const uniforms = {
+    coreSize: {value: 0.1}
+};
+```
+
+Vi lager en funksjon for å oppdatere uniformene:
+
+```javascript
+function updateUniforms() {
+    uniforms.coreSize.value = parameters.coreSize;
+}
+```
+
+Og kaller den for hver render: 
+
+```javascript
+function render() {
+  requestAnimationFrame(render);
+
+  updateParameters();
+
+  renderer.render(scene, camera);
+}
+```
+
+Da kan vi styre størrelsen på stjernen live via kontrollpanelet.
+
+Gjør det samme for å parametrisere alle de andre parameterne.
+
+Tips: For å legge til color picker i dat.GUI bruker man `gui.addColor()` i stedet for `.add()`. Parameterverdien blir da en hex-string slik som `"#ff9500"`. Denne kan vi sende til en vec3-uniform via THREE.Color:
+
+```javascript
+uniforms.baseColor.value = new THREE.Color(params.baseColor);
+```
 
 ## Oppgave 5
 
