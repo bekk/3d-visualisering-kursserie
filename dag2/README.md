@@ -393,13 +393,101 @@ gl_PointSize = particleSize * pixelRatio / gl_Position.z;
 
 Resultatet er et pent rutenett av firkanter.
 
+### Vi legger på bevegelse
+
+La oss lage bølger! Hva er en bølge? Jo, det er sinus såklart. Vi øker høyden (y-koordinaten) for å lage bølger i x-retningen:
+
+```c
+float x = newPosition.x;
+
+newPosition.y += sin(x);
+```
+
+Men de beveger seg ikke. En lett måte å flytte på sinus-bølger er å øke x-verdien, og vi har allerde en `uniform float time` med tiden i sekunder:
+
+```c
+float waveSpeed = 3.0;
+
+x = x + time * waveSpeed;
+```
+
+Der ja. Nå har vi også en mulighet for å justere `waveSpeed` ved behov. 
+
+Vi ønsker større bølger. Både større bølgehøyde og bølgelengde. Heldigvis er det ganske lett å styre dette i et sinus-uttrykk. Bølgelengden økes ved å dele x:
+
+```c
+float waveLength = 10.0;
+
+x = x / waveLength + time * waveSpeed;
+```
+
+Og bølgene blir høyere av å gange hele sinusbølgen:
+
+```c
+float amplitude = 3.0;
+
+newPosition.y += amplitude * sin(x);
+```
+
+Nå har vi pene bølger.
+
 ### Fra firkanter til prikker
 
-TODO
+Vi har ikke gjort noe med fragmentshaderen enda. Den spytter kun ut fargen hvit for alle piksler til hver partikkel:
+
+```c
+gl_FragColor = vec4(1.0); // Kun ett argument (1.0) oversettes av webgl til (1.0, 1.0, 1.0, 1.0)
+```
+
+Vi vil lage en prikk, så fargen skal være gjennomsiktig utenfor prikken, og solid innenfor. La oss fiske ut alpha-verdien så vi kan beregne den for seg selv:
+
+```c
+vec3 color = vec3(1.0);
+
+float alpha = 1.0;
+
+gl_FragColor = vec4(color, alpha); // Enda en snarvei, hvor webgl tar de tre dimensjonene i første argument og slenger på siste argument for å lage en firedimensjonal vektor
+```
+
+Hvis vi har hver piksels avstand til senter av partikkelen kan vi gjøre alt utenfor en viss radius gjennomsiktig. I oppgave 4 hadde vi pikselens koordinater fra en `varying vec2 vertexPosition`. Men for partikkelsystemer er det ikke mulig å gjøre det på samme måte fordi `varying` interpoleres mellom vertices i en face, mens et partikkelsystem har som nevnt ingen faces. 
+
+I stedet finnes det en egen global variabel `gl_PointCoord` som inneholder en `vec2` mellom (0, 0) og (1, 1) som sier hvilken koordinat nåværende piksel har i partikkelens firkant.
+
+La oss se hva som skjer om vi setter alpha til å være lik lengden av `gl_PointCoord`:
+
+```c
+float radius = length(gl_PointCoord);
+alpha = radius;
+```
+
+Hvis man ser nøøøye etter ser man at det ene hjørnet til hver partikkel ble gjennomsiktig. Det er fordi det er definert som (0, 0) i dette systemet. hvis vi trekker fra (0.5, 0.5) får vi dermed flyttet nullpunktet til senter av partikkelen:
+
+```c
+float radius = length(gl_PointCoord - vec2(0.5));
+```
+
+Men da får vi en radius som går fra 0.0 til 0.5. Så vi ganger med 2 for å får en normalisert radius mellom 0 og 1:
+
+```c
+float radius = 2.0 * length(gl_PointCoord - vec2(0.5));
+```
+
+Men da ser vi at det er gjennomsiktig i midten og hvitt på utsiden. Det er jo det motsatte av hva vi vil. Vi inverterer radiusen for å riktig resultat:
+
+```c
+alpha = 1.0 - radius;
+```
+
+Der ja. Fine prikker. Litt små da. Vi ganger med et tall for å få de litt kraftigere. Alpha vil automatisk clampes til mellom 0 og 1, så vi løper ingen risiko:
+
+```c
+float strength = 5.0;
+alpha *= strength;
+```
 
 ### Vi fargelegger
 
-TODO
+La oss få en smak av regnbuen med litt tilfeldige farger. La oss beregne alle fargene i javascript og sende dem over til GPU-en. Hver farge er en vektor av 3 floats for red, green og blue. Vi setter hver rgb til en tilfeldig verdi med `.map()`:
 
 ```javascript
 let color = new Float32Array(nofParticles * 3);
@@ -407,14 +495,108 @@ color = color.map(Math.random);
 geometry.addAttribute('color', new THREE.BufferAttribute(color, 3));
 ```
 
-### Vi legger på bevegelse
+Disse fargene er jo `attribute` og dermed kun tilgjengelig i vertexshaderen:
 
-TODO (sinusbølge)
+```c
+attribute vec3 color;
+```
+
+Men vi trenger dem i fragmentshaderen. Den typiske fremgangsmåten i den situasjonen er å lage en `varying` som fragmentshaderen kan lese, og så bare skrive verdien oppå den:
+
+```c
+attribute vec3 color;
+varying vec3 colorForFragshader;
+
+void main() {
+    ...
+
+    colorForFragshader = color;
+}
+```
+
+Er det en hack? Nei, fordi GPU-en er optimalisert for å overføre data på denne måten. Performance er fortsatt king.
+
+Husk å deklarere `varyingen` i fragmentshaderen også. Og så kan den brukes:
+
+```c
+vec3 color = colorForFragshader;
+```
+
+Voila! Vi har farger.
 
 ### Vi plukker opp de grønne
 
-TODO
+Fremtiden er grønn. Så vi ønsker å plukke ut og stille opp de grønne partiklene. Kanskje de symboliserer noe viktig, som miljø eller håp eller noe sånt. Det skal skje når man klikker med musen, så vi trenger å fange opp det og kommunisere det til webgl-animasjonen.
 
+La oss starte med å bare finne de grønne partiklene så vi har noe å se på:
+
+```c
+bool isGreen = color.g > color.r && color.g > color.b; // .r er en snarvei for .x, og så videre for g og b. Praktisk for vektorer som er farger.
+```
+
+Inntil videre hardkoder vi høyden deres. Så får vi et grønt fast teppe oppå bølgene:
+
+```c
+if (isGreen) {
+  newPosition.y = 20.0;
+}
+```
+
+For å animere noe på uforutsigbare tidspunkt i webgl er det en generell smart teknikk å styre en tidsmåler-variabel i javascript, og så sende den rått til shaderne som reagerer på en funksjonell forutsigbar måte avhengig av den verdien. 
+
+Det vil si at timeren starter fastlåst på 0.0, som shaderen kan være programmert til å ignorere. Når javascript-koden oppdager at noe skal skje øker den timeren jevnt oppover helt til 1.0 som symboliserer slutten på hendelsen. Da resetter javascript-koden timeren til 0.0 igjen, og dermed er animasjonen til hendelsen ferdig. Det er fritt opp til shaderens kode å beregne hva den gjør for de ulike verdiene mellom 0 og 1.
+
+Poenget med teknikken er at shaderen ikke trenger å vite hva *forrige* verdi av timeren var. Den bare leser nåværende og kalkulerer sitt utseende fra det. Den trenger dermed også ikke å vite hva sin egen forrige utseende var. Dette er viktig fordi shaderne beholder ikke sine variabler fra bilde til bilde. Det er kun gjennom `uniforms` og `attributes` at noe kan huskes mellom rendringer. 
+
+La oss gjøre akkruat dette. Steg for steg såklart. Tilbake i javascripten må vi altså fange opp museklikk på canvasen og gjøre noe med det:
+
+```c
+function callback(event) {
+   console.log("Du klikket!");
+}
+
+document.getElementsByTagName("canvas")[0].addEventListener("click", callback);
+```
+
+TODO: Resten av koden
+
+```c
+
+let animationInProgress = false;
+
+function callback(event) {
+   animationInProgress = true;
+   animationStart = new Date().getTime();
+}
+
+const uniforms = {
+    ...
+    animationTime: {value: 0.0},
+};
+
+function updateAnimationTime() {
+    const now = new Date().getTime();
+
+    let animationTime = 0.0;
+
+    if (animationInProgress) {
+        const animationLength = 2.5;
+
+        animationTime = (now - animationStart) / 1000 / animationLength;
+        
+        if (animationTime > 1) {
+            animationInProgress = false;
+            animationTime = 1;
+        }
+    }
+
+    uniforms.animationTime.value = animationTime;
+}
+
+
+```
+
+TODO: Fjern initMouseEvents fra utdelt kode
 
 
 

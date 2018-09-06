@@ -30,7 +30,7 @@ const initAnimation = function() {
     const ratio = renderer.getContext().drawingBufferWidth / renderer.getContext().drawingBufferHeight;
     
     camera = new THREE.PerspectiveCamera(60, ratio, 0.1, 10000);
-    camera.position.set(-120, 40, 0)
+    camera.position.set(0, 40, 120)
     camera.lookAt(new THREE.Vector3(0, 0, 0));
     camera.updateProjectionMatrix();
 

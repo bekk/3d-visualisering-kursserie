@@ -1,7 +1,6 @@
 uniform float time;
 
 varying vec3 colorForFragshader;
-varying vec3 particlePosition;
 
 vec4 circle(vec3 color, vec2 pointCoord) {
   float radius = length(pointCoord * 2.0 - vec2(1.0));

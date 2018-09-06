@@ -5,7 +5,6 @@ uniform float animationTime;
 uniform float nofParticles;
 uniform float pixelRatio;
 
-varying vec3 particlePosition;
 varying vec3 colorForFragshader;
 
 attribute float vertexIndex;
@@ -33,7 +32,7 @@ float wave(float x, float frequency, float amplitude, float wavespeed) {
 void main() {
   vec3 newPosition = gridPosition();
 
-  newPosition.y += wave(newPosition.z, 0.1, 3.0, 3.0);
+  newPosition.y += wave(newPosition.x, 0.1, 3.0, 3.0);
 
   bool isGreen = color.y > color.x && color.y > color.z;
 
@@ -45,7 +44,6 @@ void main() {
     newPosition.y = min(newPosition.y, 20.0);
   }
 
-  particlePosition = newPosition;
   colorForFragshader = color;
 
   gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
