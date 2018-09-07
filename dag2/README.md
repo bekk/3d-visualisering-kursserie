@@ -648,33 +648,39 @@ if (isGreen) {
 }
 ```
 
-Men de løftes ikke *ned* igjen pent. De bare hopper ned når det er ferdig. Det er fordi animationTime går som en koselig normalisert lineær graf:
+Men de løftes ikke *ned* igjen pent. De bare hopper ned når det er ferdig. Det er fordi `animationTime` går som en koselig normalisert lineær graf:
 
-(Bilde av f(x) = x) mellom x = 0 og x = 1)
+> f(x) = x
+![f(x) = x](./bilder/graf1.png)
 
 Men vi vil ha en graf som ser mer slik ut:
 
-(Bilde av graf som går opp og ned med topp på x = 0.5)
+![f(x) = riktig](./bilder/graf2.png)
 
 La oss dedusere oss frem til den grafen. Et bra triks er å bruke absolutt verdi:
 
-f(x) = abs(x)
+> f(x) = abs(x)
+![f(x) = abs(x)](./bilder/graf3.png)
 
 Dette ligner mer. Vi snur den på hodet:
 
-f(x) = -abs(x)
+> f(x) = -abs(x)
+![f(x) = -abs(x)](./bilder/graf4.png)
 
 Og flytter den opp y-aksen:
 
-f(x) = -abs(x) + 1
+> f(x) = -abs(x) + 1
+![f(x) = -abs(x) + 1](./bilder/graf5.png)
 
 Og flytter den til høyre på x-aksen:
 
-f(x) = -abs(x - 1) + 1
+> f(x) = -abs(x - 1)
+![f(x) = -abs(x - 1)](./bilder/graf6.png)
 
 Der ja! Nesten. Men den går fra x=0 til x=2. Så vi ganger x for å skalere den langs x-aksen:
 
-f(x) = -abs(x*2 - 1) + 1
+> f(x) = -abs(x * 2 - 1) + 1
+![f(x) = -abs(x * 2 - 1) + 1](./bilder/graf7.png)
 
 Perfekt! I shaderkode blir det:
 
@@ -692,8 +698,10 @@ newPosition.y = mix(newPosition.y, targetHeight, movement);
 
 Sånn, da blir de flate og fine! En siste ting for å legge prikken over i-en: easing. For at animasjonen blir mer elegant kan vi konvertere den lineære movement-parameteren til å gli inn og gli ut:
 
+Før:
 (bilde av f(x)=x)
 
+Etter:
 (bilde av f(x) = easeInOutCubic)
 
 Et raskt søk på internett gir oss en ferdig formel for ease-in-out i 2.grad:
@@ -716,9 +724,6 @@ movement = easeInOutCubic(movement);
 
 Resultatet er en deilig visualisering!
 
-TODO: Legge inn bilder av grafene f(x)
-
-TODO: Fjern initMouseEvents og animationStart fra utdelt kode
-
+TODO: Legge inn bilder av easeInOutCubic
 
 
