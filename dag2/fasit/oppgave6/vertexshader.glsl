@@ -37,9 +37,10 @@ void main() {
   bool isGreen = color.y > color.x && color.y > color.z;
 
   //float impulseStrength = (sin(animationTime * 2.0 * PI - PI/2.0) + 1.0) / 2.0; // f(x)=(sin(x*2*3.14 - 3.14/2) + 1) / 2
-  float impulseStrength = 1.0-abs(1.0-animationTime*2.0);
-
   if (isGreen) {
+    float impulseStrength = 1.0-abs(1.0-animationTime*2.0);
+
+    
     newPosition.y += 50.0 * impulseStrength;
     newPosition.y = min(newPosition.y, 20.0);
   }

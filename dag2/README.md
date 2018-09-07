@@ -548,7 +548,7 @@ Det vil si at timeren starter fastlåst på 0.0, som shaderen kan være programm
 
 Poenget med teknikken er at shaderen ikke trenger å vite hva *forrige* verdi av timeren var. Den bare leser nåværende og kalkulerer sitt utseende fra det. Den trenger dermed også ikke å vite hva sin egen forrige utseende var. Dette er viktig fordi shaderne beholder ikke sine variabler fra bilde til bilde. Det er kun gjennom `uniforms` og `attributes` at noe kan huskes mellom rendringer. 
 
-La oss gjøre akkruat dette. Steg for steg såklart. Tilbake i javascripten må vi altså fange opp museklikk på canvasen og gjøre noe med det:
+La oss gjøre akkurat dette. Steg for steg såklart. Tilbake i javascripten må vi altså fange opp museklikk på canvasen og gjøre noe med det:
 
 ```c
 function callback(event) {
@@ -558,45 +558,167 @@ function callback(event) {
 document.getElementsByTagName("canvas")[0].addEventListener("click", callback);
 ```
 
-TODO: Resten av koden
+Prøv å klikke og se om det funker.
+
+Planen vår blir altså å ha en timer-uniform `animationTime` som skal gå fra 0 til 1. For å kunne styre denne i javascript-koden lager vi to variabler til for om animasjonen er igang og hvilket tidspunkt det ble trykket:
 
 ```c
-
+let animationStart = 0;
 let animationInProgress = false;
-
-function callback(event) {
-   animationInProgress = true;
-   animationStart = new Date().getTime();
-}
 
 const uniforms = {
     ...
     animationTime: {value: 0.0},
 };
-
-function updateAnimationTime() {
-    const now = new Date().getTime();
-
-    let animationTime = 0.0;
-
-    if (animationInProgress) {
-        const animationLength = 2.5;
-
-        animationTime = (now - animationStart) / 1000 / animationLength;
-        
-        if (animationTime > 1) {
-            animationInProgress = false;
-            animationTime = 1;
-        }
-    }
-
-    uniforms.animationTime.value = animationTime;
-}
-
-
 ```
 
-TODO: Fjern initMouseEvents fra utdelt kode
+De to støttevariablene gir vi verdi når man har trykket:
+
+```c
+function callback(event) {
+   animationInProgress = true;
+   animationStart = new Date().getTime();
+}
+```
+
+Og så lager vi en funksjon som skal oppdatere variablene i render-loopen:
+
+```c
+function updateAnimationTime() {
+    // Noe smart her
+}
+
+const animate = function() {
+    ...
+    updateAnimationTime();
+    ...
+}
+```
+
+Hvis animasjonen er igang må vi kalkulere animationTime, hvis ikke er den bare 0:
+
+```c
+function updateAnimationTime() {
+    if (animationInProgress) {
+        let animationTime = // noe smart
+
+        uniforms.animationTime.value = animationTime;
+    } else {
+        uniforms.animationTime.value = 0;
+    }
+}
+```
+
+Hvis animasjonen er igang blir `animationTime` tidsdifferensen siden `animationStart`. Vi deler på 1000 siden tidene i er i millisekunder, og så deler vi på en konstant som blir antall sekunder animasjonen varer. 
+
+```c
+const animationLength = 2.5;
+const now = new Date().getTime();
+
+let animationTime = (now - animationStart) / 1000 / animationLength;
+```
+
+Men hvis animasjonen er ferdig, må vi sette timeren til 0 og skru av `animationInProgress`:
+
+```c
+if (animationTime > 1) {
+    animationInProgress = false;
+    animationTime = 0;
+}
+```
+
+Sånn, la oss teste det med å skrive ut `uniforms.animationTime.value`:
+
+```c
+console.log(uniforms.animationTime.value);
+```
+
+Tilbake i vertexshaderen kan vi nå endelig bruke `animationTime` til noe lurt:
+
+```c
+uniform float animationTime;
+```
+
+Hvis vi øker høyden med `animationTime` vil partiklene løftes opp fra bølgene:
+
+```c
+if (isGreen) {
+    float targetHeight = 20.0;
+    newPosition.y += targetHeight * animationTime;
+}
+```
+
+Men de løftes ikke *ned* igjen pent. De bare hopper ned når det er ferdig. Det er fordi animationTime går som en koselig normalisert lineær graf:
+
+(Bilde av f(x) = x) mellom x = 0 og x = 1)
+
+Men vi vil ha en graf som ser mer slik ut:
+
+(Bilde av graf som går opp og ned med topp på x = 0.5)
+
+La oss dedusere oss frem til den grafen. Et bra triks er å bruke absolutt verdi:
+
+f(x) = abs(x)
+
+Dette ligner mer. Vi snur den på hodet:
+
+f(x) = -abs(x)
+
+Og flytter den opp y-aksen:
+
+f(x) = -abs(x) + 1
+
+Og flytter den til høyre på x-aksen:
+
+f(x) = -abs(x - 1) + 1
+
+Der ja! Nesten. Men den går fra x=0 til x=2. Så vi ganger x for å skalere den langs x-aksen:
+
+f(x) = -abs(x*2 - 1) + 1
+
+Perfekt! I shaderkode blir det:
+
+```c
+float movement = -abs(animationTime * 2.0 - 1.0) + 1.0;
+
+newPosition.y += targetHeight * movement;
+```
+
+Nå driver de grønne og bølger seg når de er på toppen. Men de skal heller gå over til et flatt plan så vi kan se dem tydeligere. Så i stedet for å simpelthen øke høyden setter vi høyden til å være en interpolasjon mellom bølgebevegelsen og en fastlåst høyde. Lineær interpolasjon gjøres i webgl med `mix(fra, til, parameter)` hvor `parameter` er mellom 0 og 1:
+
+```c
+newPosition.y = mix(newPosition.y, targetHeight, movement);
+```
+
+Sånn, da blir de flate og fine! En siste ting for å legge prikken over i-en: easing. For at animasjonen blir mer elegant kan vi konvertere den lineære movement-parameteren til å gli inn og gli ut:
+
+(bilde av f(x)=x)
+
+(bilde av f(x) = easeInOutCubic)
+
+Et raskt søk på internett gir oss en ferdig formel for ease-in-out i 2.grad:
+
+```c
+// Hvis t er mellom 0 og 1:
+float easeInOutCubic(float t) {
+  if (t < 0.5) 
+    return 4.0*t*t*t;
+  else 
+    return (t-1.0)*(2.0*t-2.0)*(2.0*t-2.0)+1.0;
+}
+```
+
+Og siden vi har vært så flinke å normalisere ting mellom 0 og 1 kan vi bruke den direkte.
+
+```c
+movement = easeInOutCubic(movement);
+```
+
+Resultatet er en deilig visualisering!
+
+TODO: Legge inn bilder av grafene f(x)
+
+TODO: Fjern initMouseEvents og animationStart fra utdelt kode
 
 
 
