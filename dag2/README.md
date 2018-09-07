@@ -708,7 +708,7 @@ float easeInOutCubic(float t) {
 }
 ```
 
-Og siden vi har vært så flinke å normalisere ting mellom 0 og 1 kan vi bruke den direkte.
+Og siden vi har vært så flinke til å normalisere ting mellom 0 og 1 kan vi bruke den direkte:
 
 ```c
 movement = easeInOutCubic(movement);

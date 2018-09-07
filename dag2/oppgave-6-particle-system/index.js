@@ -5,9 +5,9 @@ const fragmentShaderCode = fs.readFileSync(__dirname + '/fragmentshader.glsl', '
 
 const pixelRatio = window.devicePixelRatio || 1;
 
-const nofParticles = Math.pow(125, 2);
+const nofParticles = 0;
 
-let timeStart, camera, renderer, scene, animationStart;
+let timeStart, camera, renderer, scene;
 
 const uniforms = {
     time: {value: 0.0},
@@ -33,17 +33,6 @@ const initAnimation = function() {
     document.body.appendChild(renderer.domElement);
 
     scene = new THREE.Scene();
-
-    initMouseEvents();
-}
-
-function initMouseEvents() {
-    function callback(event) {
-       animationInProgress = true;
-       animationStart = new Date().getTime();
-    }
-
-    document.getElementsByTagName("canvas")[0].addEventListener("click", callback);
 }
 
 const animate = function() {

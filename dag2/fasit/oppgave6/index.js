@@ -6,17 +6,18 @@ const fragmentShaderCode = fs.readFileSync(__dirname + '/fragmentshader.glsl', '
 const pixelRatio = window.devicePixelRatio || 1;
 
 const nofParticles = Math.pow(125, 2);
-const animationLength = 2.5;
 
-let timeStart, camera, renderer, scene, animationStart;
+let timeStart, camera, renderer, scene;
 
+let animationStart = 0;
 let animationInProgress = false;
+let animationPaused = false;
 
 const uniforms = {
     time: {value: 0.0},
-    animationTime: {value: 0.0},
     pixelRatio: {value: pixelRatio},
-    nofParticles: {value: nofParticles}
+    nofParticles: {value: nofParticles},
+    animationTime: {value: 0.0},
 };
 
 const initAnimation = function() {
@@ -38,8 +39,6 @@ const initAnimation = function() {
 
     scene = new THREE.Scene();
 
-    const geometry = makeGeometry();
-
     const material = new THREE.ShaderMaterial({
         uniforms: uniforms,
         vertexShader: vertexShaderCode,
@@ -47,30 +46,24 @@ const initAnimation = function() {
         transparent: true
     });
 
-    const points = new THREE.Points(geometry, material);
-    scene.add(points);
-
-    initMouseEvents();
-}
-
-function makeGeometry() {
     const geometry = new THREE.BufferGeometry();
 
+    const nofParticles = Math.pow(125, 2);
     const positions = new Float32Array(nofParticles * 3);
     geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3));
 
-    let vertexIndecies = new Float32Array(nofParticles);
-    vertexIndecies = vertexIndecies.map((element, i) => i);
-    geometry.addAttribute('vertexIndex', new THREE.BufferAttribute(vertexIndecies, 1));
 
     let color = new Float32Array(nofParticles * 3);
     color = color.map(Math.random);
     geometry.addAttribute('color', new THREE.BufferAttribute(color, 3));
 
-    return geometry;
-}
+    let vertexIndecies = new Float32Array(nofParticles);
+    vertexIndecies = vertexIndecies.map((element, i) => i);
+    geometry.addAttribute('vertexIndex', new THREE.BufferAttribute(vertexIndecies, 1));
 
-function initMouseEvents() {
+    const points = new THREE.Points(geometry, material);
+    scene.add(points);
+
     function callback(event) {
        animationInProgress = true;
        animationStart = new Date().getTime();
@@ -79,25 +72,34 @@ function initMouseEvents() {
     document.getElementsByTagName("canvas")[0].addEventListener("click", callback);
 }
 
+function updateAnimationTime() {
+    const now = new Date().getTime();
+
+    if (animationInProgress) {
+        const animationLength = 2.5;
+        const now = new Date().getTime();
+
+        let animationTime = (now - animationStart) / 1000 / animationLength;
+
+        if (animationTime > 1) {
+            animationInProgress = false;
+            animationTime = 0;
+        }
+
+        uniforms.animationTime.value = animationTime;
+    } else {
+        uniforms.animationTime.value = 0;
+    }
+}
+
 const animate = function() {
     requestAnimationFrame(animate);
 
     const now = new Date().getTime();
-
     uniforms.time.value = (now - timeStart) / 1000;
 
-    let animationTime = 0.0;
-
-    if (animationInProgress) {
-        animationTime = (now - animationStart) / 1000 / animationLength;
-        
-        if (animationTime > 1) {
-            animationInProgress = false;
-            animationTime = 1;
-        }
-    }
-
-    uniforms.animationTime.value = animationTime;
+    updateAnimationTime();
+    console.log(uniforms.animationTime.value);
 
     renderer.render(scene, camera);
 }
