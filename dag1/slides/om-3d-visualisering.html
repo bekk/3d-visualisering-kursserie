@@ -52,6 +52,112 @@
   <body>
     <textarea id="source">
 
+<!--
+
+OUTLINE
+=========
+
+Hei! La oss starte.
+
+Jeg heter Holger, og dette er Stian og Petter. Vi er fra Bekk, og det vi skal gjøre nå er å holde kurs i 3D-visualisering. Og det skal gå over 3 dager. 
+
+Målet med det er at man skal forstå hvordan man lager 3D, og at man klarer å lage noe fett i 3D. Vi kommer til å starte rolig, og så blir det mer og mer spennende utover i serien.
+
+Plan:
+  Dag 1
+    Intro til 3D-visualisering
+    Intro til rammeverket three.js
+    Lage kule ting i 3D
+
+  Dag 2
+    Lage enda kulere ting
+
+  Dag 3
+    Være kreativ og lage særdeles kule ting
+
+Hva er 3D-visualisering?
+  Lage et flatt bilde på skjermen, av noe som egentlig ikke er flatt
+
+  (eksempler på webgl fra nettet)
+
+I prinsippet:
+  Starter med 3D-data: Koordinater (x, y, z), vektorer (x, y, z)
+  Ender opp med 2D-koordinater (pikselposisjoner) på skjermen, og hvilken farge de pikslene skal ha
+
+  (face-wireframe.png) + (shading1.png) + (pixels-on-screen-close.png)
+
+Viktige konsepter i 3D-visualisering
+
+  Vertex
+    Flertall: Vertices
+    Det er ytterpunktene på 3D-modellene. De er i koordinater i 3D-rommet. De lagres som lange lister av tre og tre floating point numbers (float)
+
+    (illustrasjon med grov polyhedron med indeks på hver vertex)
+    (opplisting av koordinatene til hver indeks)
+
+  Face
+    Det er en samling av tre vertices som tilsammen skal utgjøre et flatt polygon. De lagres som lister av tre og tre integers, som er indeksene til hver vertex i vertex-lista. 
+
+    (illustrasjon med polyhedron med index på hver face)
+    (opplisting av vertex-indeksene til hver face)
+
+  Geometry
+    Kalles også surface, mesh, model
+    Dette er en samling av en liste med vertices og en liste med faces som tilsammen skal bli en figur.
+
+    (ring rundt polyhedronet og ring rundt de to listene)
+
+  Material og shading
+    Dette definerer fargen til hver piksel som tilhører en face
+    Det gjøres som regel ved å lagre fargeverdier, refleksjonsstyrke, lysstyrke og så videre, og så la en kode regne ut fargen basert på det.
+
+    (shadertypes.png)
+
+  Kamera
+    Dette er "øyet som ser" i 3D-scenen. Det lagres som mange koordinater og vektorer som f.eks. 
+      posisjon i rommet
+      retning man ser
+      høyde og bredde på utsnittet man ser
+      hvor stor field-of-view man ser (fish eye vs kikkert)
+
+    (illustrasjon med three-camera-helper)
+
+  Lys
+    Disse brukes i utregningene for å finne fargene til pikslene. Lagres som f.eks.
+      posisjon
+      lysretning
+      lysstyrke og -farge
+
+    (illustrasjon med three-light-helper)
+
+  Scene graph
+    Hierarki av objekter som tilsammen er innholdet i 3D-scenen. Lagres som en trestruktur av alle meshes, lights og andre ting som har en plassering i rommet. Gjør det veldig praktisk å flytte rundt eller rotere flere deler som hører sammen.
+
+    (illustrasjon av trestruktur av scene -> mann + light -> hode + arm + ben)
+
+  Rendering
+    Hele prosessen å lage 2D-bildet av 3D-scenen og vise det på skjermen. Må typisk gjøres 60 ganger i sekundet for å få helt jevn bevegelse. Mellom hver rendering kan man bevege på objektene og endre parametre for å animere, slik som stop motion.
+
+    Består av to viktige steg:
+      Projisering
+        Beregn 2D-posisjonen til alle vertices på skjermen
+      Rasterisering
+        Fargelegg pikslene til hver face på skjermen
+
+    (projection1.png) + (projection4.png) + (rasterization4.png)
+
+  Hardware
+    I motsetning til hverdagslig programmering i Java og JavaScript må vi i større grad forholde oss til hvordan hardwaren er bygd opp. Spesielt for å oppnå god ytelse.
+
+    - Tar forholdvis lang tid å sende data til GPU (60 fps)
+    - GPU har MASSIV parallellitet gjennom tusenvis av kjerner
+
+    (hardware.png)
+    (cpu-vs-gpu.png)
+
+-->
+
+
 3D-visualisering
 ================
 
