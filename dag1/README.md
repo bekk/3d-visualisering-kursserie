@@ -35,10 +35,11 @@ dag1/
 └── slides/                     # Slides som har blitt vist frem
 ```
 
-For å sparke igang utviklingsprosessen, gjør følgende i en terminal:
+For å sparke i gang utviklingsprosessen, gjør følgende i en terminal:
 
 ```sh
 cd sti/til/avansert-visualisering-kursserie/dag1
+npm install
 npm start
 ```
 
@@ -84,7 +85,7 @@ function render() {
 
 // Kall init-koden
 init();
-// Spark igang render-loopen
+// Spark i gang render-loopen
 render();
 ```
 
@@ -152,7 +153,7 @@ Nå som vi har både en scene og et kamera kan vi be rendereren om å tegne ting
 renderer.render(scene, camera);
 ```
 
-Det er fortsatt ikke stort å se, for vi har ingen objekter i scenen. Men hvis du får en svart skjerm er sansynligheten stor for at ting er OK.
+Det er fortsatt ikke stort å se, for vi har ingen objekter i scenen. Men hvis du får en svart skjerm er sannsynligheten stor for at ting er OK.
 
 ### Hello Cube!
 
@@ -347,14 +348,14 @@ analyse({ fftSize: antallKuber * 2 }, function(a) {
   analyser = a;
 
   // Så kan du kalle render-funksjonen din
-  // som kicker igang render-loopen som før
+  // som kicker i gang render-loopen som før
   render();
 });
 ```
 
 > Hvis du lurer på hvordan den modulen ser ut kan du scrolle litt lengre ned, der finner du en kommentert utgave av kildekoden.
 
-Analyser-objektet du får tilbake fra `analyse`-funksjonen har en kjekk metode som heter `analyser.frequencies()`. Den gir deg en liste av decibel-verdier for de ulike frekvensene mikrofonen plukker opp. Hvor mange frekvenser du får ut er avhengig av `fftSize`. Nærmere bestemt får du ut halvparten så mange frekvenser som størrelsen på `fftSize`, det kan derfor være en god ide å sette `fftSize` til `2 * numberOfCubes`.
+Analyser-objektet du får tilbake fra `analyse`-funksjonen har en kjekk metode som heter `analyser.frequencies()`. Den gir deg en liste av decibel-verdier for de ulike frekvensene mikrofonen plukker opp. Hvor mange frekvenser du får ut er avhengig av `fftSize`. Nærmere bestemt får du ut halvparten så mange frekvenser som størrelsen på `fftSize`, det kan derfor være en god ide å sette `fftSize` til `2 * numberOfCubes`. `fftSize` må være høyere enn 32 og også være en toerpotens. Dette medfører at du må sette antall kuber til en toerpotens som er høyrere enn 16 (16,32,64,128 etc.)
 
 I tillegg kan du også lese ut max og min verdien til decibelene mikrofonen plukker opp. De finner du slik:
 
@@ -562,10 +563,11 @@ new THREE.ShaderMaterial({
 Nå må vi koble sammen lyd og bilde. Dette må gjøres i JavaScript-koden, siden det er der lyddataene finnes. Det er mange måter å beregne lydstyrke på, men en som er ganske enkel er å summere styrken på alle frekvensene fra lydanalysen:
 
 ```javascript
-const soundLevel = frequencies.reduce((a, b) => a + b, 0);
+let soundLevel = 0;
+for(let i = 0; i < frequencies.length; i++){
+  soundLevel = soundLevel += frequencies[i];
+}
 ```
-
-// TODO: Kanskje bruke en koselig løkke i stedet?
 
 For å sende denne til shaderen trenger vi bare skrive over `value`-feltet til uniformen:
 
