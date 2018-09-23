@@ -355,7 +355,7 @@ analyse({ fftSize: antallKuber * 2 }, function(a) {
 
 > Hvis du lurer på hvordan den modulen ser ut kan du scrolle litt lengre ned, der finner du en kommentert utgave av kildekoden.
 
-Analyser-objektet du får tilbake fra `analyse`-funksjonen har en kjekk metode som heter `analyser.frequencies()`. Den gir deg en liste av decibel-verdier for de ulike frekvensene mikrofonen plukker opp. Hvor mange frekvenser du får ut er avhengig av `fftSize`. Nærmere bestemt får du ut halvparten så mange frekvenser som størrelsen på `fftSize`, det kan derfor være en god ide å sette `fftSize` til `2 * numberOfCubes`.
+Analyser-objektet du får tilbake fra `analyse`-funksjonen har en kjekk metode som heter `analyser.frequencies()`. Den gir deg en liste av decibel-verdier for de ulike frekvensene mikrofonen plukker opp. Hvor mange frekvenser du får ut er avhengig av `fftSize`. Nærmere bestemt får du ut halvparten så mange frekvenser som størrelsen på `fftSize`, det kan derfor være en god ide å sette `fftSize` til `2 * numberOfCubes`. `fftSize` må være høyere enn 32 og også være en toerpotens. Dette medfører at du må sette antall kuber til en toerpotens som er høyrere enn 16 (16,32,64,128 etc.)
 
 I tillegg kan du også lese ut max og min verdien til decibelene mikrofonen plukker opp. De finner du slik:
 
