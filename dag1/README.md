@@ -563,10 +563,11 @@ new THREE.ShaderMaterial({
 Nå må vi koble sammen lyd og bilde. Dette må gjøres i JavaScript-koden, siden det er der lyddataene finnes. Det er mange måter å beregne lydstyrke på, men en som er ganske enkel er å summere styrken på alle frekvensene fra lydanalysen:
 
 ```javascript
-const soundLevel = frequencies.reduce((a, b) => a + b, 0);
+let soundLevel = 0;
+for(let i = 0; i < frequencies.length; i++){
+  soundLevel = soundLevel += frequencies[i];
+}
 ```
-
-// TODO: Kanskje bruke en koselig løkke i stedet?
 
 For å sende denne til shaderen trenger vi bare skrive over `value`-feltet til uniformen:
 
