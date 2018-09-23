@@ -35,7 +35,7 @@ dag1/
 └── slides/                     # Slides som har blitt vist frem
 ```
 
-For å sparke igang utviklingsprosessen, gjør følgende i en terminal:
+For å sparke i gang utviklingsprosessen, gjør følgende i en terminal:
 
 ```sh
 cd sti/til/avansert-visualisering-kursserie/dag1
@@ -85,7 +85,7 @@ function render() {
 
 // Kall init-koden
 init();
-// Spark igang render-loopen
+// Spark i gang render-loopen
 render();
 ```
 
@@ -153,7 +153,7 @@ Nå som vi har både en scene og et kamera kan vi be rendereren om å tegne ting
 renderer.render(scene, camera);
 ```
 
-Det er fortsatt ikke stort å se, for vi har ingen objekter i scenen. Men hvis du får en svart skjerm er sansynligheten stor for at ting er OK.
+Det er fortsatt ikke stort å se, for vi har ingen objekter i scenen. Men hvis du får en svart skjerm er sannsynligheten stor for at ting er OK.
 
 ### Hello Cube!
 
@@ -348,7 +348,7 @@ analyse({ fftSize: antallKuber * 2 }, function(a) {
   analyser = a;
 
   // Så kan du kalle render-funksjonen din
-  // som kicker igang render-loopen som før
+  // som kicker i gang render-loopen som før
   render();
 });
 ```
