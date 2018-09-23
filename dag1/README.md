@@ -39,6 +39,7 @@ For å sparke igang utviklingsprosessen, gjør følgende i en terminal:
 
 ```sh
 cd sti/til/avansert-visualisering-kursserie/dag1
+npm install
 npm start
 ```
 
