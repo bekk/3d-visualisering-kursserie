@@ -19,6 +19,8 @@
       .remark-code * { font-size: 12px; }
       .remark-slide-content img { width: 50%; margin: 1rem 0;}
 
+      .remark-slide-content { text-align: center }
+
       .topLeft { left: 1rem; top: 8rem }
       .topRight { right: 1rem; top: 8rem }
       .bottomLeft { left: 1rem; bottom: 1rem }
@@ -28,10 +30,19 @@
       .center { right: 38%; top: 16rem }
       .right { right: 1rem; top: 16rem }
 
+      .lowerleft { left: 1rem; top: 20rem }
+      .lowercenter { right: 38%; top: 20rem }
+      .lowerright { right: 1rem; top: 20rem }
+
       .topLeft img,
       .topRight img,
       .bottomLeft img, 
       .bottomRight img { width: 97.5% !important; margin: 0.1rem !important; }
+
+      .left7525 { left: 1rem; top: 21rem; position: fixed; width: 65% }
+      .right7525 { right: 1rem; top: 21rem; position: fixed; width: 35% }
+      .left7525 img { width: 85% !important; margin: 0.1rem !important; }
+      .right7525 img { width: 85% !important; margin: 0.1rem !important; }
 
       .topLeft,
       .topRight,
@@ -40,13 +51,23 @@
 
       .left,
       .center,
-      .right { position: fixed; width: 28%;}
+      .right,
+      .lowerleft,
+      .lowercenter,
+      .lowerright { position: fixed; width: 28%;}
 
       .left img,
       .center img,
-      .right img { width: 97.5% !important; margin: 0.1rem !important; }
+      .right img,
+      .lowerleft img,
+      .lowercenter img,
+      .lowerright img { width: 97.5% !important; margin: 0.1rem !important; }
 
       .full * { width: 94% !important;}
+
+      .verticalCenter {
+        padding-top: 27%;
+      }
     </style>
   </head>
   <body>
@@ -160,13 +181,17 @@ Viktige konsepter i 3D-visualisering
 Kurs i 3D-visualisering
 =======================
 
+●●●
+
 ### Holger Ludvigsen
 
 ### Stian Møllersen
 
 ### Petter Astrup
 
-## Bekk Consulting
+●●●
+
+## Bekk Consulting AS
 
 ---
 
@@ -180,16 +205,21 @@ Lage noe fett i 3D
 En plan
 =======
 
-Dag 1
-- Intro til 3D-visualisering
-- Intro til rammeverket three.js
-- Lage kule ting i 3D
+#### -- Dag 1 --
 
-Dag 2
-- Lage enda kulere ting
+Intro til 3D-visualisering
 
-Dag 3
-- Være kreativ og lage særdeles kule ting
+Intro til rammeverket three.js
+
+Lage kule ting i 3D
+
+#### -- Dag 2 --
+
+Lage enda kulere ting
+
+#### -- Dag 3 --
+
+Være kreativ og lage særdeles kule ting
 
 ---
 
@@ -197,43 +227,51 @@ Hva er 3D-visualisering?
 ========================
 
 _Lage et flatt bilde på skjermen,_
+
 _av noe som ikke er flatt._
 
+### Eksempler
+
 [World Flights](http://www.senchalabs.org/philogl/PhiloGL/examples/worldFlights/)
+
 [Sprett](http://playsprett.com)
+
 [Bekk.no](http://bekk.no)
 
 ---
 
-Hva er 3D-visualisering?
+3D-visualisering - Mer konkret
 ========================
 
-## Mer konkret
-
 Starter med 3D-data: koordinater, vektorer, osv
+
 Ender opp med fargede piksler på skjermen
 
-.left[![altxt](./img/face-wireframe.png)]
-.center[![altxt](./img/shading1.png)]
-.right[![altxt](./img/pixels-on-screen-close.png)]
+.lowerleft[![altxt](./img/face-wireframe.png)]
+.lowercenter[![altxt](./img/shading1.png)]
+.lowerright[![altxt](./img/pixels-on-screen-close.jpg)]
 
 ---
 
-La oss forstå dette gjennom 
+.verticalCenter[
+### La oss forstå dette gjennom 
 
-## noen viktige konsepter
+# Noen viktige konsepter
+]
+
 
 ---
 
 Vertex
 ======
 
+En vertex er ytterpunktene på 3D-modellene
+
 Flertall: _Vertices_
 
-Ytterpunktene på 3D-modellene
 Koordinater i 3D-rommet
 
-```
+```c
 0: [0.12,  2.15,  1.01]
 1: [0.13,  0.25,  3.51]
 2: [1.42,  8.65,  0.06]
@@ -249,10 +287,11 @@ Koordinater i 3D-rommet
 Face
 ====
 
-Samling av 3 vertices
+En face er en samling av 3 vertices
+
 Utgjør en flat trekant
 
-```
+```c
 0: [0, 1, 2]
 1: [0, 3, 4]
 2: [3, 0, 1]
@@ -270,8 +309,10 @@ Utgjør en flat trekant
 Geometry
 ========
 
-Kjent under mange navn! Surface, mesh, model.
-En samling av vertex-liste og faces-liste
+Geometri er en samling av vertex-liste og faces-liste
+
+Er kjent under mange navn! _Surface, mesh, model_
+
 Representerer tilsammen en 3D-form
 
 ![altxt](./img/todo.png) <!-- TODO: Illustrasjon -->
@@ -281,9 +322,9 @@ Representerer tilsammen en 3D-form
 Material og shading
 ===================
 
-Definerer fargen til hver piksel i et face
+Materialet og shadingen definerer fargen til hver piksel i et face
 
-```
+```c
 color: [1.0, 0.5, 0.1]
 reflection: 0.75
 glossiness: 0.1
@@ -298,10 +339,11 @@ texture: light-skin.png
 Kamera
 ======
 
-"Øyet som ser" i 3D-scenen
+Kamera er "øyet som ser" i 3D-scenen
+
 Representerer på en måte skjermen
 
-```
+```c
 position: [5.0, 1.5, -5.0]
 direction: [-1.0, -0.5, 1.0]
 width: 1920
@@ -316,18 +358,20 @@ field-of-view: 45
 Lys
 ====
 
-Brukes sammen med materialet til å finne fargen til pikslene.
+Lys brukes sammen med materialet til å finne fargen til pikslene.
 
-```
+_Sterk lyskilde -> Lysere farge_
+
+_Lys peker rett på facen -> Lysere farge_
+
+_Rødt lys -> Mer rødlig farge_
+
+```c
 position: [10.0, 2.0, -4.0]
 direction: [1.0, -0.3, 1.0]
 intensity: 2.5
 color: [1.0, 1.0, 1.0]
 ```
-
-Sterk lyskilde -> Lysere farge
-Lys peker rett på facen -> Lysere farge
-Rødt lys -> Mer rødlig farge
 
 ![altxt](./img/todo.png) <!-- TODO: Illustrasjon -->
 
@@ -336,7 +380,8 @@ Rødt lys -> Mer rødlig farge
 Scene graph
 ===========
 
-Hierarki av innholdet i 3D-scenen
+En scene graph er et hierarki av innholdet i 3D-scenen
+
 Trestruktur av meshes, lys og andre ting som har plassering i rommet
 
 ![altxt](./img/todo.png) <!-- TODO: Illustrasjon -->
@@ -346,8 +391,10 @@ Trestruktur av meshes, lys og andre ting som har plassering i rommet
 Rendering
 =========
 
-Hele prosessen å lage 2D-bildet av 3D-scenen og vise det på skjermen
+Rendering er hele prosessen å lage 2D-bildet av 3D-scenen og vise det på skjermen
+
 Gjøres f.eks. 60 ganger i sekundet
+
 Mellom hver render kan man endre litt på scenen for å animere (tenk stop motion)
 
 ---
@@ -357,185 +404,29 @@ Mer om rendering
 
 Rendering består av to steg:
 
-## 1: Projisering
-  
-Beregn 2D-posisjonen på skjermen for alle vertices
+**1: Projisering**: Beregn 2D-posisjonen på skjermen for alle vertices
 
-## 2: Rasterisering
+**2: Rasterisering:** Fargelegg pikslene til hver face 
 
-Fargelegg pikslene til hver face 
-
-.left[![altxt](./img/projection1.png)]
-.center[![altxt](./img/projection4.png)]
-.right[![altxt](./img/rasterization4.png)]
+.lowerleft[![altxt](./img/projection1.png)]
+.lowercenter[![altxt](./img/projection4.png)]
+.lowerright[![altxt](./img/rasterization4.png)]
 
 ---
 
 Hardware
 ========
 
-I motseting til hverdagslig programmering må vi forholde oss til hardwarens oppbygning.
+I motsetning til hverdagslig programmering må vi forholde oss til hardwarens oppbygning.
 
-Spesielt for _ytelse_
+#### Spesielt for _ytelse_
 
-Forholdsvis tregt å sende data til GPU (60 ganger i sekundet)
+Tregt å sende data til GPU (60 fps)
+
 GPU har massiv parallellitet
 
-![altxt](./img/hardware.png)
-![altxt](./img/cpu-vs-gpu.png)
-
-
-
-
-
-
-
-
-
-
-
-
-<!--
-
-3D-visualisering OLD
-================
-
-// Vi brukte ca 45 minutter på våre første slides
-
-// TODO: Gjør mye mer pedagogisk og ikke så lavnivås
-// TODO: Ta med shader pipelinemodellen fra oppgaveteksten?
-// TODO: Forbered en muntlig tekst
-
-// TODO: Hold introen ukonkret! Folk ble litt overvelmet over å ikke huske alle detaljer
-
-// TODO: Projiseringsslidene må være mer steg for steg
-// TODO: Forklar ordentlig vertices, faces og geometri
-// TODO: Forklar koordinatsystemet, og hvilken koordinat kamera må væfre i forhold til et objekt
-// TODO: Trenger ikke data-sliden med den lange lista, siden Stian har en del om de samme tingene
-
-// TODO: Legg til eksempler på hva man gjøre i webgl
-
-.topLeft[![altxt](./img/transformers.png)]
-.topRight[![altxt](./img/rainbow-fart.png)]
-.bottomLeft[![altxt](./img/southpark.png)]
-.bottomRight[![altxt](./img/doom.jpg)]
-
----
-
-# Fra modell til bilde
-
-.topLeft[![altxt](./img/face-wireframe.png)]
-.topRight[![altxt](./img/avatar.png)]
-
-.bottomLeft[![altxt](./img/coordinates.png)]
-.bottomRight[![altxt](./img/pixels-on-screen-close.jpg)]
-
----
-
-1. Data
-  - Modeller
-  - Kameraposisjon
-  - Lysposisjon
-  - Farger
-  - ++
-2. Magic
-  - Projisering
-  - Rasterisering
-3. Bilder på skjermen
-
----
-
-# Data
-
-- Vertices
-  - (bilde av vertice-koordinater som tall)
-  - (bilde av vertices som punkter)
-- Faces
-  - (bilde av vertex-index-vektorer som tall)
-  - (bilde av faces som wireframe-polygoner)
-- Vertices + Faces = Geometry
-  - (bilde)
-- Farger og teksturer
-  - (bilde med rgba-vektorer som tall både 0.0-1.0 og 0-255)
-  - (bilde av teksturmap med rgba-verdier inni pikslene)
-- Posisjoner og rotasjoner
-  - (bilde av eksempler på objekts posisjoner med posisjonsvektorer)
-  - (bilde av rotert objekt med rotasjonsvektorene)
-- Kamera
-  - (bilde med posisjon, retnings-vektor og formfaktor på bilderektangel)
-- Lys
-  - (bilde med lystype punktlys, posisjon, lysstyrke)
-  - (bilde med lystype directional, retning, lysstyrke)
-
----
-
-# Projisering
-
-![altxt](./img/projection1.png)
-
----
-
-# Projisering
-
-.left[![altxt](./img/projection2.png)]
-.center[![altxt](./img/projection3.png)]
-.right[![altxt](./img/projection4.png)]
-
----
-
-<!-- 
-
-# Rasterisering
-
-(Pipeline fra projection4 til rasterization3 til fullfarget trekant)
-
-(Kanskje droppe denne sliden?)
-
---- -->
-
-# Rasterisering
-
-.topLeft[![altxt](./img/rasterization1.png)]
-.topRight[![altxt](./img/rasterization2.png)]
-.bottomLeft[![altxt](./img/rasterization3.png)]
-.bottomRight[![altxt](./img/rasterization4.png)]
-
----
-
-# Rasterisering
-
-
-.full[![altxt](./img/shadertypes.png)]
-
-<!-- TODO: Bytt ut med et bilde jeg lager selv -->
-<!-- (bilde med samme modell i wireframe, solid color, flat shading, diffuse shading, fancy shading m/ fresnel+reflection map++) -->
-
----
-
-# Shading
-
-![altxt](./img/shading1.png)
-
----
-
-# Shading
-
-.left[![altxt](./img/shading2.png)]
-.center[![altxt](./img/shading3.png)]
-.right[![altxt](./img/shading4.png)]
-
----
-
-# Hardware
-
-.full[![altxt](./img/hardware.png)]
-
-Hardware påvirker hvordan vi skriver koden
-
-- Tar forholdvis lang tid å sende data til GPU (60 fps)
-- GPU har MASSIV parallellitet gjennom tusenvis av kjerner
-
-  -->
+.left7525[![altxt](./img/hardware.png)]
+.right7525[![altxt](./img/cpu-vs-gpu.png)]
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js"> </script>
