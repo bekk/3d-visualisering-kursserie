@@ -564,7 +564,7 @@ Nå må vi koble sammen lyd og bilde. Dette må gjøres i JavaScript-koden, side
 
 ```javascript
 let soundLevel = 0;
-for(let i = 0; i < frequencies.length; i++){
+for (let i = 0; i < frequencies.length; i++) {
   soundLevel = soundLevel += frequencies[i];
 }
 ```

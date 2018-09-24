@@ -74,7 +74,7 @@ function makeCubesDance() {
   );
 
   let soundLevel = 0;
-  for(let i = 0; i < frequencies.length; i++){
+  for (let i = 0; i < frequencies.length; i++) {
     soundLevel = soundLevel += frequencies[i];
   }
   console.log(soundLevel);  
