@@ -371,7 +371,7 @@ Nå som du har noen tall som svarer til hvor mange decibel av en gitt frekvens m
 
 Vi bytter ut koden som snurrer på kubene med noe som heller skalerer kubene etter hvor mye lyd som blir plukka opp.
 
-```
+```js
 let frequencies = analyser.frequencies();
 function scaleCube(cube, cubeNumber) {
   let frequency = frequencies[cubeNumber];
