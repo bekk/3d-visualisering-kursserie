@@ -1,4 +1,4 @@
-# Del 1: Intro til WebGL og `three.js`
+# Dag 1: Intro til WebGL og `three.js`
 
 ## Introduksjonsforelesning
 
