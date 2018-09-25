@@ -51,22 +51,7 @@ Du skal da kunne se teksten `Velkommen til kurs!` på skjermen.
 
 All kode kan skrives i `index.js`-fila du finner i denne mappa. Prosessen du startet i sted vil sørge for at nettleseren blir oppdatert med nyeste kode når du lagrer den fila.
 
-Hvis du på et eller annet tidspunkt føler for å putte kode i flere filer har du et par valg:
-
-1.  Putte JavaScript-kode i en annen fil og bruke koden fra `index.js`.
-
-    For å gjøre dette kan du benytte deg av node.js' modul system, som du kan lese mer om her: https://nodejs.org/dist/latest-v10.x/docs/api/modules.html#modules_modules
-
-2.  Putte noe annet i en fil og bruke innholdet i fila fra `index.js`.
-
-    For å gjøre dette kan du lese innholdet til fila med `fs`-modulen til node.js:
-
-    ```js
-    const fs = require("fs");
-    const fileContents = fs.readFileSync(`${__dirname}/path/to/file`, "utf8");
-    ```
-
-For å holde oppsettet så enkelt som mulig, har vi droppet å dra inn rammeverk som React eller Vue, så her er det bare å kjøre på med helt vanlig JavaScript.
+For å holde oppsettet så enkelt som mulig, har vi droppet å dra inn rammeverk som React eller Vue, så her er det bare å kjøre på med helt vanlig moderne JavaScript.
 
 I `index.js`-fila er det laget en veldig enkel boilerplate:
 
