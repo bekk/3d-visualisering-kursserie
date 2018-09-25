@@ -78,6 +78,8 @@ init();
 render();
 ```
 
+Hvordan du strukturerer koden videre er opp til deg, dette er kun ment som forslag. I oppgaveteksten under vil det stå korte kodesnutter for å illustrere hvordan APIet til three.js funker, hvor du velger å kalle de funksjonene og legge variabel-deklarasjoner er opp til deg selv. Det kan være greit å huske på hvordan scoping fungerer i JavaScript hvis du ønsker å benytte en variabel i flere funksjoner.
+
 ### Lage `three.js` renderer, scene og kamera
 
 De første tingene du må lage for å komme i gang med `three.js` er:
@@ -146,11 +148,11 @@ Det er fortsatt ikke stort å se, for vi har ingen objekter i scenen. Men hvis d
 
 ### Hello Cube!
 
-Vår første oppgave er å få en kube til å vises på skjermen. For å få til det trenger vi å lage en kube. En kube er et objekt, og de fleste objekter i `three.js` består av en geometri og et materiale. Geometrien avgjør formen på objektet og materiale avgjør utseende.
+Vår første oppgave er å få en cube til å vises på skjermen. For å få til det trenger vi å lage en cube. En cube er et objekt, og de fleste objekter i `three.js` består av en geometri og et materiale. Geometrien avgjør formen på objektet og materiale avgjør utseende.
 
-Den enkleste objekttypen er noe som kalles [`Mesh`](https://threejs.org/docs/index.html#api/objects/Mesh) som består av en masse trekanter, som vi vet WebGL er veldig glad i. Det er denne objekttypen vi vil bruke til å lage kuben vår.
+Den enkleste objekttypen er noe som kalles [`Mesh`](https://threejs.org/docs/index.html#api/objects/Mesh) som består av en masse trekanter, som vi vet WebGL er veldig glad i. Det er denne objekttypen vi vil bruke til å lage cuben vår.
 
-Som nevnt trenger vi også en geometri, `three.js` har en hendig metode klar til bruk som heter [`BoxGeometry`](https://threejs.org/docs/#api/geometries/BoxGeometry). Den metoden tar inn tre verdier (høyde, bredde og dybde) og gir oss tilbake en geometri som representerer en boks (eller en kube) med de samme verdiene. Her er det bare å leke seg med verdiene og se på effekten.
+Som nevnt trenger vi også en geometri, `three.js` har en hendig metode klar til bruk som heter [`BoxGeometry`](https://threejs.org/docs/#api/geometries/BoxGeometry). Den metoden tar inn tre verdier (høyde, bredde og dybde) og gir oss tilbake en geometri som representerer en boks (eller en cube) med de samme verdiene. Her er det bare å leke seg med verdiene og se på effekten.
 
 ```js
 let geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -238,7 +240,7 @@ Du skal gjøre om din snurrende kube til et ensemble av dansende kuber!
 Hvis du ikke kom helt i mål med forrige oppgave kan du starte ferskt ved å kopiere fasiten som du finner i `fasit/oppgave1/index.js`. Du kan også ta en titt på fasiten ved å kjøre:
 
 ```sh
-npm run oppgave1
+npm run fasit1
 ```
 
 ### OrbitControls
@@ -261,12 +263,6 @@ let controls;
 controls = new OrbitControls(camera);
 ```
 
-Hvis du endrer på posisjonen til kameraet etter at du har koblet det til `OrbitControls` må du også oppdatere `OrbitControls`. Det gjør du slik:
-
-```js
-controls.update();
-```
-
 Nå kan du bevege deg fritt rundt i scena du har laga.
 
 ### Multiplisere kubene
@@ -276,12 +272,12 @@ For å lage et ensemble av dansende kuber trenger vi fler kuber enn vi har til n
 Det er ikke noe hokus-pokus i `three.js` for å gjøre dette, bare god gammeldags JavaScript. Dette er koden som ble brukt i oppgave 1 for å lage en kube:
 
 ```js
-let cube = new THREE.Mesh(
-  new THREE.CubeGeometry(height, width, depth),
-  new THREE.MeshNormalMaterial()
-);
-cube.position.set(x, y, z);
-scene.add(cube);
+let cube;
+function makeCube(height, width, depth) {
+  let geometry = new THREE.BoxGeometry(height, width, depth);
+  let material = new THREE.MeshNormalMaterial();
+  cube = new THREE.Mesh(geometry, material);
+}
 ```
 
 Det du må gjøre er å repetere dette så mange ganger du har lyst til. Om du foretrekker `for`-løkker eller `forEach`/`map` er opp til deg selv. Men det vil være en fordel å kunne refere til hver enkelt kube i stegene som kommer etterpå, så lagre alle kubene du lager i en liste 👍
@@ -300,6 +296,12 @@ Vårt forslag til deg er å lage en funksjon som lar deg beregne posisjonen til 
 function positionCube(cubeNumber, startPosition) {
   // hvor X er et tall på avstanden mellom hver kube
   return startPosition + cubeNumber * X;
+}
+
+const start = 0;
+for(let i = 0; i < cubes.length; i++) {
+  let position = positionCube(i, start);
+  cube.position.x = position;
 }
 ```
 
@@ -329,8 +331,8 @@ init(); // Kaller init-funksjonen din som vanlig for å sette opp ting
 let analyser; // Ta vare på en referanse til analyseren din
 
 // Kall analyse-funksjonen, den tar inn options og et callback
-analyse({ fftSize: antallKuber * 2 }, function(a) {
-  // Når analyse funksjonen har kobla seg til mikrofonen
+analyse(function(a) {
+  // Når analyse-funksjonen har kobla seg til mikrofonen
   // vil denne koden bli kjørt
 
   // Da får du en referanse til analysern, som du bør ta vare på
@@ -344,7 +346,7 @@ analyse({ fftSize: antallKuber * 2 }, function(a) {
 
 > Hvis du lurer på hvordan den modulen ser ut kan du scrolle litt lengre ned, der finner du en kommentert utgave av kildekoden.
 
-Analyser-objektet du får tilbake fra `analyse`-funksjonen har en kjekk metode som heter `analyser.frequencies()`. Den gir deg en liste av decibel-verdier for de ulike frekvensene mikrofonen plukker opp. Hvor mange frekvenser du får ut er avhengig av `fftSize`. Nærmere bestemt får du ut halvparten så mange frekvenser som størrelsen på `fftSize`, det kan derfor være en god ide å sette `fftSize` til `2 * numberOfCubes`. `fftSize` må være høyere enn 32 og også være en toerpotens. Dette medfører at du må sette antall kuber til en toerpotens som er høyrere enn 16 (16,32,64,128 etc.)
+Analyser-objektet du får tilbake fra `analyse`-funksjonen har en kjekk metode som heter `analyser.frequencies()`. Den gir deg en liste av decibel-verdier for de ulike frekvensene mikrofonen plukker opp. Frekvensene blir regnet ut med en Fast Fourier Transform (FFT), som i dette tilfellet vil gi deg tilbake en liste med `32` decibel-verdier som representerer alle frekvensene.
 
 I tillegg kan du også lese ut max og min verdien til decibelene mikrofonen plukker opp. De finner du slik:
 
@@ -352,6 +354,8 @@ I tillegg kan du også lese ut max og min verdien til decibelene mikrofonen pluk
 const maxDecibels = analyser.analyser.maxDecibels;
 const minDecibels = analyser.analyser.minDecibels;
 ```
+
+> Her er det en del rariteter mellom datamaskiner. Hvis du får veldig rar oppførsel med verdiene over kan det lønne seg å bytte dem ut med 0 og 255.
 
 De verdiene er kjekke å ha for å kunne normalisere decibel-verdien til en frekvens. Normalisering er navnet på å regne om en gitt nummer range til en `[0,1]` range.
 
@@ -381,6 +385,8 @@ Dette vil skalere kuben din i y-retning med en `scaleFactor` som er mellom `0` o
 
 Hvis du har gjort ting riktig vil du nå se at kubene dine danser i takt med det mikrofonen din plukker opp. Gratulerer, du har nå en fiks ferdig musikk visualisering 👍
 
+> Hvis du ikke får mikrofonen til å plukke opp noe, sjekk at du er på `localhost:9966` og ikke IPen til datamaskinen din. `localhost` er fritatt for en del av sikkerhetsmekanismene til nettleseren.
+
 Noen forslag til ting du kan endre på og leke med:
 
 - Skalere kuben i ulike retninger med ulike verdier
@@ -394,7 +400,8 @@ Noen forslag til ting du kan endre på og leke med:
 const createAnalyser = require("web-audio-analyser");
 
 // Eksporter en funksjon fra modulen
-module.exports = function analyse(options = { fftSize: 64 }, callback) {
+// Optional options for å enable flere enn 32 frekvenser
+module.exports = function analyse(callback, options = { fftSize: 64 }) {
   // Vi ber nettleseren om lov til å bruke en mediaDevice
   // Dette er en del av WebRTC APIet
   navigator.mediaDevices
