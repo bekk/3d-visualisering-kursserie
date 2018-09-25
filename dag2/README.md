@@ -678,9 +678,9 @@ Og flytter den opp y-aksen:
 
 Og flytter den til høyre på x-aksen:
 
-> f(x) = -abs(x - 1)
+> f(x) = -abs(x - 1) + 1
 
-![f(x) = -abs(x - 1)](./bilder/graf6.PNG)
+![f(x) = -abs(x - 1) + 1](./bilder/graf6.PNG)
 
 Der ja! Nesten. Men den går fra x=0 til x=2. Så vi ganger x for å skalere den langs x-aksen:
 
