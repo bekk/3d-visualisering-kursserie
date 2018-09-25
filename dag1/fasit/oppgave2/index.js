@@ -69,7 +69,7 @@ function render() {
 }
 
 init();
-analyse({ fftSize: NUM_CUBES * 2 }, function(a) {
+analyse(function(a) {
   analyser = a;
   render();
 });

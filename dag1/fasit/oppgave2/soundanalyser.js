@@ -1,6 +1,6 @@
 const createAnalyser = require("web-audio-analyser");
 
-module.exports = function analyse(options = { fftSize: 64 }, callback) {
+module.exports = function analyse(callback, options = { fftSize: 64 }) {
   navigator.mediaDevices
     .getUserMedia({ video: false, audio: true })
     .then(function(stream) {

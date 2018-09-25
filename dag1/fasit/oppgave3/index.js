@@ -77,7 +77,7 @@ function makeCubesDance() {
   for (let i = 0; i < frequencies.length; i++) {
     soundLevel = soundLevel += frequencies[i];
   }
-  console.log(soundLevel);  
+
   UNIFORMS.soundLevel.value = soundLevel;
 }
 
@@ -88,7 +88,7 @@ function render() {
 }
 
 init();
-analyse({ fftSize: NUM_CUBES * 2 }, function(a) {
+analyse(function(a) {
   analyser = a;
   render();
 });
