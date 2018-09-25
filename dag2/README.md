@@ -651,36 +651,36 @@ if (isGreen) {
 Men de løftes ikke *ned* igjen pent. De bare hopper ned når det er ferdig. Det er fordi `animationTime` går som en koselig normalisert lineær graf:
 
 > f(x) = x
-![f(x) = x](./bilder/graf1.png)
+![f(x) = x](./bilder/graf1.PNG)
 
 Men vi vil ha en graf som ser mer slik ut:
 
-![f(x) = riktig](./bilder/graf2.png)
+![f(x) = riktig](./bilder/graf2.PNG)
 
 La oss dedusere oss frem til den grafen. Et bra triks er å bruke absolutt verdi:
 
 > f(x) = abs(x)
-![f(x) = abs(x)](./bilder/graf3.png)
+![f(x) = abs(x)](./bilder/graf3.PNG)
 
 Dette ligner mer. Vi snur den på hodet:
 
 > f(x) = -abs(x)
-![f(x) = -abs(x)](./bilder/graf4.png)
+![f(x) = -abs(x)](./bilder/graf4.PNG)
 
 Og flytter den opp y-aksen:
 
 > f(x) = -abs(x) + 1
-![f(x) = -abs(x) + 1](./bilder/graf5.png)
+![f(x) = -abs(x) + 1](./bilder/graf5.PNG)
 
 Og flytter den til høyre på x-aksen:
 
 > f(x) = -abs(x - 1)
-![f(x) = -abs(x - 1)](./bilder/graf6.png)
+![f(x) = -abs(x - 1)](./bilder/graf6.PNG)
 
 Der ja! Nesten. Men den går fra x=0 til x=2. Så vi ganger x for å skalere den langs x-aksen:
 
 > f(x) = -abs(x * 2 - 1) + 1
-![f(x) = -abs(x * 2 - 1) + 1](./bilder/graf7.png)
+![f(x) = -abs(x * 2 - 1) + 1](./bilder/graf7.PNG)
 
 Perfekt! I shaderkode blir det:
 
