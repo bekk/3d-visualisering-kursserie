@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8"/>
+
+    <script src="https://threejs.org/build/three.min.js"></script>
+    <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+    
+    <style>
+      * {
+        margin: 0px;
+        padding: 0px;
+      }
+
+      body {
+        overflow: hidden;
+        background-color: #d1d1d1;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container"> </div>
+    
+    <script>
+
+let timeStart;
+let camera;
+let renderer;
+let scene;
+let orbitControls;
+let time;
+
+const initAnimation = function() {
+
+  timeStart = new Date().getTime();
+
+  renderer = new THREE.WebGLRenderer({antialias: true});
+  renderer.gammaInput = true;
+  renderer.gammaOutput = true;
+  renderer.setClearColor(0xffffff);
+  renderer.setSize(window.innerWidth, window.innerHeight, true);
+  //renderer.setPixelRatio(window.devicePixelRatio || 1);
+  renderer.setPixelRatio(1);
+
+  const ratio = renderer.getContext().drawingBufferWidth / renderer.getContext().drawingBufferHeight;
+  
+  camera = new THREE.PerspectiveCamera(50, ratio, 0.1, 10000);
+  camera.position.set(3.0, 3.5, 7.1);
+
+  scene = new THREE.Scene();
+  
+  orbitControls = new THREE.OrbitControls(camera, renderer.domElement);
+  orbitControls.target.set(0, 1, 0)
+  orbitControls.autoRotate = true;
+  orbitControls.update();
+
+  document.body.appendChild(renderer.domElement);
+
+  makeScene();
+
+  addResizeListener(camera, renderer);
+}
+
+function makeScene() {
+  const octahedron = new THREE.Mesh(
+    new THREE.OctahedronGeometry(1, 0), 
+    //new THREE.MeshLambertMaterial({color: 0xd1d1d1, emissive: 0x101010})
+    new THREE.MeshBasicMaterial({color: 0xb1b1b1})
+  );
+  octahedron.position.y = 1;
+  scene.add(octahedron);
+  octahedron.visible = true;
+
+  const octahedronWireframe = new THREE.Mesh(octahedron.geometry, new THREE.MeshBasicMaterial({color: 0x0, wireframe: true}))
+  octahedronWireframe.position.copy(octahedron.position);
+  scene.add(octahedronWireframe);
+  octahedronWireframe.visible = true;
+
+  const pointsMaterial = new THREE.PointsMaterial({
+    size: 0.1,
+    vertexColors: THREE.VertexColors,
+    color: 0x0
+  });
+  const pointsGeometry = new THREE.BufferGeometry().fromGeometry(octahedron.geometry);
+  const octahedronVertices = new THREE.Points(pointsGeometry, pointsMaterial);
+  octahedronVertices.position.copy(octahedron.position);
+  scene.add(octahedronVertices);
+  
+  const gridHelper = new THREE.GridHelper(3, 4);
+  scene.add(gridHelper);
+
+  const dummyCamera = new THREE.PerspectiveCamera(35, 1.920/1.080, 0.4, 1.2);
+  const cameraHelper = new THREE.CameraHelper(dummyCamera);
+  dummyCamera.position.set(2, 2, -2);
+  dummyCamera.lookAt(new THREE.Vector3(0, 1, 0))
+  scene.add(dummyCamera);
+  scene.add(cameraHelper);
+  cameraHelper.visible = true;
+
+  const light = new THREE.DirectionalLight(0xFFFFFF);
+  light.position.set(-2, 2, 2);
+  light.target.position.set(-1, 2, 1);
+  light.target.updateMatrixWorld()
+  const lightHelper = new THREE.DirectionalLightHelper(light, 0.4, 0xff0000);
+  scene.add(light);
+  scene.add(light.target);
+  scene.add(lightHelper);
+  lightHelper.visible = false;
+
+  const light2 = new THREE.PointLight(0xFFFFFF, 0.5);
+  light2.position.set(1, 2, 2);
+  scene.add(light2);
+}
+
+const animate = function() {
+  requestAnimationFrame(animate);
+
+  time = (new Date().getTime() - timeStart) / 1000;
+
+  orbitControls.update();
+  orbitControls.autoRotateSpeed = Math.sin(time) * 2;
+
+  renderer.render(scene, camera);
+}
+
+const addResizeListener = function(camera, renderer) {
+  window.addEventListener('resize', function() {
+    var height = window.innerHeight;
+    renderer.setSize(window.innerWidth, height);
+    camera.aspect = window.innerWidth / height;
+    camera.updateProjectionMatrix();
+  });
+}
+
+initAnimation();
+animate();
+
+    </script>
+  </body>
+</html>
