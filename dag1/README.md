@@ -453,8 +453,8 @@ I forrige oppgave brukte vi et av three.js sine innebygde materialer `THREE.Mesh
 
 ```javascript
 const material = new THREE.ShaderMaterial({
-    uniforms: UNIFORMS, // Objekt med uniform-variabler
-    fragmentShader: fragmentShaderCode, // String med fragmentshader-koden
+  uniforms: UNIFORMS, // Objekt med uniform-variabler
+  fragmentShader: fragmentShaderCode // String med fragmentshader-koden
 });
 ```
 
@@ -463,11 +463,14 @@ Her legger man merke til at vi ikke definerer noen vertexshader. Da vil three.js
 Selve shaderkoden er det mest praktisk å lagre i en separat fil som leses inn:
 
 ```javascript
-const fragmentShaderCode = fs.readFileSync(
-    __dirname + '/fragmentshader.glsl', 
-    'utf8'
+const { readFileSync } = require("fs");
+const fragmentShaderCode = readFileSync(
+  __dirname + "/fragmentshader.glsl",
+  "utf8"
 );
 ```
+
+(Dette funker fordi vi har lagt til en liten bit med kode som bundler filer lest på denne måten i byggesteget.)
 
 ### WebGL shader language
 
