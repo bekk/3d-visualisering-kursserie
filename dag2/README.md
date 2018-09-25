@@ -28,7 +28,7 @@ Den utdelte koden har en gjennomsiktig gul `PlaneGeometry` oppå en fin stjerneb
 
 ### Teori
 
-Siden det er flere dager siden forrige gang kan det være greit å friske opp teorien fra siste oppgave den forrige kursdagen før man går videre: (LINK TIL OPPGAVE-3-SHADER-INTRO)
+Siden det er flere dager siden forrige gang kan det være greit å friske opp [teorien fra siste oppgave den forrige kursdagen](https://github.com/bekk/avansert-visualisering-kursserie/tree/master/dag1#teori) før man går videre.
   
 ### Anatomy of a star
 
