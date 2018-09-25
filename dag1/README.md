@@ -24,15 +24,14 @@ Du har fått utdelt noe kode som du finner i `dag1`-mappen.
 
 ```sh
 dag1/
-├── README.md                   # Denne teksten
 ├── bilder/                     # Bilder vi har i denne teksten
 ├── fasit/                      # Fasiten på de ulike oppgavene
+├── slides/                     # Slides som har blitt vist frem
+├── README.md                   # Denne teksten
 ├── index.html                  # HTML-fila som kjører koden vår
 ├── index.js                    # JS-fila som blir kjørt
-├── node_modules/               # Her havner alle avhengighetene
 ├── package-lock.json           # Oversikt over versjonsnummere etc
-├── package.json                # Avhengigheter etc
-└── slides/                     # Slides som har blitt vist frem
+└── package.json                # Avhengigheter etc
 ```
 
 For å sparke i gang utviklingsprosessen, gjør følgende i en terminal:
