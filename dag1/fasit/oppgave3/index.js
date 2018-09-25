@@ -2,11 +2,15 @@ const THREE = require("three");
 const OrbitControls = require("three-orbit-controls")(THREE);
 const analyse = require("./soundanalyser.js");
 
-const fs = require("fs");
-const fragmentShaderCode = fs.readFileSync(
-  __dirname + "/fragmentshader.glsl",
-  "utf8"
-);
+const fragmentShaderCode = `
+uniform float soundLevel;
+
+void main() {
+  vec4 baseRed = vec4(1.0, 0.15, 0.15, 1.0);
+  float redness = soundLevel / 3000.0;
+  gl_FragColor = baseRed * (redness + 0.2);
+}
+`;
 
 let scene, camera, renderer, cubes, analyser, soundLevel;
 
@@ -77,7 +81,7 @@ function makeCubesDance() {
   for (let i = 0; i < frequencies.length; i++) {
     soundLevel = soundLevel += frequencies[i];
   }
-  console.log(soundLevel);  
+  console.log(soundLevel);
   UNIFORMS.soundLevel.value = soundLevel;
 }
 
