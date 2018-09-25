@@ -59,13 +59,17 @@ I `index.js`-fila er det laget en veldig enkel boilerplate:
 // Henter inn three.js
 const THREE = require("three");
 
-// Her kan du putte kode som bare skal gjøres en gang
-function init() {}
+function init() {
+  // Her kan du putte kode som bare skal gjøres én gang
+}
 
-// Her kan du putte kode som skal gjøres hver "frame"
 function render() {
-  // requestAnimationFrame sørger for å køe et nytt kall til render
+  // sørger for å køe et nytt kall til render
   requestAnimationFrame(render);
+
+  // Her kan du putte kode som skal gjøres hver "frame",
+  // som feks renderer.render();
+  // eller box.position.x += 10
 }
 
 // Kall init-koden
