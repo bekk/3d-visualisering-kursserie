@@ -702,15 +702,11 @@ Nå driver de grønne og bølger seg når de er på toppen. Men de skal heller g
 newPosition.y = mix(newPosition.y, targetHeight, movement);
 ```
 
-Sånn, da blir de flate og fine! En siste ting for å legge prikken over i-en: easing. For at animasjonen blir mer elegant kan vi konvertere den lineære movement-parameteren til å gli inn og gli ut:
+Sånn, da blir de flate og fine! En siste ting for å legge prikken over i-en: easing. For at animasjonen blir mer elegant kan vi konvertere den lineære movement-parameteren til å gli inn og gli ut i henhold til en kubisk kurve:
 
-Før:
-(bilde av f(x)=x)
+![linear vs easing](./bilder/linear-vs-easing.png)
 
-Etter:
-(bilde av f(x) = easeInOutCubic)
-
-Et raskt søk på internett gir oss en ferdig formel for ease-in-out i 2.grad:
+Et raskt søk på internett gir oss en ferdig formel for ease-in-out i 2. grad:
 
 ```c
 // Hvis t er mellom 0 og 1:
@@ -729,7 +725,5 @@ movement = easeInOutCubic(movement);
 ```
 
 Resultatet er en deilig visualisering!
-
-TODO: Legge inn bilder av easeInOutCubic
 
 
