@@ -2,9 +2,9 @@
 
 ## Introduksjonsforelesning
 
-[Slides om WebGL og 3D programmering](https://bekk.github.io/avansert-visualisering-kursserie/dag1/slides/om-3d-visualisering.html)
+[Slides om WebGL og 3D programmering](https://bekk.github.io/3d-visualisering-kursserie/dag1/slides/om-3d-visualisering.html)
 
-[Slides om three.js](https://bekk.github.io/avansert-visualisering-kursserie/dag1/slides/om-threejs.html)
+[Slides om three.js](https://bekk.github.io/3d-visualisering-kursserie/dag1/slides/om-threejs.html)
 
 ## Oppgaver
 
@@ -37,7 +37,7 @@ dag1/
 For å sparke i gang utviklingsprosessen, gjør følgende i en terminal:
 
 ```sh
-cd sti/til/avansert-visualisering-kursserie/dag1
+cd sti/til/3d-visualisering-kursserie/dag1
 npm install
 npm start
 ```

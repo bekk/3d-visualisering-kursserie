@@ -28,8 +28,8 @@ Den utdelte koden har en gjennomsiktig gul `PlaneGeometry` oppå en fin stjerneb
 
 ### Teori
 
-Siden det er flere dager siden forrige gang kan det være greit å friske opp [teorien fra siste oppgave den forrige kursdagen](https://github.com/bekk/avansert-visualisering-kursserie/tree/master/dag1#teori) før man går videre.
-  
+Siden det er flere dager siden forrige gang kan det være greit å friske opp [teorien fra siste oppgave den forrige kursdagen](https://github.com/bekk/3d-visualisering-kursserie/tree/master/dag1#teori) før man går videre.
+
 ### Anatomy of a star
 
 For å tegne stjernen vil vi bruke polarkoordinater. Da kan vi ha forskjellige intensitet i sentrum, og vi kan ha stråler som varierer med vinkelen rundt sentrum.
@@ -45,7 +45,7 @@ polarkoordinater(x, y) = (
 );
 ```
 
-I den utdelte koden ligger x og y i `vertexPosition.x` og `vertexPosition.y`. Det er en vec2 som går fra (-1, -1) til (1, 1). 
+I den utdelte koden ligger x og y i `vertexPosition.x` og `vertexPosition.y`. Det er en vec2 som går fra (-1, -1) til (1, 1).
 
 Siden `sqrt(x*x + y*y)` er lik lengden av vektoren kan vi bruke funksjonen `length()`:
 
@@ -121,7 +121,7 @@ float wave = sin(angle * nofBeams);
 
 Her ser vi også en lett måte å kontrollere frekvensen til sinusbølger, nemlig å gange vinkelen med en konstant `nofBeams`.
 
-Men, siden sinus er en verdi fra -1 til +1, får vi negative stråler også, og det vil vi ikke. Så vi clamper bølgen til 0.0 - 1.0: 
+Men, siden sinus er en verdi fra -1 til +1, får vi negative stråler også, og det vil vi ikke. Så vi clamper bølgen til 0.0 - 1.0:
 
 ```c
 wave = clamp(wave, 0.0, 1.0);
@@ -141,7 +141,7 @@ float beamStrength = 0.075;
 wave *= beamStrength * beamFalloff;
 ```
 
-Nå har vi en komplett stjerne. De viktige parameterne ble 
+Nå har vi en komplett stjerne. De viktige parameterne ble
 
 - `color`
 - `coreSize`
@@ -177,7 +177,7 @@ const parameters = {coreSize: 0.1};
 gui.add(parameters, "coreSize", 0.02, 0.5); // min = 0.02, max = 0.5
 ```
 
-Mer dokumentasjon for dat.GUI finnes her: http://workshop.chromeexperiments.com/examples/gui/#1--Basic-Usage 
+Mer dokumentasjon for dat.GUI finnes her: http://workshop.chromeexperiments.com/examples/gui/#1--Basic-Usage
 
 Nå får du opp en slik slider for coreSize. Men det skjer ikke noe man drar den. Det er fordi coreSize-verdien kun ligger i parameters-objektet. Vi må få den inn i shaderen.
 
@@ -205,7 +205,7 @@ function updateUniforms() {
 }
 ```
 
-Og kaller den for hver render: 
+Og kaller den for hver render:
 
 ```javascript
 function render() {
@@ -247,7 +247,7 @@ I mappen `oppgave-6-particle-system` finner du et oppsett med den vanlige boiler
 
 ### Partikler i webgl
 
-Partikkelsystemer fungerer ganske likt som vanlige geometrier og mesher. Men, det er kun vertices som brukes, og faces ignoreres. Hver vertex blir en partikkel med posisjon gitt av vertexshaderen, men i stedet for at fragmentshaderen fargelegger faces brukes den til å fargelegge en "flat" todimensjonal firkant der hver vertex position befinner seg på skjermen. 
+Partikkelsystemer fungerer ganske likt som vanlige geometrier og mesher. Men, det er kun vertices som brukes, og faces ignoreres. Hver vertex blir en partikkel med posisjon gitt av vertexshaderen, men i stedet for at fragmentshaderen fargelegger faces brukes den til å fargelegge en "flat" todimensjonal firkant der hver vertex position befinner seg på skjermen.
 
 Three.js har en egen klasse `THREE.Points` for partikler som fungerer på akkurat denne måten. Vi legger den til `scene` som alle andre objekter:
 
@@ -280,7 +280,7 @@ const nofParticles = Math.pow(125, 2);
 const positions = new Float32Array(nofParticles * 3);
 ```
 
-Vi bruker `Float32Array` i stedet for et vanlig javascript-array for å få 32-bit floats som GPU-en forventer. Et vanlig array ville bestått av javascript sin `Number` som er en brukervennlig klasse, men for lite spesifikk på hvor mange bits den okkuperer i minnet. 
+Vi bruker `Float32Array` i stedet for et vanlig javascript-array for å få 32-bit floats som GPU-en forventer. Et vanlig array ville bestått av javascript sin `Number` som er en brukervennlig klasse, men for lite spesifikk på hvor mange bits den okkuperer i minnet.
 
 Til slutt spesifiserer vi selve allokeringen ved å legge til et `attribute` på geometrien. Tallet `3` her forteller webgl at floatene skal grupperes tre og tre, slik at de kan brukes som `vec3` i shaderen.
 
@@ -300,7 +300,7 @@ Nå har vi noe på skjermen. En enslig partikkel? Nei, det er jo alle femten tus
 ### Uniforms, attributes og varyings
 
 Vi har lært om `uniform`, men i webgl er det faktisk definert tre typer variabler som shaderkoden bruker. Forskjellen mellom dem er
- 
+
 - når de kan endres
 - hvilken kode som kan lese dem
 - når de leses, om man får verdien deres direkte eller en interpolasjon mellom to nabo-verdier
@@ -327,7 +327,7 @@ vec3 gridPosition() {
 
 void main() {
   vec3 newPosition = gridPosition();
-  
+
   ...
 }
 ```
@@ -368,7 +368,7 @@ attribute float vertexIndex;
 Nå kan vi returnere posisjonen til hver vertex. Siden posisjonen er 3d setter vi høyden til 0 og bruker `y` til dybden:
 
 ```c
-return vec3(x, 0.0, y); 
+return vec3(x, 0.0, y);
 ```
 
 Der, et rutenett! Men det er to problemer:
@@ -411,7 +411,7 @@ float waveSpeed = 3.0;
 x = x + time * waveSpeed;
 ```
 
-Der ja. Nå har vi også en mulighet for å justere `waveSpeed` ved behov. 
+Der ja. Nå har vi også en mulighet for å justere `waveSpeed` ved behov.
 
 Vi ønsker større bølger. Både større bølgehøyde og bølgelengde. Heldigvis er det ganske lett å styre dette i et sinus-uttrykk. Bølgelengden økes ved å dele x:
 
@@ -449,7 +449,7 @@ float alpha = 1.0;
 gl_FragColor = vec4(color, alpha); // Enda en snarvei, hvor webgl tar de tre dimensjonene i første argument og slenger på siste argument for å lage en firedimensjonal vektor
 ```
 
-Hvis vi har hver piksels avstand til senter av partikkelen kan vi gjøre alt utenfor en viss radius gjennomsiktig. I oppgave 4 hadde vi pikselens koordinater fra en `varying vec2 vertexPosition`. Men for partikkelsystemer er det ikke mulig å gjøre det på samme måte fordi `varying` interpoleres mellom vertices i en face, mens et partikkelsystem har som nevnt ingen faces. 
+Hvis vi har hver piksels avstand til senter av partikkelen kan vi gjøre alt utenfor en viss radius gjennomsiktig. I oppgave 4 hadde vi pikselens koordinater fra en `varying vec2 vertexPosition`. Men for partikkelsystemer er det ikke mulig å gjøre det på samme måte fordi `varying` interpoleres mellom vertices i en face, mens et partikkelsystem har som nevnt ingen faces.
 
 I stedet finnes det en egen global variabel `gl_PointCoord` som inneholder en `vec2` mellom (0, 0) og (1, 1) som sier hvilken koordinat nåværende piksel har i partikkelens firkant.
 
@@ -542,11 +542,11 @@ if (isGreen) {
 }
 ```
 
-For å animere noe på uforutsigbare tidspunkt i webgl er det en generell smart teknikk å styre en tidsmåler-variabel i javascript, og så sende den rått til shaderne som reagerer på en funksjonell forutsigbar måte avhengig av den verdien. 
+For å animere noe på uforutsigbare tidspunkt i webgl er det en generell smart teknikk å styre en tidsmåler-variabel i javascript, og så sende den rått til shaderne som reagerer på en funksjonell forutsigbar måte avhengig av den verdien.
 
 Det vil si at timeren starter fastlåst på 0.0, som shaderen kan være programmert til å ignorere. Når javascript-koden oppdager at noe skal skje øker den timeren jevnt oppover helt til 1.0 som symboliserer slutten på hendelsen. Da resetter javascript-koden timeren til 0.0 igjen, og dermed er animasjonen til hendelsen ferdig. Det er fritt opp til shaderens kode å beregne hva den gjør for de ulike verdiene mellom 0 og 1.
 
-Poenget med teknikken er at shaderen ikke trenger å vite hva *forrige* verdi av timeren var. Den bare leser nåværende og kalkulerer sitt utseende fra det. Den trenger dermed også ikke å vite hva sin egen forrige utseende var. Dette er viktig fordi shaderne beholder ikke sine variabler fra bilde til bilde. Det er kun gjennom `uniforms` og `attributes` at noe kan huskes mellom rendringer. 
+Poenget med teknikken er at shaderen ikke trenger å vite hva *forrige* verdi av timeren var. Den bare leser nåværende og kalkulerer sitt utseende fra det. Den trenger dermed også ikke å vite hva sin egen forrige utseende var. Dette er viktig fordi shaderne beholder ikke sine variabler fra bilde til bilde. Det er kun gjennom `uniforms` og `attributes` at noe kan huskes mellom rendringer.
 
 La oss gjøre akkurat dette. Steg for steg såklart. Tilbake i javascripten må vi altså fange opp museklikk på canvasen og gjøre noe med det:
 
@@ -609,7 +609,7 @@ function updateAnimationTime() {
 }
 ```
 
-Hvis animasjonen er igang blir `animationTime` tidsdifferensen siden `animationStart`. Vi deler på 1000 siden tidene i er i millisekunder, og så deler vi på en konstant som blir antall sekunder animasjonen varer. 
+Hvis animasjonen er igang blir `animationTime` tidsdifferensen siden `animationStart`. Vi deler på 1000 siden tidene i er i millisekunder, og så deler vi på en konstant som blir antall sekunder animasjonen varer.
 
 ```c
 const animationLength = 2.5;
@@ -711,9 +711,9 @@ Et raskt søk på internett gir oss en ferdig formel for ease-in-out i 2. grad:
 ```c
 // Hvis t er mellom 0 og 1:
 float easeInOutCubic(float t) {
-  if (t < 0.5) 
+  if (t < 0.5)
     return 4.0*t*t*t;
-  else 
+  else
     return (t-1.0)*(2.0*t-2.0)*(2.0*t-2.0)+1.0;
 }
 ```
@@ -725,5 +725,3 @@ movement = easeInOutCubic(movement);
 ```
 
 Resultatet er en deilig visualisering!
-
-
