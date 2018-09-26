@@ -329,7 +329,7 @@ init(); // Kaller init-funksjonen din som vanlig for å sette opp ting
 
 let analyser; // Ta vare på en referanse til analyseren din
 
-// Kall analyse-funksjonen, den tar inn options og et callback
+// Kall analyse-funksjonen med et callback
 analyse(function(a) {
   // Når analyse-funksjonen har kobla seg til mikrofonen
   // vil denne koden bli kjørt
@@ -404,7 +404,7 @@ module.exports = function analyse(callback, options = { fftSize: 64 }) {
   // Vi ber nettleseren om lov til å bruke en mediaDevice
   // Dette er en del av WebRTC APIet
   navigator.mediaDevices
-    // Vi ønsker bare audio, ikke lyd
+    // Vi ønsker bare audio, ikke video
     .getUserMedia({ video: false, audio: true })
     // Hvis vi får tilgang, får vi et stream-objekt av mikrofonens input
     .then(function(stream) {
