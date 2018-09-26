@@ -213,7 +213,7 @@ function rotateCube() {
 }
 ```
 
-Denne funksjonen kan du kalle inne i den funksjonen som blir kalt hver frame (hvis du har beholdt boilerplaten så heter den `render`), sammen med et nytt kall til rendereren's render-metode:
+Denne funksjonen kan du kalle inne i den funksjonen som blir kalt hver frame (hvis du har beholdt boilerplaten så heter den `render`), sammen med et nytt kall til rendererens render-metode:
 
 ```js
 renderer.render(scene, camera);
