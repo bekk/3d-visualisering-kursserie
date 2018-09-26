@@ -540,12 +540,7 @@ Det finnes egne materialer for spesielle lysmodeller eller materialer som bruker
 ]
 .right-column[
   ```js
-  vertexShader = "...";
-  fragmentShader = "...";
-  material = new THREE.ShaderMaterial({
-    vertexShader,
-    fragmentShader
-  });
+  material = new THREE.MeshBasicMaterial({color: 0xFF0000});
   ```
 ]
 ---
