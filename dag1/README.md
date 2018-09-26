@@ -475,9 +475,9 @@ Her legger man merke til at vi ikke definerer noen vertexshader. Da vil three.js
 Selve shaderkoden er det mest praktisk å lagre i en separat fil som leses inn:
 
 ```javascript
-const { readFileSync } = require("fs");
+const fs = require("fs");
 
-const fragmentShaderCode = readFileSync(
+const fragmentShaderCode = fs.readFileSync(
   __dirname + "/fragmentshader.glsl",
   "utf8"
 );
