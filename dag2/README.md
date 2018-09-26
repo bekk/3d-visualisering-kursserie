@@ -174,7 +174,7 @@ Så legger vi til en parameter for coreSize. dat.GUI fungerer ved at den endrer 
 ```c
 const parameters = {coreSize: 0.1};
 
-gui.add(parameters, "coreSize", 0.02, 0.5);
+gui.add(parameters, "coreSize", 0.02, 0.5); // min = 0.02, max = 0.5
 ```
 
 Mer dokumentasjon for dat.GUI finnes her: http://workshop.chromeexperiments.com/examples/gui/#1--Basic-Usage 

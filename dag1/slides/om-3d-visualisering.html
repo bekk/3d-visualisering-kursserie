@@ -47,14 +47,19 @@
       .topLeft,
       .topRight,
       .bottomLeft, 
-      .bottomRight { position: fixed; width: 40%;}
+      .bottomRight { position: fixed; width: 40%; }
 
       .left,
       .center,
       .right,
       .lowerleft,
       .lowercenter,
-      .lowerright { position: fixed; width: 28%;}
+      .lowerright { position: fixed; width: 28%; }
+
+      .bigger * { width: 55%; }
+      .smaller * { width: 17%; }
+      .smaller .lowercenter { right: 25%; }
+      .smaller .lowerright { right: 2rem; }
 
       .left img,
       .center img,
@@ -259,7 +264,6 @@ Ender opp med fargede piksler på skjermen
 # Noen viktige konsepter
 ]
 
-
 ---
 
 Vertex
@@ -391,11 +395,11 @@ Trestruktur av alt som har plassering i 3D-rommet
 Rendering
 =========
 
-Rendering er hele prosessen å lage 2D-bildet av 3D-scenen og vise det på skjermen
+Rendering er hele prosessen å lage 2D-bildet <br/>av 3D-scenen og vise det på skjermen
 
 Gjøres f.eks. 60 ganger i sekundet
 
-Mellom hver render kan man endre litt på scenen for å animere (tenk stop motion)
+Mellom hver render kan man endre litt <br/>på scenen for å animere (tenk stop motion)
 
 ![altxt](./img/rendering.gif)
 
@@ -410,9 +414,9 @@ Rendering består av to steg:
 
 **2: Rasterisering:** Fargelegg pikslene til hver face 
 
-.lowerleft[![altxt](./img/projection1.png)]
-.lowercenter[![altxt](./img/projection4.png)]
-.lowerright[![altxt](./img/rasterization4.png)]
+.bigger[.lowerleft[![altxt](./img/projection1.png)]]
+.smaller[.lowercenter[![altxt](./img/projection4.png)]]
+.smaller[.lowerright[![altxt](./img/rasterization4.png)]]
 
 ---
 

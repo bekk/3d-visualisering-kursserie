@@ -451,9 +451,11 @@ I tillegg til vertices og faces er det mulig å sende over mer vilkårlige data 
 
 Javascript-koden kjører på CPU-en og har tilgang til datamaskinens vanlige minne. For å holde ytelsen høy er det nøye definert i webgl når og hvordan man kan sende innholdet i variablene sine til shaderen på GPU-en. I denne oppgaven skal vi bruke en `uniform` variabel for å sende lydnivået for hver rendret frame. Slik får vi en variabel som vi kan bruke i shaderne til å gjøre fete ting™:
 
-    const UNIFORMS = {
-      soundLevel: { value: 0.0 }
-    };
+```javascript
+const UNIFORMS = {
+    soundLevel: { value: 0.0 }
+};
+```
 
 Det er viktig her at hver uniform har et felt `value` med selve verdien. Det er fordi den kan også ha andre metadata som f.eks. `type`, som kan være f.eks. vektor eller tekstur. Men i vårt tilfelle skal vi bare ha et tall, og three.js kommer til å skjønne selv at den skal ha typen `float`.
 
