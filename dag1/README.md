@@ -534,7 +534,7 @@ void main() {
 
 Nå har forfatteren fortalt i det lange og brede om pikselfargen som er outputen til fragmentshaderen. Og her er den. Det er så enkelt som at man skriver til en forhåndsdefinert variabel som heter `gl_FragColor`:
 
-```
+```c
   gl_FragColor = vec4(0.5, 1.0, 0.5, 1.0); // Red, blue, green, alpha
 ```
 
@@ -594,7 +594,7 @@ Resultatet blir en skuffende lav korrelasjon til lyden. Vi har truffet en typisk
 
 Prøv å skrive ut soundLevel i konsollen og se:
 
-```
+```javascript
 console.log(soundLevel);
 ```
 

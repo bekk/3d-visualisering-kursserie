@@ -334,7 +334,7 @@ void main() {
 
 Hvis hver partikkel har indeks `vertexIndex`, og bredden på rutenettet skal være `w` er formelen for posisjonene ganske enkel:
 
-```
+```c
 float x = mod(vertexIndex, w);
 float y = floor(vertexIndex / w);
 ```
@@ -343,7 +343,7 @@ Hvor `mod` er matamtisk modulo (rest) og `floor` gjør at et tall rundes ned til
 
 Bredden `w` er jo kvadratoren av det totale antall partikler hvis rutenettet skal være kvadratisk. Og i den utdelte koden er dette allerede sendt over til shaderen i en uniform `nofParticles`:
 
-```
+```c
 float w = floor(sqrt(nofParticles));
 ```
 
