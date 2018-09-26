@@ -77,7 +77,7 @@ init();
 render();
 ```
 
-Hvordan du strukturerer koden videre er opp til deg, dette er kun ment som forslag. I oppgaveteksten under vil det stå korte kodesnutter for å illustrere hvordan APIet til three.js funker, hvor du velger å kalle de funksjonene og legge variabel-deklarasjoner er opp til deg selv. Det kan være greit å huske på hvordan scoping fungerer i JavaScript hvis du ønsker å benytte en variabel i flere funksjoner.
+Hvordan du strukturerer koden videre er opp til deg, dette er kun ment som forslag. I oppgaveteksten under vil det stå korte kodesnutter for å illustrere hvordan API-et til three.js funker, hvor du velger å kalle de funksjonene og legge variabel-deklarasjoner er opp til deg selv. Det kan være greit å huske på hvordan scoping fungerer i JavaScript hvis du ønsker å benytte en variabel i flere funksjoner.
 
 ### Lage `three.js` renderer, scene og kamera
 
@@ -445,11 +445,11 @@ For å oppnå høy ytelse er renderingen arrangert i en pipeline med definert in
 
 ![Shader pipeline](./bilder/shader-pipeline.png)
 
-### Data fra Javascript til GPU
+### Data fra JavaScript til GPU
 
 I tillegg til vertices og faces er det mulig å sende over mer vilkårlige data som kan brukes av shaderne. Det kan være tall, vektorer og array av vektorer, og inneholder typisk fargeverdier, teksturer, animasjonsparametere og andre verdier man har tenkt å bruke i shaderne.
 
-Javascript-koden kjører på CPU-en og har tilgang til datamaskinens vanlige minne. For å holde ytelsen høy er det nøye definert i webgl når og hvordan man kan sende innholdet i variablene sine til shaderen på GPU-en. I denne oppgaven skal vi bruke en `uniform` variabel for å sende lydnivået for hver rendret frame. Slik får vi en variabel som vi kan bruke i shaderne til å gjøre fete ting™:
+JavaScript-koden kjører på CPU-en og har tilgang til datamaskinens vanlige minne. For å holde ytelsen høy er det nøye definert i webgl når og hvordan man kan sende innholdet i variablene sine til shaderen på GPU-en. I denne oppgaven skal vi bruke en `uniform` variabel for å sende lydnivået for hver rendret frame. Slik får vi en variabel som vi kan bruke i shaderne til å gjøre fete ting™:
 
 ```javascript
 const UNIFORMS = {
@@ -476,6 +476,7 @@ Selve shaderkoden er det mest praktisk å lagre i en separat fil som leses inn:
 
 ```javascript
 const { readFileSync } = require("fs");
+
 const fragmentShaderCode = readFileSync(
   __dirname + "/fragmentshader.glsl",
   "utf8"
@@ -496,7 +497,7 @@ float b = 42;  // FEIL pga manglende desimaltall til float
 int c = 42; // Heltall
 bool d = true; // Boolean
 
-vec3 minVektor = vec3(2.0, 1.5, 0.5); // Dett er en 3D vektor. vec2 og vec4 går også an
+vec3 minVektor = vec3(2.0, 1.5, 0.5); // Dette er en 3D vektor. vec2 og vec4 går også an
 float enKoordinat = minVektor.x; // Lesing av en koordinat i vektoren
 
 float minProsedyre(float t) { // Prosedyre som kan kalles senere
