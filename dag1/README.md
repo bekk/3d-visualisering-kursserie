@@ -483,7 +483,7 @@ const fragmentShaderCode = readFileSync(
 );
 ```
 
-(Dette funker fordi vi har lagt til en liten bit med kode som bundler filer lest på denne måten i byggesteget.)
+(Dette funker fordi det i byggesteget er lagt til en liten bit kode som slår sammen filer hvis de leses på denne måten.)
 
 ### WebGL shader language
 
