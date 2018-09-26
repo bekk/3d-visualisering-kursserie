@@ -1,4 +1,4 @@
-# Del 2: Dypdykk i shaderprogrammering
+# Dag 2: Dypdykk i shaderprogrammering
 
 ## Oppgaver
 
