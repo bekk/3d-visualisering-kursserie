@@ -532,7 +532,7 @@ void main() {
 }
 ```
 
-Nå har forfatteren fortalt i det lange og brede om denne pikselfargen som er outputen til fragmentshaderen. Og her er den. Det er så enkelt som at man skriver til en foråndsdefinert variabel som heter `gl_FragColor`:
+Nå har forfatteren fortalt i det lange og brede om pikselfargen som er outputen til fragmentshaderen. Og her er den. Det er så enkelt som at man skriver til en forhåndsdefinert variabel som heter `gl_FragColor`:
 
 ```
   gl_FragColor = vec4(0.5, 1.0, 0.5, 1.0); // Red, blue, green, alpha
