@@ -453,7 +453,7 @@ Javascript-koden kjører på CPU-en og har tilgang til datamaskinens vanlige min
 
 ```javascript
 const UNIFORMS = {
-    soundLevel: { value: 0.0 }
+  soundLevel: { value: 0.0 }
 };
 ```
 
