@@ -171,8 +171,8 @@ _Et rammeverk for å lage WebGL-ting._
 ]
 .right-column[
   ```js
-  renderer = new THREE.WebGLRenderer();
-  renderer.setSize(HEIGHT,WIDTH);
+renderer = new THREE.WebGLRenderer();
+renderer.setSize(HEIGHT,WIDTH);
   ```
 ]
 
@@ -187,8 +187,8 @@ _Et rammeverk for å lage WebGL-ting._
 ]
 .right-column[
   ```js
-  renderer = new THREE.WebGLRenderer();
-  renderer.setSize(HEIGHT,WIDTH);
+renderer = new THREE.WebGLRenderer();
+renderer.setSize(HEIGHT,WIDTH);
   ```
 ]
 .right-column[
@@ -214,9 +214,9 @@ _Et rammeverk for å lage WebGL-ting._
 ]
 .right-column[
   ```js
-  scene = new THREE.Scene();
-  // ...
-  scene.add(someObject);
+scene = new THREE.Scene();
+// ...
+scene.add(someObject);
   ```
 ]
 ---
@@ -230,9 +230,9 @@ _Et rammeverk for å lage WebGL-ting._
 ]
 .right-column[
   ```js
-  scene = new THREE.Scene();
-  // ...
-  scene.add(teapot);
+scene = new THREE.Scene();
+// ...
+scene.add(teapot);
   ```
 ]
 .right-column[
@@ -294,12 +294,12 @@ _Et rammeverk for å lage WebGL-ting._
 ]
 .right-column[
   ```js
-  camera = new THREE.PerspectiveCamera(
-    fov,
-    aspectRatio,
-    near,
-    far
-  )
+camera = new THREE.PerspectiveCamera(
+  fov,
+  aspectRatio,
+  near,
+  far
+)
   ```
 ]
 ---
@@ -323,7 +323,7 @@ _Et rammeverk for å lage WebGL-ting._
 ]
 .right-column[
   ```js
-  renderer.render(scene, camera);
+renderer.render(scene, camera);
   ```
 ]
 ---
@@ -337,7 +337,7 @@ _Et rammeverk for å lage WebGL-ting._
 ]
 .right-column[
   ```js
-  renderer.render(scene, camera);
+renderer.render(scene, camera);
   ```
 ]
 .right-column[
@@ -453,7 +453,7 @@ _Et rammeverk for å lage WebGL-ting._
 ]
 .right-column[
   ```js
-  geometry = new THREE.BoxGeometry(1, 1, 1);
+geometry = new THREE.BoxGeometry(1, 1, 1);
   ```
 ]
 ---
@@ -540,7 +540,7 @@ Det finnes egne materialer for spesielle lysmodeller eller materialer som bruker
 ]
 .right-column[
   ```js
-  material = new THREE.MeshBasicMaterial({color: 0xFF0000});
+material = new THREE.MeshBasicMaterial({color: 0xFF0000});
   ```
 ]
 ---
@@ -581,8 +581,8 @@ Det finnes egne materialer for spesielle lysmodeller eller materialer som bruker
 ]
 .right-column[
   ```js
-  object = new THREE.Mesh(geometry, material);
-  scene.add(object);
+object = new THREE.Mesh(geometry, material);
+scene.add(object);
   ```
 ]
 ---
