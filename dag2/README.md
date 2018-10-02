@@ -84,7 +84,7 @@ float glow = 1.0 - glowDistance;
 alpha += glow;
 ```
 
-Dette er jo lineær avtagende glød, som ikke er så pent. Vi ønsker at den avtar litt mer eksponensielt, og en lett måte å oppnå det er å opphøye tallet i f.eks. 3:
+Dette er jo lineær avtagende glød, som ikke er så pent. Vi ønsker at den avtar litt mer eksponentielt, og en lett måte å oppnå det er å opphøye tallet i f.eks. 3:
 
 ```c
 float glowFalloff = 3.0;
