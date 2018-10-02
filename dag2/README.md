@@ -211,7 +211,7 @@ Og kaller den for hver render:
 function render() {
   requestAnimationFrame(render);
 
-  updateParameters();
+  updateUniforms();
 
   renderer.render(scene, camera);
 }
