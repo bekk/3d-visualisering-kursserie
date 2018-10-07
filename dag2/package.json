@@ -7,7 +7,6 @@
     "start4": "budo oppgave-4-fragment-shader/index.js --live -- -t brfs",
     "start5": "budo oppgave-5-vertex-shader/index.js --live -- -t brfs",
     "start6": "budo oppgave-6-particle-system/index.js --live -- -t brfs",
-
     "fasit4": "budo fasit/oppgave4/index.js --live -- -t brfs",
     "fasit5": "budo fasit/oppgave5/index.js --live -- -t brfs",
     "fasit6": "budo fasit/oppgave6/index.js --live -- -t brfs"
