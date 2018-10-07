@@ -267,7 +267,7 @@ const material = new THREE.ShaderMaterial({
 });
 ```
 
-Geometrien er derimot litt spesiell. Vi lager en `BufferGeometry`, som er en helt rå geometri uten noe innhold. Rått er som vanlig bra. Vil vil rett på jernet her:
+Geometrien er derimot litt spesiell. Vi lager en `BufferGeometry`, som er en helt rå geometri uten noe innhold. Rått er som vanlig bra. Vi vil rett på jernet her:
 
 ```javascript
 const geometry = new THREE.BufferGeometry();
@@ -339,9 +339,9 @@ float x = mod(vertexIndex, w);
 float y = floor(vertexIndex / w);
 ```
 
-Hvor `mod` er matamtisk modulo (rest) og `floor` gjør at et tall rundes ned til nærmeste heltall.
+Hvor `mod` er matematisk modulo (rest) og `floor` gjør at et tall rundes ned til nærmeste heltall.
 
-Bredden `w` er jo kvadratoren av det totale antall partikler hvis rutenettet skal være kvadratisk. Og i den utdelte koden er dette allerede sendt over til shaderen i en uniform `nofParticles`:
+Bredden `w` er jo kvadratroten av det totale antall partikler hvis rutenettet skal være kvadratisk. Og i den utdelte koden er dette allerede sendt over til shaderen i en uniform `nofParticles`:
 
 ```c
 float w = floor(sqrt(nofParticles));
@@ -395,7 +395,7 @@ Resultatet er et pent rutenett av firkanter.
 
 ### Vi legger på bevegelse
 
-La oss lage bølger! Hva er en bølge? Jo, det er sinus såklart. Vi øker høyden (y-koordinaten) for å lage bølger i x-retningen:
+La oss lage bølger! Hva er en bølge? Jo, det er sinus så klart. Vi øker høyden (y-koordinaten) for å lage bølger i x-retningen:
 
 ```c
 float x = newPosition.x;
@@ -403,7 +403,7 @@ float x = newPosition.x;
 newPosition.y += sin(x);
 ```
 
-Men de beveger seg ikke. En lett måte å flytte på sinus-bølger er å øke x-verdien, og vi har allerde en `uniform float time` med tiden i sekunder:
+Men de beveger seg ikke. En lett måte å flytte på sinus-bølger er å øke x-verdien, og vi har allerede en `uniform float time` med tiden i sekunder:
 
 ```c
 float waveSpeed = 3.0;
