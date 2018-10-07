@@ -1,8 +1,8 @@
 const THREE = require('three');
 const dat = require('dat.gui');
 const fs = require('fs');
-const vertexShaderCode = fs.readFileSync(__dirname + '/vertexshader.glsl', 'utf8');
-const fragmentShaderCode = fs.readFileSync(__dirname + '/fragmentshader.glsl', 'utf8');
+const vertexShaderCode = fs.readFileSync(`${__dirname}/vertexshader.glsl`, 'utf8');
+const fragmentShaderCode = fs.readFileSync(`${__dirname}/fragmentshader.glsl`, 'utf8');
 
 let scene, camera, renderer;
 
@@ -83,8 +83,8 @@ function initStar() {
 
 function initBackdrop() {
   const geometry = new THREE.PlaneGeometry(205, 137);
-  const material = new THREE.MeshBasicMaterial({ 
-    map: new THREE.TextureLoader().load("fasit/oppgave4/img/Milkyway.jpg") 
+  const material = new THREE.MeshBasicMaterial({
+    map: new THREE.TextureLoader().load(`${__dirname}/img/Milkyway.jpg`)
   });
 
   const backdrop = new THREE.Mesh(
