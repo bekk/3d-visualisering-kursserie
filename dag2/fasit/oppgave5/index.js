@@ -58,8 +58,8 @@ function initSphere() {
   );
 
   displacement = new Float32Array(geometry.attributes.position.count);
-  noise = new Float32Array(geometry.attributes.position.count);
-  for (var i = 0; i < displacement.length; i++) {
+  noise = new Float32Array(displacement.length);
+  for (let i = 0; i < noise.length; i++) {
     noise[i] = Math.random() * params.noiseClamp;
   }
 
@@ -96,7 +96,7 @@ function updateDisplacement() {
   for (var i = 0; i < displacement.length; i++) {
     displacement[i] = Math.sin(0.1 * i + time);
 
-    noise[i] += 0.5 * (-0.5 + Math.random());
+    noise[i] += -0.5 + Math.random();
     noise[i] = THREE.Math.clamp(
       noise[i],
       -params.noiseClamp,
