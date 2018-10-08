@@ -164,7 +164,7 @@ dat.GUI er et lite bibliotek for å lage små kontrollpanel til prototyping:
 For å bruke det importerer vi det og initialiserer en instans:
 
 ```javascript
-const dat = require('dat.gui');
+const dat = require("dat.gui");
 
 const gui = new dat.GUI();
 ```
@@ -193,7 +193,7 @@ og legge til uniformen i `uniforms` som blir sendt til ShaderMaterial:
 
 ```javascript
 const uniforms = {
-    coreSize: {value: 0.1}
+  coreSize: { value: 0.1 }
 };
 ```
 
@@ -201,7 +201,7 @@ Vi lager en funksjon for å oppdatere uniformene:
 
 ```javascript
 function updateUniforms() {
-    uniforms.coreSize.value = parameters.coreSize;
+  uniforms.coreSize.value = parameters.coreSize;
 }
 ```
 
@@ -260,10 +260,10 @@ Materialet er faktisk helt likt som før. Og det er jo logisk siden vårt `Shade
 
 ```javascript
 const material = new THREE.ShaderMaterial({
-    uniforms: uniforms,
-    vertexShader: vertexShaderCode,
-    fragmentShader: fragmentShaderCode,
-    transparent: true
+  uniforms: uniforms,
+  vertexShader: vertexShaderCode,
+  fragmentShader: fragmentShaderCode,
+  transparent: true
 });
 ```
 
@@ -273,7 +273,7 @@ Geometrien er derimot litt spesiell. Vi lager en `BufferGeometry`, som er en hel
 const geometry = new THREE.BufferGeometry();
 ```
 
-Den er så himla rå at vi til og med må allokere plass på GPU-minnet til posisjonene til alle verticene. I dette minnet er stort sett alt floats, og siden posisjonene er vektorer av tre floats må vi allokere 3 floats for hver partikkel. Vi setter antall partikler til 125 * 125 som blir rundt femten tusen tilsammen:  
+Den er så himla rå at vi til og med må allokere plass på GPU-minnet til posisjonene til alle verticene. I dette minnet er stort sett alt floats, og siden posisjonene er vektorer av tre floats må vi allokere 3 floats for hver partikkel. Vi setter antall partikler til 125 \* 125 som blir rundt femten tusen tilsammen:
 
 ```javascript
 const nofParticles = Math.pow(125, 2);
@@ -285,7 +285,7 @@ Vi bruker `Float32Array` i stedet for et vanlig javascript-array for å få 32-b
 Til slutt spesifiserer vi selve allokeringen ved å legge til et `attribute` på geometrien. Tallet `3` her forteller webgl at floatene skal grupperes tre og tre, slik at de kan brukes som `vec3` i shaderen.
 
 ```javascript
-geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3));
+geometry.addAttribute("position", new THREE.BufferAttribute(positions, 3));
 ```
 
 Kommer det noe opp på skjermen? Nei. Årsaken til det er at det mangler en ny output fra vertexshaderen som vi ikke har brukt før: `gl_PointSize`. Den er i tillegg til den kjente `gl_Position`, og den sier hvor stor firkanten til hver vertex skal være på skjermen.
@@ -318,7 +318,7 @@ De tre typene er
 
 ### Rutenett
 
-Vi har lyst til å fordelen partiklene i  et rutenett. For å holde ting ryddig lager vi en egen prosedyre for det:
+Vi har lyst til å fordelen partiklene i et rutenett. For å holde ting ryddig lager vi en egen prosedyre for det:
 
 ```c
 vec3 gridPosition() {
@@ -354,7 +354,10 @@ let vertexIndecies = new Float32Array(nofParticles);
 
 vertexIndecies = vertexIndecies.map((element, i) => i);
 
-geometry.addAttribute('vertexIndex', new THREE.BufferAttribute(vertexIndecies, 1));
+geometry.addAttribute(
+  "vertexIndex",
+  new THREE.BufferAttribute(vertexIndecies, 1)
+);
 ```
 
 Den snedige `map`-onelineren fyller hvert element i lista med 0, 1, 2, 3, osv.
@@ -492,7 +495,7 @@ La oss få en smak av regnbuen med litt tilfeldige farger. La oss beregne alle f
 ```javascript
 let color = new Float32Array(nofParticles * 3);
 color = color.map(Math.random);
-geometry.addAttribute('color', new THREE.BufferAttribute(color, 3));
+geometry.addAttribute("color", new THREE.BufferAttribute(color, 3));
 ```
 
 Disse fargene er jo `attribute` og dermed kun tilgjengelig i vertexshaderen:
@@ -546,7 +549,7 @@ For å animere noe på uforutsigbare tidspunkt i webgl er det en generell smart 
 
 Det vil si at timeren starter fastlåst på 0.0, som shaderen kan være programmert til å ignorere. Når javascript-koden oppdager at noe skal skje øker den timeren jevnt oppover helt til 1.0 som symboliserer slutten på hendelsen. Da resetter javascript-koden timeren til 0.0 igjen, og dermed er animasjonen til hendelsen ferdig. Det er fritt opp til shaderens kode å beregne hva den gjør for de ulike verdiene mellom 0 og 1.
 
-Poenget med teknikken er at shaderen ikke trenger å vite hva *forrige* verdi av timeren var. Den bare leser nåværende og kalkulerer sitt utseende fra det. Den trenger dermed også ikke å vite hva sin egen forrige utseende var. Dette er viktig fordi shaderne beholder ikke sine variabler fra bilde til bilde. Det er kun gjennom `uniforms` og `attributes` at noe kan huskes mellom rendringer.
+Poenget med teknikken er at shaderen ikke trenger å vite hva _forrige_ verdi av timeren var. Den bare leser nåværende og kalkulerer sitt utseende fra det. Den trenger dermed også ikke å vite hva sin egen forrige utseende var. Dette er viktig fordi shaderne beholder ikke sine variabler fra bilde til bilde. Det er kun gjennom `uniforms` og `attributes` at noe kan huskes mellom rendringer.
 
 La oss gjøre akkurat dette. Steg for steg såklart. Tilbake i javascripten må vi altså fange opp museklikk på canvasen og gjøre noe med det:
 
@@ -648,7 +651,7 @@ if (isGreen) {
 }
 ```
 
-Men de løftes ikke *ned* igjen pent. De bare hopper ned når det er ferdig. Det er fordi `animationTime` går som en koselig normalisert lineær graf:
+Men de løftes ikke _ned_ igjen pent. De bare hopper ned når det er ferdig. Det er fordi `animationTime` går som en koselig normalisert lineær graf:
 
 > f(x) = x
 
@@ -684,7 +687,7 @@ Og flytter den til høyre på x-aksen:
 
 Der ja! Nesten. Men den går fra x=0 til x=2. Så vi ganger x for å skalere den langs x-aksen:
 
-> f(x) = -abs(x * 2 - 1) + 1
+> f(x) = -abs(x \* 2 - 1) + 1
 
 ![f(x) = -abs(x * 2 - 1) + 1](./bilder/graf7.PNG)
 
