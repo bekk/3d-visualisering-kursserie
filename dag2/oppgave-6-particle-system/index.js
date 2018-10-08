@@ -38,6 +38,9 @@ const initAnimation = function() {
 const animate = function() {
     requestAnimationFrame(animate);
 
+    const now = new Date().getTime();
+    uniforms.time.value = (now - timeStart) / 1000;
+
     renderer.render(scene, camera);
 }
 
