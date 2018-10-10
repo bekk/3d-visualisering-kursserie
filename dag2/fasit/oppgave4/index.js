@@ -14,15 +14,15 @@ const HEIGHT = window.innerHeight;
 const uniforms = {
   baseColor: {value: null},
   coreSize: {value: null},
-  glowRange: {value: null},
+  glowFalloff: {value: null},
   glowIntensity: {value: null},
 };
 
 const params = {
   baseColor: "#ff9500",
   coreSize: 0.1,
-  glowRange: 1.4,
-  glowIntensity: 0.56,
+  glowFalloff: 1.4,
+  glowIntensity: 0.96,
   scale: 1.0,
   enableDebug: false,
 }
@@ -108,7 +108,7 @@ function makeDebugObject(mesh) {
 function updateParameters() {
   uniforms.baseColor.value = new THREE.Color(params.baseColor);
   uniforms.coreSize.value = params.coreSize;
-  uniforms.glowRange.value = params.glowRange;
+  uniforms.glowFalloff.value = params.glowFalloff;
   uniforms.glowIntensity.value = params.glowIntensity;
 
   scene.traverse((child) => {
@@ -124,7 +124,7 @@ function initDatGui() {
 
   gui.addColor(params, 'baseColor').onChange(updateParameters);
   gui.add(params, "coreSize", 0.02, 0.5).onChange(updateParameters);
-  gui.add(params, "glowRange", 0.1, 5.0).onChange(updateParameters);
+  gui.add(params, "glowFalloff", 0.1, 5.0).onChange(updateParameters);
   gui.add(params, "glowIntensity", 0.02, 3.0).onChange(updateParameters);
   gui.add(params, "scale", 0.05, 8.0).onChange(updateParameters);
   gui.add(params, "enableDebug").onChange(updateParameters)
