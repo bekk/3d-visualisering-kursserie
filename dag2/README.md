@@ -265,6 +265,25 @@ scene.add(sphere);
 
 Hvis du har gjort ting rett, vil du nå se en hvit sirkel på skjermen din. Ikke veldig spennende, men det kan vi fikse på!
 
+### Uniforms, attributes og varyings
+
+Før vi går videre tar vi en liten teoripause. Vi har lært om `uniform`, men i webgl er det faktisk definert tre typer variabler som shaderkoden bruker. Forskjellen mellom dem er
+
+- når de kan endres
+- hvilken kode som kan lese dem
+- når de leses, om man får verdien deres direkte eller en interpolasjon mellom to nabo-verdier
+
+De tre typene er
+
+- `uniform` Variabler som kan skrives av JavaScript-koden og sendes over 1 gang per rendret bilde, er read-only for shaderne og har samme globale verdi for alle vertices og alle piksler til hvert Mesh
+  - For eksempel tid, museposisjon, animasjonshastighet, osv
+  - Hensikten med dette er at GPU-en så kan kjøre shaderkoden uten å gjøre flere trege dataoverføringen fra resten av datamaskinen
+- `attribute` Samme som uniform, men kan kun leses i vertex shader, og skal ha en separat verdi for hver eneste vertex
+  - For eksempel farge, teksturkoordinat, osv
+  - Hensikten med denne typen er at GPU-en kan optimalisere minnet og kjernene sine slik at flest mulig beregninger kan kjøre samtidig uten å måtte snakke sammen
+- `varying` Kan ikke skrives til av JavaScript-koden, men av vertexshaderen. Får dermed en separat verdi per vertex. Men den kan leses av fragmentshaderen, og den verdien som leses da er interpolert mellom de tre vertexene som pikselen er mellom
+  - Typisk eksempel er den interpolerte fargen pikselen skal ha fra en tekstur. Men generelt er denne typen brukt hvis man vil at vertexshaderen skal beregne en verdi som fragmentshaderen igjen skal bruke til å beregne fargen. Slik kan vertex shader og fragment shader snakke sammen.
+
 ### Gjøre spheren spennende!
 
 For å live opp spheren vår, og for å få frem 3D-effekten trenger vi litt farge. Farge er, som vi har lært, jobben til vertex-shaderen. I dag1 brukte vi et spesielt materiale som het `MeshNormalMaterial` for å få en farge som så ganske ålreit ut right out of the gate. Vi kan benytte oss av en lignende teknikk her nå for å gi spheren vår gøy farge.
@@ -283,7 +302,7 @@ scene.add(helper);
 
 Det vil vise oss alle normal-vektorene som gjelder for spheren vår. Og som du ser så peker alle normal-vektorene vekk fra sentrum av spheren.
 
-Det vi skal gjøre er å bruke normal-vektoren til å fargelegge spheren. Måten vi gjør det på er å bruke noe som heter en `varying`. En `varying` er en spesiell type datatype i shadere, på linje med `uniform`. Vi bruker `varying` til å sende data fra vertex-shaderen til fragment-shaderen.
+Det vi skal gjøre er å bruke normal-vektoren til å fargelegge spheren. Måten vi gjør det på er å bruke en `varying`:
 
 `vertexshader.glsl`:
 
@@ -365,7 +384,7 @@ Det første vi skal gjøre er å gå tilbake til vanlige vertex normals, ikke fa
 
 Nå er vi tilbake til at hver vertex har sin egen normal-vektor og da ser plutselig spheren helt kontinuerlig ut igjen.
 
-For å kunne gi hver vertex en unik random-verdi trenger vi å bruke noe som heter `attributes`. En `attribute` er en verdi som er knytta til hver enkelt vertice og som blir sendt med til vertex shaderen. For å hekte på `attributes` i three.js må vi endre litt på hvordan vi definerer geometrien:
+For å kunne gi hver vertex en unik random-verdi trenger vi å bruke en `attribute`. For å hekte på en `attribute` i three.js må vi endre litt på hvordan vi definerer geometrien:
 
 ```diff
 -let geometry = new THREE.SphereGeometry(10, 128, 64);
@@ -539,25 +558,6 @@ gl_PointSize = particleSize * pixelRatio;
 ```
 
 Nå har vi noe på skjermen. En enslig partikkel? Nei, det er jo alle femten tusen partiklene på samme posisjon oppå hverandre. På tide å flytte rundt på dem. Men først litt teori.
-
-### Uniforms, attributes og varyings
-
-Vi har lært om `uniform`, men i webgl er det faktisk definert tre typer variabler som shaderkoden bruker. Forskjellen mellom dem er
-
-- når de kan endres
-- hvilken kode som kan lese dem
-- når de leses, om man får verdien deres direkte eller en interpolasjon mellom to nabo-verdier
-
-De tre typene er
-
-- `uniform` Variabler som kan skrives av JavaScript-koden og sendes over 1 gang per rendret bilde, er read-only for shaderne og har samme globale verdi for alle vertices og alle piksler til hvert Mesh
-  - For eksempel tid, museposisjon, animasjonshastighet, osv
-  - Hensikten med dette er at GPU-en så kan kjøre shaderkoden uten å gjøre flere trege dataoverføringen fra resten av datamaskinen
-- `attribute` Samme som uniform, men kan kun leses i vertex shader, og skal ha en separat verdi for hver eneste vertex
-  - For eksempel farge, teksturkoordinat, osv
-  - Hensikten med denne typen er at GPU-en kan optimalisere minnet og kjernene sine slik at flest mulig beregninger kan kjøre samtidig uten å måtte snakke sammen
-- `varying` Kan ikke skrives til av JavaScript-koden, men av vertexshaderen. Får dermed en separat verdi per vertex. Men den kan leses av fragmentshaderen, og den verdien som leses da er interpolert mellom de tre vertexene som pikselen er mellom
-  - Typisk eksempel er den interpolerte fargen pikselen skal ha fra en tekstur. Men generelt er denne typen brukt hvis man vil at vertexshaderen skal beregne en verdi som fragmentshaderen igjen skal bruke til å beregne fargen. Slik kan vertex shader og fragment shader snakke sammen.
 
 ### Rutenett
 
