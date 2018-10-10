@@ -17,7 +17,7 @@
       .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
       .remark-slide-content * { font-size: 16px; }
       .remark-code * { font-size: 20px; }
-      .remark-slide-content img { width: 50%; margin: 1rem 0;}
+      .remark-slide-content img { width: 100%; margin: 1rem 0;}
 
       .remark-slide-content { text-align: center }
 
@@ -93,19 +93,507 @@
   <body>
     <textarea id="source">
 
-Shadere
-================
+class: middle
+
+# Shadere
 
 _Shady_
 
+
 ---
 .left-column[
-  # Shadere?
+  ## Shadere?
 ]
 .right-column[
+  ### Programmer på GPU
 
+  Shadere er programmer som kjører på GPUen, som gjør at vi kan utnytte GPUens parallelitet.
+]
+---
+.left-column[
+  ## Shadere?
+]
+.right-column[
+  ### Programmer på GPU
+
+  Shadere er programmer som kjører på GPUen, som gjør at vi kan utnytte GPUens parallelitet.
+]
+.right-column[
+  Utgjør en sentral del av det å jobbe med 3D og avansert grafikk, siden det er mange operasjoner som kun er mulige når vi gjør dem i paralell.
+]
+---
+.left-column[
+  ## Shadere?
+  ## GLSL
+]
+.right-column[
+  ### GLSL
+  Vi koder shadere i et eget språk som heter GL Shading Language
+]
+---
+.left-column[
+  ## Shadere?
+  ## GLSL
+]
+.right-column[
+  ### GLSL
+  Vi koder shadere i et eget språk som heter GL Shading Language
+]
+.right-column[
+  ~~~glsl
+// Eksempler på deklarasjoner
+float a = 42.0; // Flyttall (desimaltall)
+int c = 42; // Heltall
+bool d = true; // Boolean
+
+// Dette er en 3D vektor. vec2 og vec4 går også an
+vec3 minVektor = vec3(2.0, 1.5, 0.5);
+// Lesing av en koordinat i vektoren
+float enKoordinat = minVektor.x;
+// Lesing av flere kooridnater fra en vektor
+vec2 xyVektor = minVektor.xy;
+// Konstruksjon av en ny vektor basert på en annen vektor
+vec3 farge = vec3(xyVektor, 1.0)
+
+// Prosedyre som kan kalles senere
+float minProsedyre(float t) {
+  t = t - 1;
+  return t*t*t + 1.0;
+}
+
+float minVerdi = minProsedyre(2.3);
+  ~~~
+]
+---
+.left-column[
+  ## Shadere?
+  ## GLSL
+]
+.right-column[
+  ### GLSL
+]
+.right-column[
+  ~~~glsl
+float e = (1.0 + 2.0) / 23.0;
+
+// Vektor ganger skalar (x * 3.0, y * 3.0, z * 3.0)
+vec3 lengerVektor = minVektor * 3.0;
+// Vektor pluss skalar (x + 3.0, y + 3.0, z + 3.0)
+vec3 lengerVektor = minVektor + 3.0;
+// Prikkprodukt / dot product
+vec3 prikk = minVektor * annenVektor;
+
+// Innebygde mattefunksjoner
+float f = sin(0.5); // sinus
+float g = pow(2.0, 8.0); // 2^8
+
+void main() {
+  // denne koden blir kjørt først
+}
+  ~~~
+]
+---
+.left-column[
+  ## Shadere?
+  ## GLSL
+]
+.right-column[
+  ### GLSL
+
+  Mange av tingene i GLSL er der for at GPUen skal yte optimalt.
+]
+---
+.left-column[
+  ## Shadere?
+  ## GLSL
+]
+.right-column[
+  ### GLSL
+
+  Mange av tingene i GLSL er der for at GPUen skal yte optimalt.
+]
+.right-column[
+  Datatyper sørger for at GPUen bruker riktige instruksjoner for operasjoner.
+]
+---
+.left-column[
+  ## Shadere?
+  ## GLSL
+]
+.right-column[
+  ### GLSL
+
+  Mange av tingene i GLSL er der for at GPUen skal yte optimalt.
+]
+.right-column[
+  Datatyper sørger for at GPUen bruker riktige instruksjoner for operasjoner.
+]
+.right-column[
+  Optimalisert for vektor- og matrise-operasjoner.
+]
+---
+.left-column[
+  ## Shadere?
+  ## GLSL
+]
+.right-column[
+  ### GLSL
+
+  Mange av tingene i GLSL er der for at GPUen skal yte optimalt.
+]
+.right-column[
+  Datatyper sørger for at GPUen bruker riktige instruksjoner for operasjoner.
+]
+.right-column[
+  Optimalisert for vektor- og matrise-operasjoner.
+]
+.right-column[
+  Begrensa muligheter til input og output for å kontrollere flyten av data.
+]
+---
+.left-column[
+  ## Shadere?
+  ## GLSL
+]
+.right-column[
+  ### Ulike shadere
+
+  I WebGL har vi to ulike shadere som oppfyller to ulike funksjoner
+]
+---
+.left-column[
+  ## Shadere?
+  ## GLSL
+]
+.right-column[
+  ### Ulike shadere
+
+  I WebGL har vi to ulike shadere som oppfyller to ulike funksjoner
+]
+.right-column[
+  ![shader pipeline](img/shader-pipeline.png)
+]
+---
+.left-column[
+  ## Shadere?
+  ## GLSL
+  ## Vertex shader
+]
+.right-column[
+  ### Vertex shader
+
+  Vertex shaderen er ansvarlig for å regne ut den endelige posisjonen til ett bestemt punkt i en geometri.
+]
+---
+.left-column[
+  ## Shadere?
+  ## GLSL
+  ## Vertex shader
+]
+.right-column[
+  ### Vertex shader
+
+  Vertex shaderen er ansvarlig for å regne ut den endelige posisjonen til ett bestemt punkt i en geometri.
+]
+.right-column[
+  ~~~glsl
+void main() {
+  gl_Position = position;
+}
+  ~~~
+]
+---
+.left-column[
+  ## Shadere?
+  ## GLSL
+  ## Vertex shader
+]
+.right-column[
+  ### Vertex shader
+
+  Vertex shaderen er ansvarlig for å regne ut den endelige posisjonen til ett bestemt punkt i en geometri.
+]
+.right-column[
+  ~~~glsl
+void main() {
+  vec4 modelSpaceCoordinates = vec4(position.xyz, 1.0);
+
+  vec4 worldSpaceCoordinates =
+    modelViewMatrix * modelSpaceCoordinates;
+
+  vec4 screenSpaceCoordinate =
+    projectionMatrix * worldSpaceCoordinates;
+
+  gl_Position = screenSpaceCoordinate;
+}
+  ~~~
+]
+---
+.left-column[
+  ## Shadere?
+  ## GLSL
+  ## Vertex shader
+  ## Fragment shader
+]
+.right-column[
+  ### Fragment shader
+
+  Fragment shaderen er ansvarlig for å fargelegge hver pixel i geometrien
+]
+---
+.left-column[
+  ## Shadere?
+  ## GLSL
+  ## Vertex shader
+  ## Fragment shader
+]
+.right-column[
+  ### Fragment shader
+
+  Fragment shaderen er ansvarlig for å fargelegge hver pixel i geometrien
+]
+.right-column[
+  ~~~glsl
+void main() {
+  gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+}
+  ~~~
+]
+---
+.left-column[
+  ## Shadere?
+  ## GLSL
+  ## Vertex shader
+  ## Fragment shader
+]
+.right-column[
+  ### Fragment shader
+
+  Fragment shaderen er ansvarlig for å fargelegge hver pixel i geometrien
+]
+.right-column[
+  ~~~glsl
+void main() {
+  vec3 color = vec3(1.0, 0.0, 0.0);
+  float alpha = 1.0;
+
+  gl_FragColor = vec4(color, alpha);
+}
+  ~~~
+]
+---
+.left-column[
+  ## Shadere?
+  ## GLSL
+  ## Vertex shader
+  ## Fragment shader
+  ## Argumenter
+]
+.right-column[
+  ### Sende data til shadere
+
+  Vi har ofte behov for å sende data fra JavaScript-land til GLSL-land eller mellom Vertex og Fragment shader.
+]
+---
+.left-column[
+  ## Shadere?
+  ## GLSL
+  ## Vertex shader
+  ## Fragment shader
+  ## Argumenter
+]
+.right-column[
+  ### Sende data til shadere
+
+  Vi har ofte behov for å sende data fra JavaScript-land til GLSL-land eller mellom Vertex og Fragment shader.
+]
+.right-column[
+  Til å gjøre det har vi 3 ulike metoder: **Uniforms**, **Attributes** og **Varying**.
+]
+---
+.left-column[
+  ## Shadere?
+  ## GLSL
+  ## Vertex shader
+  ## Fragment shader
+  ## Argumenter
+]
+.right-column[
+  ### Uniforms
+
+  Read only verdier som er identiske for alle vertices og pixler i begge shadere. Typisk ting som tid, museposisjon og animasjonshastighet.
+]
+---
+.left-column[
+  ## Shadere?
+  ## GLSL
+  ## Vertex shader
+  ## Fragment shader
+  ## Argumenter
+]
+.right-column[
+  ### Uniforms
+
+  Read only verdier som er identiske for alle vertices og pixler i begge shadere. Typisk ting som tid, museposisjon og animasjonshastighet.
+]
+.right-column[
+I en shader:
+  ~~~glsl
+uniform float time;
+  ~~~
+Settes i JavaScript:
+  ~~~javascript
+let material = new THREE.ShaderMaterial({
+  uniforms: {time: {value: 1.0}},
+  vertexShader: vertexShaderCode,
+  fragmentShader: fragmentShaderCode
+});
+  ~~~
+]
+---
+.left-column[
+  ## Shadere?
+  ## GLSL
+  ## Vertex shader
+  ## Fragment shader
+  ## Argumenter
+]
+.right-column[
+  ### Attributes
+
+  Read only verdier som settes per vertex i en geometri. Typisk ting som farge, normal-vektor og tekstur-kooridinat. Kan kun leses i vertex shadere.
+]
+---
+.left-column[
+  ## Shadere?
+  ## GLSL
+  ## Vertex shader
+  ## Fragment shader
+  ## Argumenter
+]
+.right-column[
+  ### Attributes
+
+  Read only verdier som settes per vertex i en geometri. Typisk ting som farge, normal-vektor og tekstur-kooridinat. Kan kun leses i vertex shadere.
+]
+.right-column[
+I en vertex shader:
+  ~~~glsl
+attribute float offset;
+  ~~~
+Settes i JavaScript:
+  ~~~javascript
+let geometry = new THREE.BoxBufferGeometry(1,1,1);
+geometry.addAttribute(
+  "offset",
+  new THREE.BufferAttribute([offset data], 1)
+);
+  ~~~
+]
+---
+.left-column[
+  ## Shadere?
+  ## GLSL
+  ## Vertex shader
+  ## Fragment shader
+  ## Argumenter
+]
+.right-column[
+  ### Varying
+
+  Verdier som sendes _fra_ en vertex shader _til_ en fragment shader. Kan ikke settes fra JavaScript. Får en verdi per vertex, siden den blir satt i vertex shaderen. Brukes typisk til ting som farge, normal-vektor og andre ting som er nyttig for å beregne farge.
+]
+---
+.left-column[
+  ## Shadere?
+  ## GLSL
+  ## Vertex shader
+  ## Fragment shader
+  ## Argumenter
+]
+.right-column[
+  ### Varying
+
+  Verdier som sendes _fra_ en vertex shader _til_ en fragment shader. Kan ikke settes fra JavaScript. Får en verdi per vertex, siden den blir satt i vertex shaderen. Brukes typisk til ting som farge, normal-vektor og andre ting som er nyttig for å beregne farge.
+]
+.right-column[
+I en vertex shader:
+  ~~~glsl
+varying vec3 vertexColor;
+
+void main() {
+  vertexColor = vec3(1.0, 0.0, 0.0);
+
+  // anna kode
+}
+  ~~~
+I en fragment shader:
+  ~~~glsl
+varying vec3 vertexColor;
+
+void main() {
+  // Her kan du bruke vertexColor-verdien
+}
+  ~~~
 ]
 
+---
+.left-column[
+  ## Shadere?
+  ## GLSL
+  ## Vertex shader
+  ## Fragment shader
+  ## Argumenter
+  ## Three.js
+]
+.right-column[
+  ### Shadere i Three.js
+
+  Dere har allerde litt erfaring med hvordan shadere kan brukes fra Three.js
+
+  ~~~javascript
+let material = new THREE.ShaderMaterial({
+  vertexShader: "vertexShaderCode",
+  fragmentShader: "fragmentShaderCode",
+});
+  ~~~
+]
+---
+.left-column[
+  ## Shadere?
+  ## GLSL
+  ## Vertex shader
+  ## Fragment shader
+  ## Argumenter
+  ## Three.js
+]
+.right-column[
+  ### Shadere i Three.js
+
+  Dere har allerde litt erfaring med hvordan shadere kan brukes fra Three.js
+
+  ~~~javascript
+let material = new THREE.ShaderMaterial({
+  vertexShader: "vertexShaderCode",
+  fragmentShader: "fragmentShaderCode",
+});
+  ~~~
+]
+.right-column[
+  I tillegg legger Three.js på en del ekstra kode for hver shader
+  ~~~glsl
+uniform mat4 modelMatrix;
+uniform mat4 modelViewMatrix;
+uniform mat4 projectionMatrix;
+uniform mat4 viewMatrix;
+uniform mat3 normalMatrix;
+uniform vec3 cameraPosition;
+
+attribute vec3 position;
+attribute vec3 normal;
+attribute vec2 uv;
+  ~~~
+]
 ---
 # Oppgavetid!
 
