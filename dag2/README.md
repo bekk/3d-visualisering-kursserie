@@ -16,7 +16,7 @@ I denne oppgaven skal vi bruke en fragmentshader til å lage en fin stjerne med 
 
 ### Utdelt oppsett
 
-I mappen `oppgave-4-fragment-shader` finner du et oppsett som ligner det vi lagde på dag 1, men uten noe innhold. Her skal du skrive koden for denne oppgaven.
+I mappen `oppgave-4-fragment-shader` finner du et oppsett som ligner det vi lagde på dag 1, men uten noe innhold. Her skal du skrive koden for denne oppgaven. Det finnes en `fragmentshader.glsl`, hvor mesteparten av koden skal skrives, og den velkjente `index.js` som binder det hele sammen, pluss en enkel `vertexshader.glsl` som kun er med fordi den trengs for å få fragmentshaderen til å snurre. Det blir mer om vertexshadere i neste oppgave.
 
 Du kjører koden i denne mappa med kommandoen
 
