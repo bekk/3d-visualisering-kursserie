@@ -20,8 +20,8 @@ I mappen `oppgave-4-fragment-shader` finner du et oppsett som ligner det vi lagd
 
 Du kjører koden i denne mappa med kommandoen
 
-```
-npm run oppgave4
+```sh
+npm run start4
 ```
 
 Den utdelte koden har en gjennomsiktig gul `PlaneGeometry` oppå en fin stjernebakgrunn. I løpet av oppgaven skal vi forme denne gule firkanten til en stjerne.
@@ -243,8 +243,8 @@ Siden du allerde har blitt kjent med `dat.GUI` og sikkert merka hvor kjekt det e
 
 Du kjører koden i denne mappa med kommandoen
 
-```
-npm run oppgave5
+```sh
+npm run start5
 ```
 
 ### Lag en sphere
@@ -512,6 +512,12 @@ I denne oppgaven skal du benytte deg av GPU-ens enorme parallellitet for å visu
 ### Utdelt oppsett
 
 I mappen `oppgave-6-particle-system` finner du et oppsett med den vanlige boilerplate-koden. Her skal du skrive koden for denne oppgaven. Du skal ikke bygge på den forrige oppgaven.
+
+Du kjører koden i denne mappa med kommandoen
+
+```sh
+npm run start6
+```
 
 ### Partikler i webgl
 
