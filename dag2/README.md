@@ -241,6 +241,12 @@ I mappen `oppgave-5-vertex-shader` finner du et oppsett med den vanlige boilerpl
 
 Siden du allerde har blitt kjent med `dat.GUI` og sikkert merka hvor kjekt det er, har vi inkludert det i den utdelte koden. Underveis vil vi peke på variabler det kan være arti å kunne kontrollere og endre.
 
+Du kjører koden i denne mappa med kommandoen
+
+```
+npm run oppgave5
+```
+
 ### Lag en sphere
 
 Det første vi trenger å gjøre er å lage en sphere, som vi kan bruke til å utforske hva vertex shadere kan gjøre.
