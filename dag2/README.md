@@ -65,9 +65,9 @@ Nå har du en enkel ball.
 
 ### Sexify
 
-For å få det riktig fint skal vi legge til glød på stjernen vår. En bra glød starter intenst og så faller av brått
+For å få det riktig fint skal vi legge til glød på stjernen vår. En bra glød starter intenst og så faller av brått:
 
-(TODO: x-y-graf over glød som avtar exponensielt med radius fra og med coreSize)
+![Avtagende graf](./bilder/graf8.PNG)
 
 Vi starter med å regne ut et praktisk tall som sier hvor langt unna ytterkanten av stjernens kjerne vi er:
 
