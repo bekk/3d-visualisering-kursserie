@@ -9,8 +9,8 @@ let camera, renderer, scene, cameraContainer;
 const keyPressed = {left: 0, right: 0, up: 0, down: 0};
 
 const uniforms = {
-    textureMap: {type: "t", value: THREE.ImageUtils.loadTexture('flightsimulator/img/texture.png'),},
-    heightMap: {type: "t", value: THREE.ImageUtils.loadTexture('flightsimulator/img/heightmap.png'),},
+    textureMap: {type: "t", value: THREE.ImageUtils.loadTexture('flightsimulator/img/texture.png')},
+    heightMap: {type: "t", value: THREE.ImageUtils.loadTexture('flightsimulator/img/heightmap.png')},
 };
 
 function initAnimation() {
@@ -35,7 +35,7 @@ function initAnimation() {
 
     const mapScale = 43;
 
-    const geometry = new THREE.PlaneGeometry(1251*mapScale, 901*mapScale, 512, 512);
+    const geometry = new THREE.PlaneBufferGeometry(1251*mapScale, 901*mapScale, 512, 512);
     geometry.rotateX(-Math.PI/2)
 
     const material = new THREE.ShaderMaterial({
