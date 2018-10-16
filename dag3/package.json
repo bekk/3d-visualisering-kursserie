@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "perlin": "budo perlin-noise/index.js --live -- -t brfs"
+    "perlin": "budo perlin-noise/index.js --live -- -t brfs",
+    "flightsimulator": "budo flightsimulator/index.js --live -- -t brfs",
+    "fasit-flightsimulator": "budo fasit/flightsimulator/index.js --live -- -t brfs"
   },
   "keywords": [],
   "author": "BEKK",
