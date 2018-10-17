@@ -33,6 +33,7 @@ const material = new THREE.ShaderMaterial({
     uniforms: uniforms,
     vertexShader: vertexShaderCode,
     fragmentShader: fragmentShaderCode,
+    transparent: true,
 });
 
 const plane = new THREE.Mesh(geometry, material);

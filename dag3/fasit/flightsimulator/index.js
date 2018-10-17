@@ -42,6 +42,7 @@ function initAnimation() {
         uniforms: uniforms,
         vertexShader: vertexShaderCode,
         fragmentShader: fragmentShaderCode,
+        transparent: true,
     });
 
     const plane = new THREE.Mesh(geometry, material);
