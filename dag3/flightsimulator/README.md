@@ -2,7 +2,7 @@
 
 I denne lager du en flight simulator med teksturert terreng:
 
-![Resultat Flight Simulator](./img/TODO.gif)
+![Resultat Flight Simulator](./img/resultat.gif)
 
 ## Utdelt oppsett
 
