@@ -18,3 +18,7 @@ Intromateriell:
 - [Om shadere](https://bekk.github.io/3d-visualisering-kursserie/dag2/slides/om-shadere.html)
 
 Åpne [dag 2](https://github.com/bekk/3d-visualisering-kursserie/tree/master/dag2) og følg readme-en der.
+
+## Dag 3:
+
+Åpne [dag 3](https://github.com/bekk/3d-visualisering-kursserie/tree/master/dag3) og følg readme-en der.
