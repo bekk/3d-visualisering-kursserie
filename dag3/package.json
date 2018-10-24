@@ -6,6 +6,7 @@
   "scripts": {
     "perlin": "budo perlin-noise/index.js --live -- -t brfs -t glslify",
     "flightsimulator": "budo flightsimulator/index.js --live -- -t brfs",
+    "orthographic-car": "budo orthographic-car/index.js --live -- -t brfs",
     "fasit-flightsimulator": "budo fasit/flightsimulator/index.js --live -- -t brfs"
   },
   "keywords": [],
