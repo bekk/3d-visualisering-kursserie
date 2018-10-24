@@ -147,3 +147,125 @@ const geometry = new THREE.PlaneBufferGeometry(10, 10, detailLevel, detailLevel)
 Der ja. Nå begynner det å ligne på noe!
 
 Jo høyere detaljnivå vi setter, jo flere vertices blir det. Siden heightmap-filen er på 1251 x 901 piksler er det ikke noe poeng å ha den så mye høyere enn 512 eller 1024. Sett den så høyt som datamaskinen din trives med.
+
+## Fysisk korrekt
+
+Terrenget er ikke helt realistisk nå. Og det er blant annet fordi planet er 10 x 10, men height map-filen er 1251 x 901 piksler. Så den er strekt feil. Vi retter dette i geometrien:
+
+```diff
+-const geometry = new THREE.PlaneBufferGeometry(10, 10, detailLevel, detailLevel);
++const mapScale = 10;
++const geometry = new THREE.PlaneBufferGeometry(1.251*mapScale, 0.901*mapScale, detailLevel, detailLevel);
+```
+
+Et godt triks i visualisering av ekte ting er å la avstand 1 tilsvare 1 meter. Slik blir verdier som lengde og fart realistisk, og det føles mer ekte. Vi kan informere om at skalaen på height mapet er 1:43000. Så før vi går videre går vi over til å bruke realistiske størrelser:
+
+```javascript
+camera.position.set(0, 3000, 15000);
+
+const mapScale = 43000;
+```
+
+Men da blir det helt flatt, fordi høyden vi setter i **vertexshaderen** må også justeres. Undersøker man `heightmap.png` ser vi at den sorte fargen midt i Trondheimsfjorden er `0x020202` og den grå fargen på toppen av Gråkallen (552 moh) er `0x878787`.
+
+Enkel heksidesimal matematikk sier dermed at høyden `h` mellom en helt lys piksel `0xffffff` og en helt mørk piksel `0x000000` dermed er gitt av 
+
+```
+0x87 - 0x02) / 0xff * h = 522 
+h = 522 / (0x87 - 0x02) * 0xff
+h = 522 / (135 - 2) * 255
+h = 1000.827
+```
+
+```c
+float heightScale = 1000.827;
+newPosition.y = texel.r * heightScale;
+```
+
+Eventuelt driter man såklart i hele matematikken og setter landskapet så høyt som er kult. F.eks. er 2000 mer spennende.
+
+## Bevegelse
+
+Selv om det ser bra ut er det ikke så mye flysimalator som det er en værballongsimulator akkurat nå. La oss få inn flyfølelsen ved å flytte kamera fremover. For å finne hvor kamera faktisk peker kan vi bruke `.getWorldDirection`:
+
+```javascript
+function moveCamera() {
+    const moveSpeed = 15;
+
+    const direction = new THREE.Vector3();
+    camera.getWorldDirection(direction);
+
+    camera.position.add(direction.multiplyScalar(moveSpeed));
+}
+```
+
+Det naturlige neste steget er å kunne svinge dette flyet litt rundt. Da trenger vi tastaturinput. Denne snutten beregner en hendig `keyPressed` med verdien 0 eller 1 for hver av piltastene:
+
+```javascript
+const keyPressed = {left: 0, right: 0, up: 0, down: 0};
+
+function addKeyListeners() {
+    const keyCodeMapping = {
+        38: "up",
+        37: "left",
+        40: "down",
+        39: "right"   
+    }
+
+    function onKey(event) {
+        const keyName = keyCodeMapping[event.keyCode];
+        keyPressed[keyName] = event.type == "keydown" ? 1 : 0;
+    }
+
+    document.addEventListener('keydown', onKey);
+    document.addEventListener('keyup', onKey);
+}
+```
+
+Og da kan vi forsøke oss på å styre kameraet:
+
+```javascript
+const rotateSpeed = 0.01;
+
+camera.rotation.x += keyPressed.down * rotateSpeed;
+camera.rotation.x -= keyPressed.up * rotateSpeed;
+
+camera.rotation.y += keyPressed.left * rotateSpeed;
+camera.rotation.y -= keyPressed.right * rotateSpeed;
+```
+
+Prøv å svinge litt rundt. Det er ikke helt riktig, er det vel? Det viser seg at rotasjon er litt vanskelig fordi `.rotation` i prinsippet tolkes slik at objektet skal først roteres langs x-aksen, så y-aksen, og så z-aksen. Men det gjør jo at aksene flytter på seg i forhold til hverandre!
+
+Det er flere mulige løsninger på dette, men en av de enkleste er å lage et hierarki av objekter i scene graphen rundt `camera`, og så rotere hver enkelt av dem separat. Vi legger camera inn i en `cameraContainer`:
+
+```diff
++let cameraContainer;
+
+camera = new THREE.PerspectiveCamera(50, ratio, 0.1, 1000000);
+-camera.position.set(0, 3000, 15000);
++cameraContainer = new THREE.Group();
++cameraContainer.position.set(0, 3000, 15000);
++cameraContainer.add(camera);
++scene.add(cameraContainer);
+
+function moveCamera() {
+-   camera.position.add(direction.multiplyScalar(moveSpeed));
++   cameraContainer.position.add(direction.multiplyScalar(moveSpeed));
+}
+```
+
+Og da kan vi rotere `cameraContainer` langs y-aksen i stedet for `camera`. Da vil ikke `camera` sin x-akse-rotasjon påvirke containerens y-akse-rotasjon:
+
+```diff
+-camera.rotation.y += keyPressed.left * rotateSpeed;
+-camera.rotation.y -= keyPressed.right * rotateSpeed;
+
++cameraContainer.rotation.y += keyPressed.left * rotateSpeed;
++cameraContainer.rotation.y -= keyPressed.right * rotateSpeed;
+```
+
+## Den kreative veien videre
+
+Fra nå av må du være kreativ og utvikle flysimulatoren videre.
+
+Implementer flykræsj, legg til andre fly, legg til sol og skyer, legg til Realfagsbygget, you name it!
