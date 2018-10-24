@@ -33,9 +33,9 @@ function initAnimation() {
 
     document.body.appendChild(renderer.domElement);
 
-    const mapScale = 43;
+    const mapScale = 43000;
 
-    const geometry = new THREE.PlaneBufferGeometry(1251*mapScale, 901*mapScale, 512, 512);
+    const geometry = new THREE.PlaneBufferGeometry(1.251*mapScale, 0.901*mapScale, 512, 512);
     geometry.rotateX(-Math.PI/2)
 
     const material = new THREE.ShaderMaterial({
@@ -90,7 +90,7 @@ function moveCamera() {
     const direction = new THREE.Vector3();
     camera.getWorldDirection(direction);
 
-    cameraContainer.position.add(direction.multiplyScalar(10));
+    cameraContainer.position.add(direction.multiplyScalar(moveSpeed));
 
     cameraContainer.rotation.y += keyPressed.left * rotateSpeed;
     cameraContainer.rotation.y -= keyPressed.right * rotateSpeed;
