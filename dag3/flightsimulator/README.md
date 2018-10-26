@@ -201,6 +201,8 @@ function moveCamera() {
 
 Det naturlige neste steget er å kunne svinge dette flyet litt rundt. Da trenger vi tastaturinput. Denne snutten beregner en hendig `keyPressed` med verdien 0 eller 1 for hver av piltastene:
 
+TODO: Putt det her i utils.js og bare bruk keyPressed i koden
+
 ```javascript
 const keyPressed = {left: 0, right: 0, up: 0, down: 0};
 
