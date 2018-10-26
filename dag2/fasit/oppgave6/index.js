@@ -99,7 +99,6 @@ const animate = function() {
     uniforms.time.value = (now - timeStart) / 1000;
 
     updateAnimationTime();
-    console.log(uniforms.animationTime.value);
 
     renderer.render(scene, camera);
 }
