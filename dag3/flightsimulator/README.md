@@ -199,29 +199,12 @@ function moveCamera() {
 }
 ```
 
-Det naturlige neste steget er å kunne svinge dette flyet litt rundt. Da trenger vi tastaturinput. Denne snutten beregner en hendig `keyPressed` med verdien 0 eller 1 for hver av piltastene:
-
-TODO: Putt det her i utils.js og bare bruk keyPressed i koden
+Det naturlige neste steget er å kunne svinge dette flyet litt rundt. Da trenger vi tastatur-input. I den utdelte `util.js` er det en funksjon `addKeyListeners` som legger til lyttere for tastetrykk og legger resultatet i et hendig `keyPressed`-objekt med verdien 0 eller 1 for hver av piltastene:
 
 ```javascript
 const keyPressed = {left: 0, right: 0, up: 0, down: 0};
 
-function addKeyListeners() {
-    const keyCodeMapping = {
-        38: "up",
-        37: "left",
-        40: "down",
-        39: "right"   
-    }
-
-    function onKey(event) {
-        const keyName = keyCodeMapping[event.keyCode];
-        keyPressed[keyName] = event.type == "keydown" ? 1 : 0;
-    }
-
-    document.addEventListener('keydown', onKey);
-    document.addEventListener('keyup', onKey);
-}
+util.addKeyListeners(keyPressed);
 ```
 
 Og da kan vi forsøke oss på å styre kameraet:

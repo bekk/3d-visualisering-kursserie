@@ -14,8 +14,6 @@ const uniforms = {
 };
 
 function initAnimation() {
-    addKeyListeners();
-
     renderer = new THREE.WebGLRenderer();
     renderer.setClearColor(0xA0D9FE);
     renderer.setSize(window.innerWidth, window.innerHeight, true);
@@ -62,6 +60,8 @@ function initAnimation() {
 
         scene.add(cloud);
     }
+
+    util.addKeyListeners(keyPressed);
 }
 
 function makeCloud() {
@@ -105,23 +105,6 @@ function animate() {
     moveCamera();
 
     renderer.render(scene, camera);
-}
-
-function addKeyListeners() {
-    const keyCodeMapping = {
-        38: "up",
-        37: "left",
-        40: "down",
-        39: "right"   
-    }
-
-    function onKey(event) {
-        const keyName = keyCodeMapping[event.keyCode];
-        keyPressed[keyName] = event.type == "keydown" ? 1 : 0;
-    }
-
-    document.addEventListener('keydown', onKey);
-    document.addEventListener('keyup', onKey);
 }
 
 initAnimation();
