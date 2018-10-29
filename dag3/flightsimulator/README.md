@@ -166,15 +166,16 @@ camera.position.set(0, 3000, 15000);
 const mapScale = 43000;
 ```
 
-Men da blir det helt flatt, fordi høyden vi setter i **vertexshaderen** må også justeres. Undersøker man `heightmap.png` ser vi at den sorte fargen midt i Trondheimsfjorden er `0x020202` og den grå fargen på toppen av Gråkallen (552 moh) er `0x878787`.
+Men da blir det helt flatt, fordi høyden vi setter i **vertexshaderen** må også justeres. Undersøker man `heightmap.png` ser vi at den sorte fargen midt i Trondheimsfjorden er `0x020202` og den grå fargen på toppen av Gråkallen (552 moh) er `0x878787`. `0x87` er et hexadesimalt tall, og `0x87 = 135`. Mens `0x02 = 2`.
 
-Enkel heksidesimal matematikk sier dermed at høyden `h` mellom en helt lys piksel `0xffffff` og en helt mørk piksel `0x000000` dermed er gitt av 
+Enkel matematikk sier dermed at høyden `H` i meter mellom en helt lys piksel `0xff = 255` og en helt mørk piksel `0x00 = 0` dermed er gitt av 
 
 ```
-0x87 - 0x02) / 0xff * h = 522 
-h = 522 / (0x87 - 0x02) * 0xff
-h = 522 / (135 - 2) * 255
-h = 1000.827
+(135 - 2) / (255 - 0) = 522 / H
+133 / 255 = 522 / H
+133 / 255 * H = 522
+H = 522 / 133 * 255
+H = 1000.827
 ```
 
 ```c
