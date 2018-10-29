@@ -98,6 +98,8 @@ Spillet vårt er ikke helt på Unity-nivå når det gjelder grafikk og gameplay.
 
 - Animer bilene videre slik at den steiler når man akselererer og lener seg ut i svingene
 
+- Legg til `dat.gui` og lag kontrollere for fart, kollisjonskraft, brettstørrelse, og så videre
+
 - Legg på skygge på bakken med `DirectionalLightShadow`: https://threejs.org/docs/#api/en/lights/shadows/DirectionalLightShadow
 
 - Lag et hopp hvor bilen løftes opp lineært på vei opp rampen
