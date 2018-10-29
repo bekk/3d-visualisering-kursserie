@@ -23,7 +23,7 @@ let plane, orb;
 let t0 = Date.now();
 let uniforms = {
   time: { value: 0 },
-  light: { value: new THREE.Vector3(0, 0, 5) }
+  light: { value: new THREE.Vector3(0, 0, 2) }
 };
 
 const WIDTH = window.innerWidth;
@@ -31,6 +31,7 @@ const HEIGHT = window.innerHeight;
 
 function init() {
   scene = new THREE.Scene();
+  scene.rotation.set(-Math.PI / 2, 0, 0);
 
   initCamera();
   initRenderer();
@@ -43,8 +44,8 @@ function init() {
 
 function initCamera() {
   camera = new THREE.PerspectiveCamera(40, WIDTH / HEIGHT, 0.01, 1000);
-  camera.position.set(0, 0, 15);
   camera.lookAt(scene.position);
+  camera.position.set(0, 10, 15);
 
   new OrbitControls(camera);
 }
@@ -60,17 +61,15 @@ function initDatGui() {
 }
 
 function initPlane() {
-  let geometry = new THREE.PlaneBufferGeometry(20, 10, 200, 200);
+  let geometry = new THREE.PlaneBufferGeometry(20, 20, 120, 120);
   let material = new THREE.ShaderMaterial({
     vertexShader: vertexShaderCode,
     fragmentShader: fragmentShaderCode,
     // wireframe: true,
-    // transparent: true,
     uniforms
   });
 
   plane = new THREE.Mesh(geometry, material);
-  plane.rotation.set((-2 * Math.PI) / 5, 0, 0);
   scene.add(plane);
 }
 
@@ -83,7 +82,7 @@ function initOrb() {
   });
 
   orb = new THREE.Mesh(geometry, material);
-  orb.position.set(0, 1, 0);
+  orb.position.set(0, 0, 2);
   scene.add(orb);
 }
 
