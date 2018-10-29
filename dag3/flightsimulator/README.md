@@ -171,9 +171,10 @@ Men da blir det helt flatt, fordi høyden vi setter i **vertexshaderen** må ogs
 Enkel heksidesimal matematikk sier dermed at høyden `h` mellom en helt lys piksel `0xffffff` og en helt mørk piksel `0x000000` dermed er gitt av 
 
 ```
-0x87 - 0x02) / 0xff * h = 522 
-h = 522 / (0x87 - 0x02) * 0xff
-h = 522 / (135 - 2) * 255
+(0x87 - 0x02) / (0xff-0x00) = 522 / h 
+((0x87 - 0x02) / 0xff) * h = 522 
+h = (522  * 0xff) / (0x87 - 0x02)
+h = (522 * 255) / (135 - 2)
 h = 1000.827
 ```
 
