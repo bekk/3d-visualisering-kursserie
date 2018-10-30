@@ -52,7 +52,7 @@ Tips: Endre på `.position` og `.rotation.y` for å henholdsvis forflytte og rot
 
 Nå risikerer vi å kjøre bilen utenfor kameraet. Det er jo ikke slik bilspill funker, er det vel? Nei, vi må flytte kamera slik at det følger etter bilen.
 
-Tips: I den utdelte koden er det en funksjon `moveCar()` som er tenkt for dette.
+Tips: I den utdelte koden er det en funksjon `moveCamera()` som er tenkt for dette.
 
 ### 5. Roter hjulene på bilen når den kjører
 
