@@ -1,14 +1,12 @@
 #pragma glslify: snoise3 = require(glsl-noise/simplex/3d);
 
-float noise(float t, vec3 position) {
-  vec3 basePos = vec3(position.x, position.y + t, 0.0);
-  float offset1 = snoise3(basePos * 0.25);
-  float offset2 = snoise3(basePos * 0.1);
-  float sumavg = offset1 * 0.5 + offset2 * 0.5;
+float noiseFunction(float t, vec3 position) {
+  vec3 offsetPosition = vec3(position.x, position.y + t, position.z);
+  float n1 = snoise3(0.25 * offsetPosition);
+  float n2 = snoise3(0.1 * offsetPosition);
+  float n = n1 + n2;
 
-  float offset = sumavg;
-
-  return offset * 5.0;
+  return n * 2.5;
 }
 
-#pragma glslify: export(noise)
+#pragma glslify: export(noiseFunction)

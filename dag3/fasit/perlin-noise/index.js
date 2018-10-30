@@ -89,10 +89,12 @@ function initOrb() {
 function render() {
   requestAnimationFrame(render);
   let time = (Date.now() - t0) * 0.002;
-  let displacement = 2.5 * Math.sin(0.5 * time);
   uniforms.time.value = time;
+
+  let displacement = 2.5 * Math.sin(0.5 * time);
   uniforms.light.value = new THREE.Vector3(displacement, 0, 2);
   orb.position.set(displacement, 0, 2);
+
   renderer.render(scene, camera);
 }
 
