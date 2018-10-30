@@ -4,7 +4,7 @@ I dag skal du velge selv hva du skal gjøre! Det er flere oppgaver, og det er me
 
 I hver oppgave går vi gjennom steg for steg i starten, men etter hvert blir det mer open ended og du får noen utfordringer du kan løse på din måte.
 
-## [Orthographic car](./ortographic-car/README.md)
+## [Orthographic car](./orthographic-car/README.md)
 
 I denne oppgaven lager vi et lite bilspill i en orthografisk verden. Det er ingen shaderprogrammering i denne oppgaven! I stedet for å få forklart hver eneste kodelinje går vi gjennom hva som må gjøres, og hvilke komponenter og triks du må bruke for å få det til.
 
