@@ -18,7 +18,7 @@ void main() {
   positionVec = position;
   normalVec = normal;
   positionOffset = offset;
-  lightOffset = clamp(noise(time, light), 0.0, 5.0);
+  lightOffset = abs(noise(time, light));
 
   gl_Position = screenSpaceCoordinate;
 }
