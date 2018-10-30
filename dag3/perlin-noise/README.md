@@ -13,6 +13,7 @@ I tillegg får du en funksjon som lager et XY-plan vi skal bruke til å visualis
 Du kjører koden med følgende kommando
 
 ```sh
+npm install
 npm run perlin-noise
 ```
 
