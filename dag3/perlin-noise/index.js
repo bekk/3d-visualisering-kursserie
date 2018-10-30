@@ -65,7 +65,8 @@ function initPlane() {
 
 function render() {
   requestAnimationFrame(render);
-  let time = Date.now() - t0;
+  // time in s
+  let time = (Date.now() - t0) * 0.001;
   uniforms.time.value = time;
 
   renderer.render(scene, camera);
