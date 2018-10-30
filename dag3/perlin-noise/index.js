@@ -13,6 +13,7 @@ const fragmentShaderCode = fs.readFileSync(
 );
 
 let scene, camera, renderer;
+let plane;
 
 let t0 = Date.now();
 let uniforms = {
