@@ -1,7 +1,7 @@
 #pragma glslify: snoise3 = require(glsl-noise/simplex/3d);
 
 float noise(float t0, vec3 position) {
-  float t = (t0 * 0.0015);
+  float t = (t0 * 0.002);
   vec3 basePos = vec3(position.x, position.y + t, 0);
   float offset1 = snoise3(basePos*.5);
   float offset2 = snoise3(basePos*.25);

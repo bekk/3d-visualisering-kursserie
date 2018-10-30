@@ -4,7 +4,9 @@ uniform float time;
 uniform vec3 light;
 
 varying vec3 positionVec;
-varying vec3 fragNormal;
+varying vec3 normalVec;
+varying float positionOffset;
+varying float lightOffset;
 
 void main() {
   float offset = noise(time, position);
@@ -14,7 +16,9 @@ void main() {
   vec4 screenSpaceCoordinate = projectionMatrix * worldSpaceCoordinates;
 
   positionVec = position;
-  fragNormal = normal;
+  normalVec = normal;
+  positionOffset = offset;
+  lightOffset = clamp(noise(time, light), 0.0, 5.0);
 
   gl_Position = screenSpaceCoordinate;
 }

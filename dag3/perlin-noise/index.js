@@ -61,7 +61,7 @@ function initDatGui() {
 }
 
 function initPlane() {
-  let geometry = new THREE.PlaneBufferGeometry(20, 20, 120, 120);
+  let geometry = new THREE.PlaneBufferGeometry(20, 20, 200, 200);
   let material = new THREE.ShaderMaterial({
     vertexShader: vertexShaderCode,
     fragmentShader: fragmentShaderCode,
@@ -74,7 +74,7 @@ function initPlane() {
 }
 
 function initOrb() {
-  let geometry = new THREE.SphereBufferGeometry(0.1, 16, 16);
+  let geometry = new THREE.SphereBufferGeometry(0.1, 8, 8);
   let material = new THREE.ShaderMaterial({
     vertexShader: orbVertexShaderCode,
     fragmentShader: orbFragmentShaderCode,
