@@ -328,6 +328,8 @@ void main() {
 }
 ```
 
+Det vi gjør her er å regne ut en verdi for hvor belyst en pixel er ved å finne dot-produktet mellom lys-retningen og normal-vektoren. Lys retningen regner vi ut ved å finne avstanden mellom lys-posisjonen og vertex-posisjonen. Grunnen til at vi normaliserer vektorene før vi gjør beregningene er at vi bare er interessert i retninger og ikke styrke.
+
 Det er ikke så lett å se, men du skal nå ha en sterkere grønnfarge i midten av terrenget ditt. Vi kan forsterke effekten ved å si at alt som ikke får minst `0.5` av lyset skal være helt mørkt:
 
 `fragmentshader.glsl`:
@@ -444,7 +446,7 @@ void main() {
 }
 ```
 
-En ting det er verdt å merke seg her er at vi ikke bruker hele posisjonen til lyset når vi henter ut noise-verdien. Dette er for at vi skal bruke samme Z-komponent som terrenget (0) og ikke den verdien vi har på lyset (2).
+En ting det er verdt å merke seg her, er at vi ikke bruker hele posisjonen til lyset når vi henter ut noise-verdien. Dette er for at vi skal bruke samme Z-komponent som terrenget (0) og ikke verdien på lysets Z-komponent (2).
 
 `fragmentshader.glsl`:
 ```diff
