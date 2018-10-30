@@ -12,7 +12,7 @@ void main() {
     vec3 lightDir = normalize(lightPos - positionVec);
     float diffuse = max(0.0, dot(lightDir, normal));
 
-    vec3 color = mix(vec3(0.0, 0.25, 0.0), vec3(0.0, 1.0, 0.0), noise);
+    vec3 color = mix(vec3(0.0, 0.25, 0.0), vec3(0.0, 1.0, 0.0), noise / 2.5);
     vec3 finalColor = (max(0.5, diffuse) - 0.5) * 2.0 * color;
 
     gl_FragColor = vec4(finalColor, 1.0);
