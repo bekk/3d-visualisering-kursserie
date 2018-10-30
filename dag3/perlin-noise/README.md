@@ -57,7 +57,7 @@ For å ta i bruk `glslify` på shaderne våre trenger vi å fortelle `glslify` h
 
 Da får vi muligheten til å gjøre dette i shaderkoden vår:
 
-`fragmentshader.glsl`:
+`vertexshader.glsl`:
 ```diff
 +#pragma glslify: snoise3 = require(glsl-noise/simplex/3d);
 ```
@@ -66,7 +66,7 @@ Da henter vi inn `snoise3`-funksjonen fra `glsl-noise`-pakka. `snoise3` er 3D-ve
 
 `vertexshader.glsl`:
 ```diff
-+#pragma glslify: snoise3 = require(glsl-noise/simplex/3d);
+#pragma glslify: snoise3 = require(glsl-noise/simplex/3d);
 
 uniform float time;
 
