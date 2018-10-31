@@ -1,6 +1,6 @@
 # Kursserie 3D-visualisering
 
-Dette er en kursserie på 3 dager
+Dette er en kursserie på 3 dager. Hver dag tar cirka 3-4 timer.
 
 ## Dag 1:
 
