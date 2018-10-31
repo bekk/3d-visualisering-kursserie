@@ -14,7 +14,7 @@ Du kjører koden med følgende kommando
 
 ```sh
 npm install
-npm run perlin-noise
+npm run perlin
 ```
 
 Når du kjører koden vil du se en hvit firkant midt på skjermen, da vet du at alt er OK og du kan starte med oppgaven.
@@ -22,7 +22,7 @@ Når du kjører koden vil du se en hvit firkant midt på skjermen, da vet du at 
 Skulle du bli sittende fast kan du alltids ta en titt på fasiten med:
 
 ```sh
-npm run fasit-perlin-noise
+npm run fasit-perlin
 ```
 
 ## Del 1: Perlin noise og glslify
