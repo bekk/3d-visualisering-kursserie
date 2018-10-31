@@ -12,12 +12,13 @@ I denne oppgaven lager vi et lite bilspill i en orthografisk verden. Det er inge
 
 ## [Flight simulator](./flightsimulator/README.md)
 
-I denne lager du en flight simulator med teksturert terreng:
+I denne lager du en flight simulator med teksturert terreng over vårt kjære Trondheim.
 
 ![Resultat Flight Simulator](./flightsimulator/img/resultat.gif)
 
 ## [Perlin noise + Lighting](./perlin-noise/README.md)
 
+I denne oppgaven skal vi bruke Perlin-støy til å lage en procedurally generated verden som vi lyser opp med vår egen lys-kilde.
+
 ![Resultat perlin noise](./perlin-noise/img/perlin-noise.gif)
 
-I denne oppgaven skal vi bruke Perlin støy til å lage en procedurally generated verden som vi lyser opp med vår egen lys-kilde.
