@@ -7,8 +7,7 @@
     "start": "budo index.js --live -- -t brfs",
     "fasit1": "budo fasit/oppgave1/index.js --live -- -t brfs",
     "fasit2": "budo fasit/oppgave2/index.js --live -- -t brfs",
-    "fasit3": "budo fasit/oppgave3/index.js --live -- -t brfs",
-    "fasit3_bonus": "budo fasit/oppgave3Bonus/index.js --live -- -t brfs"
+    "fasit3": "budo fasit/oppgave3/index.js --live -- -t brfs"
   },
   "keywords": [],
   "author": "BEKK",
