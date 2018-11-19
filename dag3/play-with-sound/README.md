@@ -43,7 +43,7 @@ Når det nå er borte kan vi begynne å bli kreative med søylene. For hver søy
 
 Her inne har vi en freq-variabel vi scaler kubene med. Bruk den samme variabelen til å regne ut en hexadesimal fargekode for rød som blir rødere jo høyere frekvensen er. Sett så fargen med følgende kode:
 ```
-  c.material.color.setHex( colorhex );
+  c.material.color.setHex(colorhex);
 ```
 
 Hint: en farge-hex består av en rød, en gul og en blå del. det er kun den røde delen du trenger å bry deg om her. 0xff0000 er helt rød og 0x000000 er selvfølgelig helt fargeløs.

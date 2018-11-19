@@ -16,7 +16,7 @@ const params = {
   speed: 50.0
 }
 
-let texture = new THREE.Color( params.baseColor );
+let texture = new THREE.Color(params.baseColor);
 
 function init() {
 
@@ -57,7 +57,7 @@ function initCubes() {
     .fill()
     .map(function(_, i) {
       let n = -1 * Math.floor(NUM_CUBES / 2) + i;
-      let cube = new THREE.Mesh(new THREE.CubeGeometry(1, 1, 1), new THREE.MeshBasicMaterial( { color: 0xff0000} ));
+      let cube = new THREE.Mesh(new THREE.CubeGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}));
       cube.position.set(n * 1 + n * 0.1, 0, 0);
       scene.add(cube);
       return cube;
@@ -69,7 +69,7 @@ function normalise(min, max, v) {
 }
 
 function updateParameters(){
-  scene.background = new THREE.Color( params.baseColor );
+  scene.background = new THREE.Color(params.baseColor);
 }
 
 function makeCubesDance() {
