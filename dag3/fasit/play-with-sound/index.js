@@ -81,11 +81,7 @@ function makeCubesDance() {
     c.scale.set(1, freq, 1);
     const freqDamperFactor = 10;
     const factor = Math.min(Math.max((freq)/freqDamperFactor, normalise(min, max, 0) / freqDamperFactor), 1);
-    const redhex = Math.floor(0xff * factor);
-    const redstring = redhex.toString(16);
-    const colorhexstring = redstring + "0000";
-    const colorhex = parseInt(colorhexstring, 16);
-    c.material.color.setHex(colorhex);
+    c.material.color.setRGB(factor, 0, 0);
     const rotateAngle = factor <= normalise(min, max, 0)/freqDamperFactor ? 0 : factor*(Math.PI/32);
     c.rotateX(rotateAngle * params.speed/freqDamperFactor);
   });
