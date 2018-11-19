@@ -16,13 +16,13 @@ const params = {
   speed: 50.0
 }
 
-let texture = new THREE.Color(params.baseColor);
+let backgroundColor = new THREE.Color(params.baseColor);
 
 function init() {
 
 
   scene = new THREE.Scene();
-  scene.background = texture
+  scene.background = backgroundColor
   initCubes();
   initCamera();
   initRenderer();
