@@ -22,3 +22,9 @@ I denne oppgaven skal vi bruke Perlin-støy til å lage en procedurally generate
 
 ![Resultat perlin noise](./perlin-noise/img/perlin-noise.gif)
 
+## [Play With Sound](./play-with-sound/README.md)
+
+I denne oppgaven skal vi leke videre med lydoppgaven fra dag 1
+
+![Resultat Play With Sound](./play-with-sound/img/playwithsound.gif)
+
