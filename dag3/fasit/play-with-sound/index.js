@@ -2,7 +2,7 @@ const THREE = require("three");
 const OrbitControls = require("three-orbit-controls")(THREE);
 const analyse = require("./soundanalyser.js");
 const fs = require("fs");
-const dat = require('dat.gui');
+const dat = require("dat.gui");
 
 let scene, camera, renderer, cubes, analyser, soundLevel;
 
@@ -14,15 +14,13 @@ const NUM_CUBES = 32;
 const params = {
   baseColor: "#ff9500",
   speed: 50.0
-}
+};
 
-let backgroundColor = new THREE.Color(params.baseColor);
+const backgroundColor = new THREE.Color(params.baseColor);
 
 function init() {
-
-
   scene = new THREE.Scene();
-  scene.background = backgroundColor
+  scene.background = backgroundColor;
   initCubes();
   initCamera();
   initRenderer();
@@ -35,10 +33,9 @@ function init() {
 function initDatGui() {
   var gui = new dat.GUI();
 
-  gui.addColor(params, 'baseColor');
+  gui.addColor(params, "baseColor");
   gui.add(params, "speed", 0.0, 100.0);
 }
-
 
 function initCamera() {
   camera = new THREE.PerspectiveCamera(45, WIDTH / HEIGHT, 0.1, 1000);
@@ -57,7 +54,10 @@ function initCubes() {
     .fill()
     .map(function(_, i) {
       let n = -1 * Math.floor(NUM_CUBES / 2) + i;
-      let cube = new THREE.Mesh(new THREE.CubeGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}));
+      let cube = new THREE.Mesh(
+        new THREE.CubeGeometry(1, 1, 1),
+        new THREE.MeshBasicMaterial({ color: 0xff0000 })
+      );
       cube.position.set(n * 1 + n * 0.1, 0, 0);
       scene.add(cube);
       return cube;
@@ -68,7 +68,7 @@ function normalise(min, max, v) {
   return ((v - min) / max) * -1;
 }
 
-function updateParameters(){
+function updateParameters() {
   scene.background = new THREE.Color(params.baseColor);
 }
 
@@ -80,10 +80,13 @@ function makeCubesDance() {
     const freq = normalise(min, max, frequencies[i]);
     c.scale.set(1, freq, 1);
     const freqDamperFactor = 10;
-    const factor = Math.min(Math.max((freq)/freqDamperFactor, normalise(min, max, 0) / freqDamperFactor), 1);
+    const factor = Math.min(freq / freqDamperFactor, 1);
     c.material.color.setRGB(factor, 0, 0);
-    const rotateAngle = factor <= normalise(min, max, 0)/freqDamperFactor ? 0 : factor*(Math.PI/32);
-    c.rotateX(rotateAngle * params.speed/freqDamperFactor);
+    const rotateAngle =
+      factor <= normalise(min, max, 0) / freqDamperFactor
+        ? 0
+        : factor * (Math.PI / 32);
+    c.rotateX((rotateAngle * params.speed) / freqDamperFactor);
   });
 }
 
