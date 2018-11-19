@@ -1,4 +1,6 @@
-### Gjør morsomme ting med lyd (Fortsettelse av dag 1 oppgave 3)
+# Play With Sound
+
+![Resultat Play With Sound](./img/playwithsound.gif)
 
 Vi skal i denne oppgaven ta utgangspunkt i løsningen din fra oppgave 3 fra dag 1 og gjøre følgende for å få noe som ligner på resultatet i bildet over:
 1. Få rødheten til lydsøylene til å avhenge av høyden på lydsøylen
