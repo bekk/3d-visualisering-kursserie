@@ -272,8 +272,8 @@ Det er ikke noe hokus-pokus i `three.js` for å gjøre dette, bare god gammeldag
 
 ```js
 let cube;
-function makeCube(height, width, depth) {
-  let geometry = new THREE.BoxGeometry(height, width, depth);
+function makeCube(width, height, depth) {
+  let geometry = new THREE.BoxGeometry(width, height, depth);
   let material = new THREE.MeshNormalMaterial();
   cube = new THREE.Mesh(geometry, material);
 }
