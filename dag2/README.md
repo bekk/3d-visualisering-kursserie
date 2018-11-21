@@ -292,7 +292,7 @@ De tre typene er
 
 ### Gjøre spheren spennende!
 
-For å live opp spheren vår, og for å få frem 3D-effekten trenger vi litt farge. Farge er, som vi har lært, jobben til vertex-shaderen. I dag1 brukte vi et spesielt materiale som het `MeshNormalMaterial` for å få en farge som så ganske ålreit ut right out of the gate. Vi kan benytte oss av en lignende teknikk her nå for å gi spheren vår gøy farge.
+For å live opp spheren vår, og for å få frem 3D-effekten trenger vi litt farge. Farge er, som vi har lært, jobben til fragment-shaderen. I dag1 brukte vi et spesielt materiale som het `MeshNormalMaterial` for å få en farge som så ganske ålreit ut right out of the gate. Vi kan benytte oss av en lignende teknikk her nå for å gi spheren vår gøy farge.
 
 Alle geometrier i three.js har definert en vektor som heter `normal`, det er den vektoren som peker rett ut (aka perpendicular aka 90grader) fra hvert punkt. Three.js kan vise oss normal-vektorene med en hendig hjelpefunksjon:
 
