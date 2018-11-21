@@ -517,22 +517,6 @@ geometry.addAttribute(
   Verdier som sendes _fra_ en vertex shader _til_ en fragment shader. Kan ikke settes fra JavaScript. Får en verdi per vertex, siden den blir satt i vertex shaderen. Brukes typisk til ting som farge, normal-vektor og andre ting som er nyttig for å beregne farge.
 ]
 .right-column[
-  ![varying interpolate](img/varying.gif)
-]
----
-.left-column[
-  ## Shadere?
-  ## GLSL
-  ## Vertex shader
-  ## Fragment shader
-  ## Argumenter
-]
-.right-column[
-  ### Varying
-
-  Verdier som sendes _fra_ en vertex shader _til_ en fragment shader. Kan ikke settes fra JavaScript. Får en verdi per vertex, siden den blir satt i vertex shaderen. Brukes typisk til ting som farge, normal-vektor og andre ting som er nyttig for å beregne farge.
-]
-.right-column[
 I en vertex shader:
   ~~~glsl
 varying vec3 vertexColor;
@@ -552,7 +536,22 @@ void main() {
 }
   ~~~
 ]
+---
+.left-column[
+  ## Shadere?
+  ## GLSL
+  ## Vertex shader
+  ## Fragment shader
+  ## Argumenter
+]
+.right-column[
+  ### Varying
 
+  Verdier som sendes _fra_ en vertex shader _til_ en fragment shader. Kan ikke settes fra JavaScript. Får en verdi per vertex, siden den blir satt i vertex shaderen. Brukes typisk til ting som farge, normal-vektor og andre ting som er nyttig for å beregne farge.
+]
+.right-column[
+  ![varying interpolate](img/varying.gif)
+]
 ---
 .left-column[
   ## Shadere?
