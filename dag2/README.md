@@ -54,14 +54,14 @@ float radius = length(vertexPosition);
 float angle = atan(vertexPosition.y / vertexPosition.x);
 ```
 
-Og da kan vi endelig lage en stjerne som en enkel disk ved å sette gjennomsiktigheten til maks utenfor en viss radius:
+Og da kan vi endelig lage en sirkel ved å sette gjennomsiktigheten til maks utenfor en viss radius:
 
 ```c
 float coreSize = 0.1;
 float alpha = radius < coreSize ? 1.0 : 0.0;
 ```
 
-Nå har du en enkel ball.
+Nå har du en enkel ensfarget ball.
 
 ### Sexify
 
@@ -111,7 +111,7 @@ Siste prikken over i-en blir stråler som skinner ut av stjernen. Her kan vi bru
 
 ![Sine](./bilder/sine-polar-vs-cartesian.png)
 
-Vi regner ut et wave-tall som er sinusbølgen av polarkoordinat-vinkelen:
+Vi regner ut et `wave`-tall som er sinusbølgen av polarkoordinat-vinkelen:
 
 ```c
 float nofBeams = 6.0;
