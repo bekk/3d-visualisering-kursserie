@@ -4,7 +4,7 @@ const vertexShaderCode = fs.readFileSync(__dirname + '/vertexshader.glsl', 'utf8
 const fragmentShaderCode = fs.readFileSync(__dirname + '/fragmentshader.glsl', 'utf8');
 const util = require('./util.js');
 
-let camera, renderer, scene, cameraContainer;
+let camera, renderer, scene, cameraContainer, img, ctx, canvas;
 
 const keyPressed = {left: 0, right: 0, up: 0, down: 0};
 
@@ -83,6 +83,22 @@ function makeCloud() {
     return cloud;
 }
 
+function initHeightMapPixels() {
+    canvas = document.createElement("canvas");
+    img = new Image();
+    img.src = "flightsimulator/img/heightmap.png";
+
+    ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+}
+
+function sampleHeightMap(x, y) {
+    canvas.width = img.width;
+    canvas.height = img.height;
+    ctx.drawImage(img, 0, 0);
+    return ctx.getImageData(x, y, 1, 1).data
+}
+
 function moveCamera() {
     const moveSpeed = 15;
     const rotateSpeed = 0.01;
@@ -104,8 +120,11 @@ function animate() {
 
     moveCamera();
 
+    console.log(sampleHeightMap(430, 480));
+
     renderer.render(scene, camera);
 }
 
 initAnimation();
+initHeightMapPixels();
 animate();
