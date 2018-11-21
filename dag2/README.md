@@ -34,7 +34,7 @@ Siden det er flere dager siden forrige gang kan det være greit å friske opp [t
 
 For å tegne stjernen vil vi bruke polarkoordinater. Da kan vi ha forskjellige intensitet i sentrum, og vi kan ha stråler som varierer med vinkelen rundt sentrum.
 
-(bilde av polarkoordinater-systemet)
+![Polar vs Cartesian](./bilder/polar-vs-cartesian.png)
 
 `position` er et punkt i det vanlige 3D-koordinatsystemet, såkalt kartesisk system. Og den matematiske formelen for å konvertere kartesiske koordinater til polarkoordinater er:
 
@@ -109,8 +109,7 @@ color += glow * brightness;
 
 Siste prikken over i-en blir stråler som skinner ut av stjernen. Her kan vi bruke `angle` fra polarkoordinatene. Hvis intensiteten er en sinusbølge får vi pene stråler:
 
-(x-y-graf over sinus over vinkel)
-(polar-graf over sinus over vinkel)
+![Sine](./bilder/sine-polar-vs-cartesian.png)
 
 Vi regner ut et wave-tall som er sinusbølgen av polarkoordinat-vinkelen:
 
