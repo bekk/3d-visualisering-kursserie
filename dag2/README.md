@@ -1,5 +1,9 @@
 # Dag 2: Dypdykk i shaderprogrammering
 
+## Teori
+
+- [Introduksjon til shadere](https://bekk.github.io/3d-visualisering-kursserie/dag2/slides/om-shadere.html)
+
 ## Oppgaver
 
 - [Oppgave 4](#oppgave-4)
